@@ -66,3 +66,22 @@
 | `app/__init__.py` | مسار مجلد `instance` قابل للضبط بـ `INSTANCE_PATH`، وافتراضياً `/var/lib/irs-road/instance` في الإنتاج على Linux (خارج مجلدات الإصدارات وضمن `ReadWritePaths` في systemd). محلياً/Windows يبقى `<project>/instance` لأن Python 3.13 على Windows لا يعتبر `/var/lib/...` مساراً مطلقاً |
 | `.env.example`، `deploy/scripts/install.sh` | توثيق `INSTANCE_PATH` وإنشاء `/var/lib/irs-road/instance` عند التثبيت |
 | `.vscode/launch.json`، `README.md` | تشغيل محلي على Windows عبر `python -m flask` و F5 |
+
+---
+
+# الإصدار 1.2 — الربط بخادم البريد (mail.iroad.ly)
+
+| الملف | التعديل |
+|---|---|
+| `app/services/mail.py` | **استبدال كامل**: STARTTLS (587) أو SSL (465) أو ترحيل محلي (25)، التحقق من شهادة الخادم، اسم مرسل، Reply-To، Date/Message-ID، نص+HTML، رسائل خطأ واضحة (مصادقة/مرسل مرفوض)، الدالة `send_template()` |
+| `config.py` | إعدادات جديدة: `MAIL_USE_SSL`، `MAIL_VERIFY_TLS`، `MAIL_TIMEOUT`، `MAIL_FROM_NAME`، `MAIL_REPLY_TO` (بعد `MAIL_FROM`) |
+| `app/templates/emails/` | **مجلد جديد**: قالب أساسي بهوية الإدارة + قوالب: إعادة التعيين، تغيير كلمة المرور، رد الدعم، الاختبار (نص و HTML) |
+| `app/auth/routes.py` | رسالة الاستعادة بقالب وبلغة الحساب؛ دالة جديدة `notify_password_changed()` تُرسل بعد إعادة التعيين |
+| `app/main/routes.py` | إشعار بالبريد بعد تغيير كلمة المرور من «تعديل البيانات» |
+| `app/admin/routes.py` | رد الدعم بالبريد بقالب HTML وعنوان رد |
+| `app/cli.py` | أمر جديد `flask send-test-mail <email>` |
+| `.env.example` | قسم البريد مضبوط على mail.iroad.ly + `APP_BASE_URL` |
+| `docs/EMAIL.md` | **جديد**: خطوات PostfixAdmin والتحقق والإعداد وقابلية التسليم واستكشاف الأخطاء |
+| `tests/test_mail.py` | **جديد**: 8 اختبارات |
+| `scripts/i18n_ar.py` + `translations/` | 12 نصاً جديداً مترجماً |
+| `README.md`، `docs/DEPLOYMENT.md`، `docs/SECURITY.md`، `docs/TESTING_REPORT.md` | تحديث المراجع |

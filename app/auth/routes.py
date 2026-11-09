@@ -1,4 +1,5 @@
 from flask import current_app, flash, redirect, render_template, request, session, url_for
+from flask_babel import force_locale
 from flask_babel import gettext as _
 from flask_login import current_user, login_required, login_user, logout_user
 from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
@@ -6,7 +7,7 @@ from itsdangerous import BadSignature, SignatureExpired, URLSafeTimedSerializer
 from ..extensions import db, limiter
 from ..models import Role, User, utcnow
 from ..services.audit import audit
-from ..services.mail import send_mail
+from ..services.mail import send_template
 from ..utils import safe_next
 from ..utils.validators import looks_like_email, normalize_phone
 from . import bp
@@ -96,6 +97,16 @@ def _serializer():
     return URLSafeTimedSerializer(current_app.config["SECRET_KEY"], salt="password-reset")
 
 
+def notify_password_changed(user: User) -> None:
+    """Security notice by e-mail after any password change (if the account has an e-mail)."""
+    if not user.email:
+        return
+    from ..utils.i18n import fmt_dt
+    with force_locale(user.locale or "ar"):
+        send_template(user.email, _("Your password was changed — International Road Libya"), "password_changed",
+                      user=user, when=fmt_dt(utcnow()))
+
+
 def make_reset_token(user: User) -> str:
     return _serializer().dumps({"uid": user.id, "fp": user.password_hash[-12:]})
 
@@ -108,8 +119,9 @@ def forgot():
         user = _find_user(form.email.data)
         if user and user.email and user.is_active:
             link = url_for("auth.reset", token=make_reset_token(user), _external=True)
-            body = _("To reset your password open this link (valid for 1 hour):") + f"\n\n{link}\n"
-            send_mail(user.email, _("Password reset — International Road Libya"), body)
+            with force_locale(user.locale or "ar"):  # e-mail in the account's language
+                send_template(user.email, _("Password reset — International Road Libya"), "password_reset",
+                              user=user, link=link, minutes=60)
             audit("auth.reset_requested", "user", user.id, user=user)
             db.session.commit()
         # identical response whether or not the account exists (no user enumeration)
@@ -135,6 +147,7 @@ def reset(token):
         user.set_password(form.password.data)
         audit("auth.password_reset", "user", user.id, user=user)
         db.session.commit()
+        notify_password_changed(user)
         flash(_("Your password was changed. You can log in now."), "success")
         return redirect(url_for("auth.login"))
     return render_template("auth/reset.html", form=form)

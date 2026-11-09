@@ -1,0 +1,11 @@
+{{ _("Hello %(name)s,", name=name) }}
+
+{{ _("The technical support team replied to your message:") }}
+
+{{ reply }}
+
+----
+{{ _("Your original message:") }}
+{{ original }}
+
+— {{ _("Road Services Management") }}

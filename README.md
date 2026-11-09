@@ -17,6 +17,7 @@ Bootstrap 5 (RTL/LTR) · Vanilla JS · Leaflet/OpenStreetMap · Chart.js · Web 
 | [docs/SECURITY.md](docs/SECURITY.md) | ضوابط الأمان |
 | [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) | النشر على Ubuntu 24.04 القائم + استكشاف الأخطاء |
 | [docs/BACKUP_RESTORE.md](docs/BACKUP_RESTORE.md) | النسخ الاحتياطي والاستعادة والتراجع |
+| [docs/EMAIL.md](docs/EMAIL.md) | الربط بخادم البريد mail.iroad.ly (Postfix/PostfixAdmin) |
 | [docs/TESTING_REPORT.md](docs/TESTING_REPORT.md) | تقرير الاختبارات |
 
 ## التشغيل المحلي (للتطوير)
@@ -52,9 +53,10 @@ python -m venv .venv
 | `flask create-admin [--role superadmin|admin|supervisor|employee]` | إنشاء/ترقية حساب إداري (كلمة المرور تُطلب تفاعلياً) |
 | `flask vapid-keys` | توليد مفاتيح Web Push |
 | `flask cleanup-push` | حذف اشتراكات Push التالفة |
+| `flask send-test-mail you@iroad.ly` | اختبار الربط بخادم البريد |
 | `python scripts/build_translations.py` | استخراج النصوص وتحديث/ترجمة كتالوجات ar/en والتحقق من الاكتمال |
 | `python scripts/build_icons.py logo.png` | توليد أيقونات التطبيق من الشعار الرسمي عالي الدقة |
-| `pytest -q` | تشغيل الاختبارات (49) |
+| `pytest -q` | تشغيل الاختبارات (57) |
 
 ## الإعداد
 كل الإعدادات الحساسة في متغيرات البيئة (`.env.example` موثّق بالكامل). الإعدادات التشغيلية (نطاق «البلاغات القريبة»، النقاط،

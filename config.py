@@ -72,7 +72,12 @@ class BaseConfig:
     MAIL_USE_TLS = _bool("MAIL_USE_TLS", True)
     MAIL_USERNAME = os.environ.get("MAIL_USERNAME", "")
     MAIL_PASSWORD = os.environ.get("MAIL_PASSWORD", "")
+    MAIL_USE_SSL = _bool("MAIL_USE_SSL", False)          # port 465 (implicit TLS)
+    MAIL_VERIFY_TLS = _bool("MAIL_VERIFY_TLS", True)      # keep true for mail.iroad.ly
+    MAIL_TIMEOUT = int(os.environ.get("MAIL_TIMEOUT", "20"))
     MAIL_FROM = os.environ.get("MAIL_FROM", "no-reply@example.ly")
+    MAIL_FROM_NAME = os.environ.get("MAIL_FROM_NAME", "")
+    MAIL_REPLY_TO = os.environ.get("MAIL_REPLY_TO", "")
 
     # --- Misc ---
     PREFERRED_URL_SCHEME = "https"

@@ -35,6 +35,7 @@ sudo mariadb -e "SHOW GRANTS FOR 'irs_app'@'localhost'"
 ```bash
 sudo bash deploy/scripts/install.sh ~/irs-road-*.zip road.example.ly
 sudo nano /etc/irs-road/irs-road.env       # DATABASE_URL, MAIL_*, VAPID_* (SECRET_KEY مولّد تلقائياً)
+# ربط البريد بخادم mail.iroad.ly (Postfix/PostfixAdmin): راجع docs/EMAIL.md ثم:  flask send-test-mail you@iroad.ly
 ```
 
 ## 4. مفاتيح Web Push
@@ -102,5 +103,5 @@ sudo ln -sfn /opt/irs-road/releases/<previous> /opt/irs-road/app && sudo systemc
 | الصور لا تُرفع | `client_max_body_size`؛ ملكية `/var/lib/irs-road/uploads`؛ `MAX_IMAGE_MB` |
 | الصفحات القديمة تظهر بعد التحديث | يظهر شريط «يتوفر إصدار جديد»؛ أو من أدوات المطوّر: Application ← Service Workers ← Update |
 | لا تصل الإشعارات | مفاتيح VAPID، HTTPS، إذن المتصفح، `push_subscriptions.failure_count` |
-| لا تصل رسائل الاستعادة | إعداد MAIL_*؛ `journalctl -u postfix` |
+| لا تصل رسائل الاستعادة | `flask send-test-mail`؛ إعداد MAIL_*؛ `/var/log/mail.log` — التفاصيل في `docs/EMAIL.md` |
 | النص الإنجليزي يظهر بالعربية | `python scripts/build_translations.py` ثم إعادة التشغيل |

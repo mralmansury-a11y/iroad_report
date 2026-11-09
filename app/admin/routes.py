@@ -14,7 +14,7 @@ from ..models import (
 )
 from ..services import stats
 from ..services.audit import audit
-from ..services.mail import send_mail
+from ..services.mail import send_template
 from ..services.notify import broadcast_push, notify
 from ..services.rbac import can_grant_role, permission_required
 from ..services.reports import (
@@ -647,7 +647,11 @@ def message_detail(msg_id):
                 notify(msg.user, "admin", lambda: (_("Reply from technical support"), text[:900]),
                        url=url_for("main.support"))
             elif looks_like_email(msg.contact):
-                send_mail(msg.contact, _("Reply from technical support"), msg.reply)
+                from flask_babel import force_locale
+                with force_locale("ar"):  # contact messages carry no language → agency default (Arabic)
+                    send_template(msg.contact, _("Reply from technical support") + " | Technical support reply",
+                                  "support_reply", name=msg.name, reply=msg.reply, original=msg.body,
+                                  reply_to=current_app.config.get("MAIL_REPLY_TO") or None)
         audit("message.update", "contact_message", msg.id, status=msg.status)
         db.session.commit()
         flash(_("Changes saved."), "success")

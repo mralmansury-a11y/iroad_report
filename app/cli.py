@@ -1,5 +1,6 @@
 """Flask CLI commands: `flask seed`, `flask create-admin`, `flask vapid-keys`, `flask cleanup-push`."""
 import getpass
+import os
 
 import click
 
@@ -67,6 +68,31 @@ def register_cli(app):
         b64 = lambda b: base64.urlsafe_b64encode(b).rstrip(b"=").decode()  # noqa: E731
         click.echo(f"VAPID_PUBLIC_KEY={b64(pub)}")
         click.echo(f"VAPID_PRIVATE_KEY={b64(priv)}")
+
+    @app.cli.command("send-test-mail")
+    @click.argument("to")
+    def send_test_mail(to):
+        """Send a test e-mail through the configured SMTP server (e.g. mail.iroad.ly)."""
+        from datetime import datetime, timezone
+
+        import logging
+
+        from .services.mail import mail_configured, send_template
+        logging.basicConfig(level=logging.INFO, format="%(levelname)s %(message)s")
+        cfg = app.config
+        if not mail_configured():
+            raise click.ClickException("MAIL_SERVER is not set in the environment file.")
+        click.echo(f"SMTP {cfg['MAIL_SERVER']}:{cfg['MAIL_PORT']} TLS={cfg['MAIL_USE_TLS']} SSL={cfg['MAIL_USE_SSL']} "
+                   f"user={cfg['MAIL_USERNAME'] or '(none)'} from={cfg['MAIL_FROM']}")
+        base = os.environ.get("APP_BASE_URL", "https://localhost")
+        with app.test_request_context("/", base_url=base):
+            ok = send_template(to, "اختبار البريد | Mail test — International Road Libya", "test",
+                               server=cfg["MAIL_SERVER"], port=cfg["MAIL_PORT"],
+                               tls="SSL" if cfg["MAIL_USE_SSL"] else ("STARTTLS" if cfg["MAIL_USE_TLS"] else "none"),
+                               sent_at=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC"))
+        if not ok:
+            raise click.ClickException("Sending failed — see the error above / application log.")
+        click.echo(f"Test message sent to {to}")
 
     @app.cli.command("cleanup-push")
     def cleanup_push():

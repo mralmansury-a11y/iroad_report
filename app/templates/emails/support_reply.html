@@ -1,0 +1,8 @@
+{% extends "emails/_base.html" %}
+{% block body %}
+<p style="margin:0 0 12px;">{{ _("Hello %(name)s,", name=name) }}</p>
+<p style="margin:0 0 8px;">{{ _("The technical support team replied to your message:") }}</p>
+<div style="margin:0 0 16px;padding:12px 14px;background:#eef6f5;border-radius:10px;white-space:pre-wrap;" dir="auto">{{ reply }}</div>
+<p style="margin:0 0 6px;font-size:12px;color:#6a6d64;">{{ _("Your original message:") }}</p>
+<div style="margin:0;padding:10px 14px;background:#faf8f2;border-radius:10px;font-size:13px;color:#6a6d64;white-space:pre-wrap;" dir="auto">{{ original }}</div>
+{% endblock %}

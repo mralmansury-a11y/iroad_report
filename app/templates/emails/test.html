@@ -1,0 +1,5 @@
+{% extends "emails/_base.html" %}
+{% block body %}
+<p style="margin:0 0 12px;">{{ _("This is a test message to verify the connection between the system and the mail server.") }}</p>
+<p style="margin:0;font-size:13px;color:#6a6d64;direction:ltr;text-align:left;">SMTP: {{ server }}:{{ port }} · TLS: {{ tls }} · {{ sent_at }}</p>
+{% endblock %}

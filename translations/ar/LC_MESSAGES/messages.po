@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-09 10:47+0200\n"
+"POT-Creation-Date: 2026-11-09 12:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: ar\n"
@@ -452,6 +452,10 @@ msgstr "عولجت بواسطة"
 msgid "Has photos"
 msgstr "يحتوي صوراً"
 
+#, python-format
+msgid "Hello %(name)s,"
+msgstr "مرحباً %(name)s،"
+
 msgid "Help keep the road safe"
 msgstr "ساعد في الحفاظ على سلامة الطريق"
 
@@ -476,11 +480,20 @@ msgstr "الأيقونة (فئة Bootstrap Icons)"
 msgid "Icon names: see icons.getbootstrap.com, e.g. bi-cone-striped"
 msgstr "أسماء الأيقونات: راجع icons.getbootstrap.com، مثل bi-cone-striped"
 
+msgid "If the button does not work, copy this link into your browser:"
+msgstr "إذا لم يعمل الزر، انسخ هذا الرابط في المتصفح:"
+
 msgid "If the e-mail is registered, a reset link has been sent."
 msgstr "إذا كان البريد الإلكتروني مسجّلاً فقد أُرسل رابط إعادة التعيين."
 
 msgid "If the install button does not appear, follow the steps for your device below."
 msgstr "إذا لم يظهر زر التثبيت، اتبع الخطوات الخاصة بجهازك أدناه."
+
+msgid "If you did not make this change, contact technical support immediately."
+msgstr "إذا لم تقم بهذا التغيير، تواصل مع الدعم الفني فوراً."
+
+msgid "If you did not request this, ignore this message — your password will not change."
+msgstr "إذا لم تطلب ذلك فتجاهل هذه الرسالة، ولن تتغير كلمة المرور."
 
 msgid "Image deleted."
 msgstr "تم حذف الصورة."
@@ -1123,6 +1136,9 @@ msgstr "مطلوبة عند الرفض، وتظهر للمُبلِّغ."
 msgid "Reset"
 msgstr "إعادة تعيين"
 
+msgid "Reset password"
+msgstr "إعادة تعيين كلمة المرور"
+
 msgid "Resolved"
 msgstr "تم الإصلاح"
 
@@ -1336,6 +1352,10 @@ msgstr "تعذّر تحميل الخريطة. استخدم «استخدم موق
 msgid "The note is empty."
 msgstr "الملاحظة فارغة."
 
+#, python-format
+msgid "The password of your account was changed on %(when)s."
+msgstr "تم تغيير كلمة مرور حسابك بتاريخ %(when)s."
+
 msgid "The point chosen on the map was set"
 msgstr "تم تحديد النقطة المختارة على الخريطة"
 
@@ -1348,6 +1368,9 @@ msgstr "ردّ فريق الطريق على «%(title)s»."
 
 msgid "The selected employee is not an active staff member."
 msgstr "الموظف المختار ليس موظفاً مفعّلاً."
+
+msgid "The technical support team replied to your message:"
+msgstr "ردّ فريق الدعم الفني على رسالتك:"
 
 msgid "The uploaded file is too large"
 msgstr "الملف المرفوع كبير الحجم"
@@ -1369,6 +1392,12 @@ msgstr "هذا الرمز مستخدم مسبقاً."
 
 msgid "This e-mail is already registered."
 msgstr "البريد الإلكتروني هذا مسجّل مسبقاً."
+
+msgid "This is a test message to verify the connection between the system and the mail server."
+msgstr "هذه رسالة تجريبية للتحقق من الربط بين النظام وخادم البريد."
+
+msgid "This is an automatic message from the International Road Libya system — National Development Agency."
+msgstr "هذه رسالة آلية من منظومة الطريق الدولي ليبيا — الجهاز الوطني للتنمية."
 
 msgid "This page is not available without a connection. Pages you opened before are still available, and unsent report drafts are kept on this device."
 msgstr "هذه الصفحة غير متاحة دون اتصال. الصفحات التي فتحتها سابقاً ما زالت متاحة، ومسودات البلاغات غير المرسلة محفوظة على هذا الجهاز."
@@ -1399,9 +1428,6 @@ msgstr "إلى تاريخ"
 
 msgid "To km"
 msgstr "إلى الكيلومتر"
-
-msgid "To reset your password open this link (valid for 1 hour):"
-msgstr "لإعادة تعيين كلمة المرور افتح هذا الرابط (صالح لمدة ساعة):"
 
 msgid "Toggle dark / light mode"
 msgstr "تبديل الوضع الداكن / الفاتح"
@@ -1486,6 +1512,10 @@ msgstr "نقوم بجمع بيانات محدودة مثل الاسم ورقم �
 
 msgid "We follow reasonable technical and organisational measures to protect your data from unauthorised access."
 msgstr "نتبع إجراءات حماية تقنية وتنظيمية معقولة للحفاظ على بياناتك من الوصول غير المصرح به."
+
+#, python-format
+msgid "We received a request to reset the password of your account. Click the button below to choose a new password. The link is valid for %(n)s minutes."
+msgstr "تلقّينا طلباً لإعادة تعيين كلمة مرور حسابك. اضغط الزر أدناه لاختيار كلمة مرور جديدة. الرابط صالح لمدة %(n)s دقيقة."
 
 msgid "Weather alert"
 msgstr "تنبيه طقس"
@@ -1591,6 +1621,12 @@ msgstr "تم إرسال رسالتك. سيتواصل معك فريق الدعم.
 msgid "Your name"
 msgstr "اسمك"
 
+msgid "Your original message:"
+msgstr "رسالتك الأصلية:"
+
+msgid "Your password was changed — International Road Libya"
+msgstr "تم تغيير كلمة المرور — الطريق الدولي ليبيا"
+
 msgid "Your password was changed. You can log in now."
 msgstr "تم تغيير كلمة المرور. يمكنك تسجيل الدخول الآن."
 
@@ -1648,4 +1684,7 @@ msgstr "حتى"
 
 #~ msgid "Tap “Use my location” or enter the kilometre manually."
 #~ msgstr "اضغط «استخدم موقعي» أو أدخل الكيلومتر يدوياً."
+
+#~ msgid "To reset your password open this link (valid for 1 hour):"
+#~ msgstr "لإعادة تعيين كلمة المرور افتح هذا الرابط (صالح لمدة ساعة):"
 

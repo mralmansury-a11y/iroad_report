@@ -85,6 +85,8 @@ def profile_edit():
                 current_user.set_password(pw_form.password.data)
                 audit("user.password_change", "user", current_user.id)
                 db.session.commit()
+                from ..auth.routes import notify_password_changed
+                notify_password_changed(current_user._get_current_object())
                 flash(_("Password changed."), "success")
                 return redirect(url_for("main.profile"))
     elif form.validate_on_submit():

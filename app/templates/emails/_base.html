@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ 'rtl' if lang == 'ar' else 'ltr' }}">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{{ subject }}</title></head>
+<body style="margin:0;padding:0;background:#f4f1e8;font-family:Tahoma,Arial,sans-serif;color:#181b19;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f1e8;padding:24px 12px;">
+<tr><td align="center">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#ffffff;border-radius:16px;overflow:hidden;border:1px solid #e3ddcd;">
+    <tr><td style="background:#34668e;padding:18px 24px;color:#ffffff;text-align:{{ 'right' if lang == 'ar' else 'left' }};">
+      <img src="{{ logo_url }}" width="44" height="44" alt="" style="vertical-align:middle;border-radius:10px;background:#fff;">
+      <span style="font-size:16px;font-weight:bold;vertical-align:middle;padding:0 10px;">{{ _("Road Services Management") }}</span>
+    </td></tr>
+    <tr><td style="padding:24px;font-size:15px;line-height:1.7;text-align:{{ 'right' if lang == 'ar' else 'left' }};">
+      {% block body %}{% endblock %}
+    </td></tr>
+    <tr><td style="padding:14px 24px;background:#faf8f2;color:#6a6d64;font-size:12px;text-align:center;">
+      {{ _("This is an automatic message from the International Road Libya system — National Development Agency.") }}
+    </td></tr>
+  </table>
+</td></tr></table>
+</body></html>

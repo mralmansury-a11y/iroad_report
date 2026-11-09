@@ -1,0 +1,27 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field %}
+{% block admin_title %}{{ title }}{% if obj %} — {{ obj.tr('name') }}{% endif %}{% endblock %}
+{% block admin_content %}
+<form method="post" class="ir-form ir-card ir-card-pad" style="max-width:760px" novalidate>
+  {{ form.csrf_token }}
+  <div class="row">
+    {% for f in form if f.name != 'csrf_token' %}
+      {% set wide = f.type == 'TextAreaField' %}
+      <div class="{{ 'col-12' if wide or f.type == 'BooleanField' else 'col-md-6' }}">
+        {% if f.name.endswith('_ar') %}{{ field(f, dir="rtl", lang="ar") }}
+        {% elif f.name.endswith('_en') %}{{ field(f, dir="ltr", lang="en") }}
+        {% elif f.name in ('code', 'icon') %}{{ field(f, dir="ltr") }}
+        {% else %}{{ field(f) }}{% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  {% if form.icon %}<p class="small ir-muted">{{ _("Icon names: see icons.getbootstrap.com, e.g. bi-cone-striped") }}</p>{% endif %}
+  <div class="d-flex gap-2"><button class="btn btn-primary" type="submit">{{ _("Save") }}</button><a class="btn btn-outline-light" href="{{ back }}">{{ _("Cancel") }}</a></div>
+</form>
+{% if members %}
+<div class="ir-card ir-card-pad mt-3" style="max-width:760px">
+  <h2 class="fs-6 fw-bold">{{ _("Members") }}</h2>
+  <ul class="mb-0">{% for m in members %}<li>{{ m.user.full_name }}{% if current_user.can('users.manage') %} — <a href="{{ url_for('admin.user_edit', user_id=m.user_id) }}">{{ _("Edit") }}</a>{% endif %}</li>{% endfor %}</ul>
+</div>
+{% endif %}
+{% endblock %}

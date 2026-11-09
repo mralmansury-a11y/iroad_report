@@ -1,0 +1,1706 @@
+# Translations template for PROJECT.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-09 10:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#, python-format
+msgid "%(n)s d"
+msgstr ""
+
+#, python-format
+msgid "%(n)s h"
+msgstr ""
+
+#, python-format
+msgid "%(n)s min"
+msgstr ""
+
+#, python-format
+msgid "%(n)s reference points saved."
+msgstr ""
+
+msgid "A new version is available."
+msgstr ""
+
+msgid "A password is required for new accounts."
+msgstr ""
+
+msgid "About the app"
+msgstr ""
+
+msgid "Accept new public reports"
+msgstr ""
+
+msgid "Accepted reports"
+msgstr ""
+
+msgid "Account"
+msgstr ""
+
+msgid "Account activated."
+msgstr ""
+
+msgid "Account deactivated."
+msgstr ""
+
+msgid "Action"
+msgstr ""
+
+msgid "Activate"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Active account"
+msgstr ""
+
+msgid "Active contributor"
+msgstr ""
+
+msgid "Add a photo of the problem"
+msgstr ""
+
+msgid "Add note"
+msgstr ""
+
+msgid "Add report"
+msgstr ""
+
+msgid "Add the app to your home screen for quick access."
+msgstr ""
+
+msgid "Administration"
+msgstr ""
+
+msgid "Administration menu"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "All reports on the coastal road"
+msgstr ""
+
+#, python-format
+msgid "All rights reserved © %(y)s National Development Agency"
+msgstr ""
+
+msgid "All statuses"
+msgstr ""
+
+msgid "Allow browser notifications to receive report updates and road alerts."
+msgstr ""
+
+msgid "Allow location access if the browser asks."
+msgstr ""
+
+msgid "Allow location access to see nearby reports."
+msgstr ""
+
+msgid "Allow reports without an account"
+msgstr ""
+
+msgid "Already notified"
+msgstr ""
+
+msgid "Already registered?"
+msgstr ""
+
+msgid ""
+"An official app that lets citizens report problems and follow the status "
+"of the International Coastal Road, supervised by the National Development"
+" Agency — Sirte."
+msgstr ""
+
+msgid "An unexpected error occurred. Please try again later."
+msgstr ""
+
+msgid "An unsent draft was restored."
+msgstr ""
+
+msgid "Analytics"
+msgstr ""
+
+msgid "Android (Chrome / Edge / Samsung Internet)"
+msgstr ""
+
+msgid "Announcement"
+msgstr ""
+
+msgid "Announcements & alerts"
+msgstr ""
+
+msgid "Answered"
+msgstr ""
+
+msgid "Are you sure?"
+msgstr ""
+
+msgid "Assign"
+msgstr ""
+
+msgid "Assigned"
+msgstr ""
+
+msgid "Assigned to"
+msgstr ""
+
+msgid "Assignment history"
+msgstr ""
+
+msgid "At least 8 characters, with letters and numbers."
+msgstr ""
+
+msgid "Audit log"
+msgstr ""
+
+msgid "Average resolution time"
+msgstr ""
+
+msgid "Average response"
+msgstr ""
+
+msgid "Average response time"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Back online."
+msgstr ""
+
+msgid "Back to home"
+msgstr ""
+
+msgid "Can I send a report without logging in?"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Categories"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Change language"
+msgstr ""
+
+msgid "Change password"
+msgstr ""
+
+msgid "Change status"
+msgstr ""
+
+msgid "Changes saved."
+msgstr ""
+
+msgid "Chat with support"
+msgstr ""
+
+msgid "Choose a road section"
+msgstr ""
+
+msgid "Choose a team or an employee."
+msgstr ""
+
+msgid "Choose the display language of the app"
+msgstr ""
+
+msgid "Choose the problem type."
+msgstr ""
+
+msgid "Choose “Add to Home Screen”, then “Add”."
+msgstr ""
+
+msgid "Choose “Install app” or “Add to Home screen”."
+msgstr ""
+
+msgid ""
+"Click the install icon in the address bar, or open the browser menu and "
+"choose “Install”."
+msgstr ""
+
+msgid "Close menu"
+msgstr ""
+
+msgid "Closed"
+msgstr ""
+
+msgid "Code"
+msgstr ""
+
+msgid "Communication"
+msgstr ""
+
+msgid "Completed"
+msgstr ""
+
+msgid "Computer (Chrome / Edge)"
+msgstr ""
+
+msgid "Configuration"
+msgstr ""
+
+msgid "Confirm password"
+msgstr ""
+
+msgid "Confirm."
+msgstr ""
+
+msgid "Contact"
+msgstr ""
+
+msgid "Contribution points"
+msgstr ""
+
+msgid "Control which alerts you receive"
+msgstr ""
+
+msgid ""
+"Coordinates saved. The kilometre will be calculated when the report is "
+"sent."
+msgstr ""
+
+msgid "Create account"
+msgstr ""
+
+msgid "Create an account"
+msgstr ""
+
+msgid "Current password"
+msgstr ""
+
+msgid "Current password is incorrect."
+msgstr ""
+
+msgid "Dashboard"
+msgstr ""
+
+msgid ""
+"Data is used to improve road quality and prioritise maintenance, and is "
+"not used for any commercial or marketing purpose."
+msgstr ""
+
+msgid "Data security"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Deactivate"
+msgstr ""
+
+msgid "Deactivated"
+msgstr ""
+
+msgid "Default map latitude"
+msgstr ""
+
+msgid "Default map longitude"
+msgstr ""
+
+msgid "Default map zoom"
+msgstr ""
+
+msgid "Default team"
+msgstr ""
+
+msgid "Delete image"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Description (Arabic)"
+msgstr ""
+
+msgid "Description (English)"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Details and photos are visible only to the reporter and the road team."
+msgstr ""
+
+msgid "Detected automatically, you can edit it"
+msgstr ""
+
+msgid "Disable on this device"
+msgstr ""
+
+msgid "Displayed app version"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Draft saved on this device."
+msgstr ""
+
+msgid "Drag to adjust the location"
+msgstr ""
+
+msgid "E-mail"
+msgstr ""
+
+msgid "E-mail (optional)"
+msgstr ""
+
+msgid "Edit"
+msgstr ""
+
+msgid "Edit personal details"
+msgstr ""
+
+msgid "Emergency"
+msgstr ""
+
+msgid "Employee"
+msgstr ""
+
+msgid "Employee workload"
+msgstr ""
+
+msgid "Employees"
+msgstr ""
+
+msgid "Enable on this device"
+msgstr ""
+
+msgid "End km must be greater than start km."
+msgstr ""
+
+msgid "Ends"
+msgstr ""
+
+msgid "Enter a phone number or an e-mail address."
+msgstr ""
+
+msgid "Enter a valid e-mail address."
+msgstr ""
+
+msgid "Enter a valid phone number, e.g. 091-2345678."
+msgstr ""
+
+msgid ""
+"Enter the e-mail of your account. Accounts registered with a phone only "
+"can contact technical support."
+msgstr ""
+
+msgid "Enter the reference number and the phone number used in the report."
+msgstr ""
+
+msgid "Enter your phone number so you can follow up the report."
+msgstr ""
+
+msgid "Expected congestion"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "First response"
+msgstr ""
+
+msgid "Fog, wind or rain affecting the road"
+msgstr ""
+
+msgid "Follow the report"
+msgstr ""
+
+msgid "Follow your reports and receive road alerts."
+msgstr ""
+
+msgid "For employees: the teams they work in."
+msgstr ""
+
+msgid "Forgot password?"
+msgstr ""
+
+msgid "Frequently asked questions"
+msgstr ""
+
+msgid "From date"
+msgstr ""
+
+msgid "From km"
+msgstr ""
+
+msgid "Full name"
+msgstr ""
+
+msgid "GPS coordinates"
+msgstr ""
+
+msgid "Get road alerts on this device."
+msgstr ""
+
+msgid "Guest"
+msgstr ""
+
+msgid "Handled by"
+msgstr ""
+
+msgid "Has photos"
+msgstr ""
+
+msgid "Help keep the road safe"
+msgstr ""
+
+msgid "Home"
+msgstr ""
+
+msgid "How data is used"
+msgstr ""
+
+msgid "How do I know the status of my report?"
+msgstr ""
+
+msgid "I agree to the"
+msgstr ""
+
+msgid "I agree to the privacy policy"
+msgstr ""
+
+msgid "Icon (Bootstrap Icons class)"
+msgstr ""
+
+msgid "Icon names: see icons.getbootstrap.com, e.g. bi-cone-striped"
+msgstr ""
+
+msgid "If the e-mail is registered, a reset link has been sent."
+msgstr ""
+
+msgid ""
+"If the install button does not appear, follow the steps for your device "
+"below."
+msgstr ""
+
+msgid "Image deleted."
+msgstr ""
+
+#, python-format
+msgid "Image is too large (maximum %(mb)s MB)."
+msgstr ""
+
+msgid "Import points"
+msgstr ""
+
+msgid "In progress"
+msgstr ""
+
+msgid "Inactive"
+msgstr ""
+
+msgid "Incorrect login details."
+msgstr ""
+
+msgid "Information we collect"
+msgstr ""
+
+msgid "Install now"
+msgstr ""
+
+msgid "Install the app"
+msgstr ""
+
+msgid "Instructions"
+msgstr ""
+
+msgid "Internal"
+msgstr ""
+
+msgid "Internal (staff only)"
+msgstr ""
+
+msgid "Internal note (staff only)"
+msgstr ""
+
+msgid "International Road Libya"
+msgstr ""
+
+msgid "International Road Services Management"
+msgstr ""
+
+msgid "Intl. Road"
+msgstr ""
+
+msgid "Invalid coordinates."
+msgstr ""
+
+#, python-format
+msgid "Invalid lines: %(lines)s"
+msgstr ""
+
+msgid "Invalid request"
+msgstr ""
+
+#, python-format
+msgid "Invalid value for %(key)s"
+msgstr ""
+
+msgid "Invalid value."
+msgstr ""
+
+#, python-format
+msgid "JPG, PNG, WEBP or HEIC — up to %(n)s images, %(mb)s MB each"
+msgstr ""
+
+msgid "Job title"
+msgstr ""
+
+msgid "Keep this number to follow up your report."
+msgstr ""
+
+msgid "Kilometre marker"
+msgstr ""
+
+msgid "Kilometre reference points"
+msgstr ""
+
+msgid "Language"
+msgstr ""
+
+msgid "Last login"
+msgstr ""
+
+#, python-format
+msgid "Last updated: %(date)s"
+msgstr ""
+
+msgid "Latest reports"
+msgstr ""
+
+msgid "Latest reports on the road"
+msgstr ""
+
+msgid "Leave empty to keep the current password."
+msgstr ""
+
+msgid "Licences and compliance"
+msgstr ""
+
+msgid ""
+"Load the official survey data: the denser and more accurate the points, "
+"the better the conversion."
+msgstr ""
+
+msgid "Local time (Libya)"
+msgstr ""
+
+msgid ""
+"Locating took too long. Make sure location (GPS) is turned on and try "
+"again."
+msgstr ""
+
+msgid "Locating…"
+msgstr ""
+
+msgid "Location"
+msgstr ""
+
+msgid ""
+"Location access is blocked for this site. Allow it from the browser "
+"settings (lock icon next to the address) and try again."
+msgstr ""
+
+msgid "Location not set yet"
+msgstr ""
+
+msgid "Log in"
+msgstr ""
+
+msgid "Log out"
+msgstr ""
+
+msgid "Login required."
+msgstr ""
+
+msgid "Main navigation"
+msgstr ""
+
+msgid "Manual"
+msgstr ""
+
+msgid "Map"
+msgstr ""
+
+msgid ""
+"Map data © OpenStreetMap contributors (ODbL). Interface built with "
+"Bootstrap (MIT), Bootstrap Icons (MIT), Leaflet (BSD-2), Chart.js (MIT) "
+"and the Tajawal font (SIL OFL)."
+msgstr ""
+
+msgid "Map to pick the location"
+msgstr ""
+
+msgid "Mark all as read"
+msgstr ""
+
+msgid "Members"
+msgstr ""
+
+msgid "Menu"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Message us directly"
+msgstr ""
+
+msgid "Minimum records before showing an average"
+msgstr ""
+
+msgid "Minor"
+msgstr ""
+
+msgid "Moderate"
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "Monthly summary"
+msgstr ""
+
+msgid "My account"
+msgstr ""
+
+msgid "My assignments"
+msgstr ""
+
+msgid "My report"
+msgstr ""
+
+msgid "My reports"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Name (Arabic)"
+msgstr ""
+
+msgid "Name (English)"
+msgstr ""
+
+msgid "Name, phone or e-mail"
+msgstr ""
+
+msgid "National Development Agency"
+msgstr ""
+
+msgid "National Development Agency — Sirte"
+msgstr ""
+
+msgid "Nearby reports"
+msgstr ""
+
+msgid "Network error. Please try again."
+msgstr ""
+
+msgid "New"
+msgstr ""
+
+msgid "New announcement"
+msgstr ""
+
+msgid "New assignment"
+msgstr ""
+
+msgid "New category"
+msgstr ""
+
+msgid "New employee"
+msgstr ""
+
+msgid "New password"
+msgstr ""
+
+msgid "New points"
+msgstr ""
+
+msgid "New problem report"
+msgstr ""
+
+msgid "New report"
+msgstr ""
+
+msgid "New response on your report"
+msgstr ""
+
+msgid "New section"
+msgstr ""
+
+msgid "New status"
+msgstr ""
+
+msgid "New support messages"
+msgstr ""
+
+msgid "New team"
+msgstr ""
+
+msgid "New user"
+msgstr ""
+
+msgid "Newest first"
+msgstr ""
+
+msgid "News about section openings and maintenance works"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "No active alerts. Drive safely."
+msgstr ""
+
+msgid "No announcements yet."
+msgstr ""
+
+msgid "No employees yet."
+msgstr ""
+
+msgid "No messages."
+msgstr ""
+
+msgid "No notes yet."
+msgstr ""
+
+msgid "No notifications yet."
+msgstr ""
+
+msgid "No report matches this reference number and phone."
+msgstr ""
+
+msgid "No reports match the filters."
+msgstr ""
+
+msgid "No reports to show."
+msgstr ""
+
+msgid "No reports yet."
+msgstr ""
+
+msgid "No road sections defined yet."
+msgstr ""
+
+msgid "No users found."
+msgstr ""
+
+msgid "Not enough data yet"
+msgstr ""
+
+msgid ""
+"Not enough data yet for meaningful statistics. Charts will become useful "
+"as reports accumulate."
+msgstr ""
+
+msgid "Not found."
+msgstr ""
+
+msgid "Note"
+msgstr ""
+
+msgid "Note added."
+msgstr ""
+
+msgid "Note to the reporter (visible)"
+msgstr ""
+
+msgid "Notes"
+msgstr ""
+
+msgid "Notification permission was denied in the browser."
+msgstr ""
+
+msgid "Notification settings"
+msgstr ""
+
+msgid "Notifications"
+msgstr ""
+
+msgid "Notifications enabled on this device."
+msgstr ""
+
+msgid "Notifications on this device"
+msgstr ""
+
+msgid "Notified"
+msgstr ""
+
+#, python-format
+msgid "Notified users: %(n)s"
+msgstr ""
+
+msgid "Notify me when the status of a report I sent changes"
+msgstr ""
+
+msgid "Object"
+msgstr ""
+
+msgid "Official response (visible to reporter)"
+msgstr ""
+
+msgid "Offline"
+msgstr ""
+
+msgid "Oldest first"
+msgstr ""
+
+msgid "On iPhone: tap Share, then “Add to Home Screen”."
+msgstr ""
+
+msgid "Open assignments"
+msgstr ""
+
+msgid "Open report draft"
+msgstr ""
+
+msgid "Open reports and road sections"
+msgstr ""
+
+msgid "Open the browser menu (⋮)."
+msgstr ""
+
+msgid "Open this site in Safari."
+msgstr ""
+
+msgid ""
+"Open “My reports” to see the current status and the full history. You "
+"also receive a notification whenever the status changes. Guests can use "
+"“Track a report” with the reference number."
+msgstr ""
+
+msgid "Optional. The employee must belong to the selected team."
+msgstr ""
+
+msgid "Or choose a section…"
+msgstr ""
+
+msgid "Order"
+msgstr ""
+
+msgid "Page not found"
+msgstr ""
+
+msgid "Pages"
+msgstr ""
+
+msgid "Partially open"
+msgstr ""
+
+msgid "Password"
+msgstr ""
+
+msgid "Password changed."
+msgstr ""
+
+msgid "Password must be at least 8 characters and contain letters and numbers."
+msgstr ""
+
+msgid "Password reset — International Road Libya"
+msgstr ""
+
+msgid "Passwords do not match."
+msgstr ""
+
+msgid "People"
+msgstr ""
+
+msgid "Performance (last 30/90 days)"
+msgstr ""
+
+msgid "Period"
+msgstr ""
+
+msgid "Phone"
+msgstr ""
+
+msgid "Phone call"
+msgstr ""
+
+msgid "Phone number"
+msgstr ""
+
+msgid "Phone number (to follow up your report)"
+msgstr ""
+
+msgid "Phone number or e-mail"
+msgstr ""
+
+msgid "Phone number used in the report"
+msgstr ""
+
+msgid "Phone or e-mail"
+msgstr ""
+
+msgid "Photo (optional)"
+msgstr ""
+
+msgid "Pick on map"
+msgstr ""
+
+msgid "Play a sound when a notification arrives"
+msgstr ""
+
+msgid "Please correct the highlighted fields."
+msgstr ""
+
+msgid "Please give the reporter a reason for rejection."
+msgstr ""
+
+msgid "Points and rewards"
+msgstr ""
+
+msgid ""
+"Points are added when the road team confirms and fixes the problem you "
+"reported."
+msgstr ""
+
+msgid "Points when a report is accepted for review"
+msgstr ""
+
+msgid "Points when a report is resolved"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Privacy policy"
+msgstr ""
+
+msgid "Privacy policy last update (YYYY-MM)"
+msgstr ""
+
+msgid "Problem type"
+msgstr ""
+
+msgid "Profile"
+msgstr ""
+
+msgid "Progress"
+msgstr ""
+
+msgid "Project update"
+msgstr ""
+
+msgid "Project updates"
+msgstr ""
+
+msgid "Public site"
+msgstr ""
+
+msgid "Publish now"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+msgid ""
+"Push notifications on iPhone require iOS 16.4 or later and work only "
+"after installing to the home screen."
+msgstr ""
+
+msgid "Push notifications on my devices"
+msgstr ""
+
+msgid "Radius for “nearby reports” (km)"
+msgstr ""
+
+msgid "Receive notifications on this device even when the app is closed"
+msgstr ""
+
+msgid "Received"
+msgstr ""
+
+msgid "Reference"
+msgstr ""
+
+msgid "Reference number"
+msgstr ""
+
+msgid "Reference points (km,latitude,longitude — one per line)"
+msgstr ""
+
+msgid "Reference, title or description"
+msgstr ""
+
+msgid "Region / section"
+msgstr ""
+
+msgid "Registered user"
+msgstr ""
+
+msgid ""
+"Registered users receive the reply as a notification; e-mail addresses "
+"receive it by e-mail when SMTP is configured."
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Remember me"
+msgstr ""
+
+msgid "Remove image"
+msgstr ""
+
+msgid "Replace all existing points"
+msgstr ""
+
+msgid "Reply / handling note"
+msgstr ""
+
+msgid "Reply from technical support"
+msgstr ""
+
+#, python-format
+msgid "Report \"%(title)s\" has been fixed. Thank you for your contribution."
+msgstr ""
+
+#, python-format
+msgid "Report \"%(title)s\" is now under review."
+msgstr ""
+
+#, python-format
+msgid "Report \"%(title)s\" is now: %(status)s"
+msgstr ""
+
+#, python-format
+msgid "Report \"%(title)s\" was rejected."
+msgstr ""
+
+#, python-format
+msgid "Report %(ref)s \"%(title)s\" was assigned to you."
+msgstr ""
+
+msgid "Report a road problem"
+msgstr ""
+
+msgid "Report assigned."
+msgstr ""
+
+msgid "Report photo"
+msgstr ""
+
+msgid "Report received"
+msgstr ""
+
+msgid "Report reference number"
+msgstr ""
+
+msgid "Report rejected"
+msgstr ""
+
+msgid "Report resolved"
+msgstr ""
+
+msgid ""
+"Report road problems and follow the status of the International Road in "
+"Libya."
+msgstr ""
+
+msgid "Report sent"
+msgstr ""
+
+msgid "Report status updated"
+msgstr ""
+
+msgid "Report submission is temporarily closed."
+msgstr ""
+
+msgid "Reporter"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Reports by category"
+msgstr ""
+
+msgid "Reports by road section"
+msgstr ""
+
+msgid "Reports by status"
+msgstr ""
+
+msgid "Reports over time (12 months)"
+msgstr ""
+
+msgid "Reports sent"
+msgstr ""
+
+msgid "Required when rejecting. Shown to the reporter."
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Resolved"
+msgstr ""
+
+msgid "Responses from the road team"
+msgstr ""
+
+msgid "Results"
+msgstr ""
+
+msgid "Road Services Management"
+msgstr ""
+
+msgid "Road alerts"
+msgstr ""
+
+msgid "Road closed"
+msgstr ""
+
+msgid "Road closure"
+msgstr ""
+
+msgid "Road illustration with nearby reports"
+msgstr ""
+
+msgid "Road map"
+msgstr ""
+
+msgid "Road open"
+msgstr ""
+
+msgid "Road section"
+msgstr ""
+
+msgid "Road sections"
+msgstr ""
+
+msgid "Road services administration"
+msgstr ""
+
+msgid "Road status"
+msgstr ""
+
+msgid "Role"
+msgstr ""
+
+msgid "Roles"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Save changes"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Search and filter"
+msgstr ""
+
+msgid ""
+"Secrets (database password, secret key, VAPID private key, SMTP password)"
+" are configured only in the server environment file and are never shown "
+"here."
+msgstr ""
+
+msgid "Send a notification to users"
+msgstr ""
+
+msgid "Send message"
+msgstr ""
+
+msgid "Send report"
+msgstr ""
+
+msgid "Send reset link"
+msgstr ""
+
+msgid "Sending…"
+msgstr ""
+
+msgid ""
+"Sends in-app notifications and push messages. Emergency alerts reach "
+"everyone; other types respect user preferences."
+msgstr ""
+
+msgid "Serious"
+msgstr ""
+
+msgid "Serious reports awaiting action"
+msgstr ""
+
+msgid "Set the location with “Use my location” or “Pick on map”."
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Severity"
+msgstr ""
+
+msgid "Sharing information"
+msgstr ""
+
+msgid "Short title (optional)"
+msgstr ""
+
+msgid "Show report"
+msgstr ""
+
+msgid "Skip to content"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Sound notifications"
+msgstr ""
+
+msgid "Specify the location: kilometre, section or GPS."
+msgstr ""
+
+msgid "Staff accounts, their teams and current workload."
+msgstr ""
+
+msgid "Starts"
+msgstr ""
+
+msgid "State"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Status history"
+msgstr ""
+
+msgid "Status updated."
+msgstr ""
+
+msgid "Submitted"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "Support e-mail"
+msgstr ""
+
+msgid "Support message"
+msgstr ""
+
+msgid "Support messages"
+msgstr ""
+
+msgid "Support phone"
+msgstr ""
+
+msgid "System / reporter"
+msgstr ""
+
+msgid "System settings"
+msgstr ""
+
+msgid "Tap the Share button."
+msgstr ""
+
+msgid "Tap the map or drag the marker to the exact place of the problem."
+msgstr ""
+
+msgid "Team"
+msgstr ""
+
+msgid ""
+"Team members are managed from each employee's account (Users → Edit → "
+"Teams)."
+msgstr ""
+
+msgid "Teams"
+msgstr ""
+
+msgid "Technical support"
+msgstr ""
+
+msgid "Terms and privacy"
+msgstr ""
+
+msgid "Text (Arabic)"
+msgstr ""
+
+msgid "Text (English)"
+msgstr ""
+
+msgid "Thank you for helping keep the road safe. The road team will review it."
+msgstr ""
+
+msgid "The browser allows location only over a secure connection (HTTPS)."
+msgstr ""
+
+msgid "The employee is not a member of the selected team."
+msgstr ""
+
+msgid "The file is empty."
+msgstr ""
+
+msgid "The file is not a valid image."
+msgstr ""
+
+msgid "The form expired. Please reload the page and try again."
+msgstr ""
+
+msgid ""
+"The location was saved. It is outside the surveyed road points, so the "
+"kilometre will be set by the road team."
+msgstr ""
+
+msgid "The map could not be loaded. Use “Use my location”."
+msgstr ""
+
+msgid "The note is empty."
+msgstr ""
+
+msgid "The point chosen on the map was set"
+msgstr ""
+
+msgid "The reset link is invalid or has expired."
+msgstr ""
+
+#, python-format
+msgid "The road team replied to \"%(title)s\"."
+msgstr ""
+
+msgid "The selected employee is not an active staff member."
+msgstr ""
+
+msgid "The uploaded file is too large"
+msgstr ""
+
+msgid ""
+"These surveyed points convert a GPS position into a kilometre marker. "
+"Current points:"
+msgstr ""
+
+msgid "This account is deactivated. Contact technical support."
+msgstr ""
+
+msgid "This browser does not support location services."
+msgstr ""
+
+msgid "This browser does not support push notifications."
+msgstr ""
+
+msgid "This code is already used."
+msgstr ""
+
+msgid "This e-mail is already registered."
+msgstr ""
+
+msgid ""
+"This page is not available without a connection. Pages you opened before "
+"are still available, and unsent report drafts are kept on this device."
+msgstr ""
+
+msgid "This phone number is already registered."
+msgstr ""
+
+msgid "This report belongs to a registered account. Log in to follow it."
+msgstr ""
+
+msgid "This status change is not allowed."
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Title"
+msgstr ""
+
+msgid "Title (Arabic)"
+msgstr ""
+
+msgid "Title (English)"
+msgstr ""
+
+msgid "To date"
+msgstr ""
+
+msgid "To km"
+msgstr ""
+
+msgid "To reset your password open this link (valid for 1 hour):"
+msgstr ""
+
+msgid "Toggle dark / light mode"
+msgstr ""
+
+msgid "Too many images."
+msgstr ""
+
+msgid "Too many requests. Please wait a moment and try again."
+msgstr ""
+
+msgid "Total reports"
+msgstr ""
+
+msgid "Track a report"
+msgstr ""
+
+msgid "Try again"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Under review"
+msgstr ""
+
+msgid "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Update status"
+msgstr ""
+
+msgid "Update your personal information"
+msgstr ""
+
+msgid "Updated"
+msgstr ""
+
+msgid "Updates on my reports"
+msgstr ""
+
+msgid "Use my location"
+msgstr ""
+
+msgid "Use your current location, or pick the exact point on the map."
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "User created."
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "View all"
+msgstr ""
+
+msgid "Visibility"
+msgstr ""
+
+msgid "Visibility rate"
+msgstr ""
+
+msgid "Visibility rate (%)"
+msgstr ""
+
+msgid "Visible to reporter"
+msgstr ""
+
+msgid "We are here to help"
+msgstr ""
+
+msgid ""
+"We collect limited data such as name, phone number and approximate "
+"location when you send a report, only to contact you and follow up the "
+"status of the report."
+msgstr ""
+
+msgid ""
+"We follow reasonable technical and organisational measures to protect "
+"your data from unauthorised access."
+msgstr ""
+
+msgid "Weather alert"
+msgstr ""
+
+msgid "Weather alerts"
+msgstr ""
+
+msgid "Weather, traffic, closures and project news"
+msgstr ""
+
+msgid "WhatsApp"
+msgstr ""
+
+msgid "WhatsApp number (international, digits only)"
+msgstr ""
+
+msgid "When are contribution points counted?"
+msgstr ""
+
+msgid "When you earn new contribution points"
+msgstr ""
+
+msgid "Write extra details that help the maintenance team..."
+msgstr ""
+
+msgid "Write your question here..."
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Yearly summary"
+msgstr ""
+
+msgid ""
+"Yes. Enter your phone number so you can follow up the report with its "
+"reference number. Registering lets you receive notifications and points."
+msgstr ""
+
+msgid ""
+"You appear to be away from the International Road. Choose the location "
+"manually."
+msgstr ""
+
+msgid "You are here"
+msgstr ""
+
+msgid "You are not allowed to add notes."
+msgstr ""
+
+msgid "You are not allowed to assign reports."
+msgstr ""
+
+msgid "You are offline"
+msgstr ""
+
+msgid "You are offline. Some features are unavailable."
+msgstr ""
+
+msgid ""
+"You are offline. The report was NOT sent; it is saved as a draft. Send it"
+" when you are back online."
+msgstr ""
+
+msgid ""
+"You are sending as a guest. Keep the reference number to follow up your "
+"report, or"
+msgstr ""
+
+msgid "You can also"
+msgstr ""
+
+msgid "You can also pick the point on the map."
+msgstr ""
+
+msgid ""
+"You can at any time request to correct your data or delete your account "
+"by contacting the technical support team."
+msgstr ""
+
+#, python-format
+msgid "You can attach up to %(n)s images."
+msgstr ""
+
+msgid "You can only grant roles below your own level."
+msgstr ""
+
+msgid "You do not have permission to access this page"
+msgstr ""
+
+#, python-format
+msgid "You earned %(n)s points for your report \"%(title)s\"."
+msgstr ""
+
+msgid "You have been logged out."
+msgstr ""
+
+msgid "Your account was created. Welcome!"
+msgstr ""
+
+msgid "Your approximate location on the road"
+msgstr ""
+
+msgid "Your current location was set"
+msgstr ""
+
+msgid "Your location could not be determined. Choose it manually."
+msgstr ""
+
+msgid "Your message was sent. The support team will contact you."
+msgstr ""
+
+msgid "Your name"
+msgstr ""
+
+msgid "Your password was changed. You can log in now."
+msgstr ""
+
+msgid ""
+"Your personal data is not shared with any party outside the National "
+"Development Agency and the technical teams responsible for the road."
+msgstr ""
+
+#, python-format
+msgid "Your report %(ref)s was received and will be reviewed."
+msgstr ""
+
+msgid "Your report was accepted"
+msgstr ""
+
+msgid "Your report was received"
+msgstr ""
+
+msgid "Your rights"
+msgstr ""
+
+msgid "by"
+msgstr ""
+
+msgid "e.g. Deep pothole in the right lane"
+msgstr ""
+
+msgid "iPhone / iPad (Safari)"
+msgstr ""
+
+msgid "just now"
+msgstr ""
+
+msgid "km"
+msgstr ""
+
+msgid "log in"
+msgstr ""
+
+msgid "privacy policy"
+msgstr ""
+
+msgid "send a report without an account"
+msgstr ""
+
+msgid "unread"
+msgstr ""
+
+msgid "until"
+msgstr ""
+

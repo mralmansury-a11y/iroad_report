@@ -1,0 +1,13 @@
+{% extends "admin/base_admin.html" %}
+{% block admin_title %}{{ _("Teams") }}{% endblock %}
+{% block admin_content %}
+<div class="mb-3"><a class="btn btn-primary btn-sm" href="{{ url_for('admin.team_form') }}"><i class="bi bi-plus-lg"></i> {{ _("New team") }}</a></div>
+<div class="ir-card"><div class="table-responsive"><table class="table mb-0">
+  <thead><tr><th>{{ _("Code") }}</th><th>{{ _("Name (Arabic)") }}</th><th>{{ _("Name (English)") }}</th><th>{{ _("Members") }}</th><th>{{ _("State") }}</th><th></th></tr></thead>
+  <tbody>{% for t in teams %}
+    <tr><td class="ltr small">{{ t.code }}</td><td lang="ar" dir="rtl">{{ t.tr('name','ar') }}</td><td lang="en" dir="ltr">{{ t.tr('name','en') }}</td><td class="num">{{ t.members|length }}</td>
+      <td>{% if t.is_active %}<span class="ir-badge tone-done">{{ _("Active") }}</span>{% else %}<span class="ir-badge tone-rejected">{{ _("Inactive") }}</span>{% endif %}</td>
+      <td class="text-end"><a class="btn btn-sm btn-outline-light" href="{{ url_for('admin.team_form', team_id=t.id) }}">{{ _("Edit") }}</a></td></tr>
+  {% endfor %}</tbody></table></div></div>
+<p class="small ir-muted mt-2">{{ _("Team members are managed from each employee's account (Users → Edit → Teams).") }}</p>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import status_badge, pager, empty %}
+{% block admin_title %}{{ _("Reports") }}{% endblock %}
+{% block admin_content %}
+{% set a = request.args %}
+{% set active_filters = [] %}{% for k, v in a.items() if v and k not in ('page', 'sort') %}{% set _ = active_filters.append(k) %}{% endfor %}
+<form method="get" class="ir-card ir-card-pad ad-filters mb-3">
+  <button type="button" class="btn btn-outline-light btn-sm w-100 ad-filters-toggle justify-content-center gap-2" data-filters-toggle aria-controls="adFiltersBody" aria-expanded="false">
+    <i class="bi bi-funnel"></i> {{ _("Search and filter") }}{% if active_filters %} <span class="ir-badge tone-assigned num">{{ active_filters|length }}</span>{% endif %}</button>
+  <div class="row g-2 align-items-end ad-filters-body" id="adFiltersBody" data-active="{{ 1 if active_filters else 0 }}">
+  <div class="col-12 col-md-4"><label class="form-label small" for="fq">{{ _("Search") }}</label>
+    <input id="fq" class="form-control" name="q" value="{{ a.get('q','') }}" placeholder="{{ _('Reference, title or description') }}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fs">{{ _("Status") }}</label>
+    <select id="fs" class="form-select" name="status"><option value="">{{ _("All") }}</option>{% for s in statuses %}<option value="{{ s.code }}" {{ 'selected' if a.get('status') == s.code }}>{{ s.tr('name') }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fc">{{ _("Category") }}</label>
+    <select id="fc" class="form-select" name="category"><option value="">{{ _("All") }}</option>{% for c in categories %}<option value="{{ c.id }}" {{ 'selected' if a.get('category') == c.id|string }}>{{ c.tr('name') }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fsec">{{ _("Road section") }}</label>
+    <select id="fsec" class="form-select" name="section"><option value="">{{ _("All") }}</option>{% for s in sections %}<option value="{{ s.id }}" {{ 'selected' if a.get('section') == s.id|string }}>{{ s.tr('name') }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fsev">{{ _("Severity") }}</label>
+    <select id="fsev" class="form-select" name="severity"><option value="">{{ _("All") }}</option>{% for s in ('high','medium','low') %}<option value="{{ s }}" {{ 'selected' if a.get('severity') == s }}>{{ severity_label(s) }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fkf">{{ _("From km") }}</label><input id="fkf" class="form-control num" name="km_from" inputmode="decimal" value="{{ a.get('km_from','') }}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fkt">{{ _("To km") }}</label><input id="fkt" class="form-control num" name="km_to" inputmode="decimal" value="{{ a.get('km_to','') }}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fdf">{{ _("From date") }}</label><input id="fdf" type="date" class="form-control" name="from" value="{{ a.get('from','') }}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fdt">{{ _("To date") }}</label><input id="fdt" type="date" class="form-control" name="to" value="{{ a.get('to','') }}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="fso">{{ _("Sort") }}</label>
+    <select id="fso" class="form-select" name="sort"><option value="">{{ _("Newest first") }}</option><option value="oldest" {{ 'selected' if a.get('sort') == 'oldest' }}>{{ _("Oldest first") }}</option></select></div>
+  <div class="col-12 col-md-2 d-flex gap-2"><button class="btn btn-primary flex-fill" type="submit"><i class="bi bi-funnel"></i> {{ _("Filter") }}</button>
+    <a class="btn btn-outline-light" href="{{ url_for('admin.reports') }}" aria-label="{{ _('Reset') }}"><i class="bi bi-x-lg"></i></a></div>
+  </div>
+</form>
+<div class="ir-card">
+  <div class="table-responsive"><table class="table table-hover mb-0">
+    <thead><tr><th>{{ _("Reference") }}</th><th>{{ _("Title") }}</th><th>{{ _("Category") }}</th><th>{{ _("Location") }}</th><th>{{ _("Severity") }}</th><th>{{ _("Status") }}</th><th>{{ _("Assigned to") }}</th><th>{{ _("Date") }}</th></tr></thead>
+    <tbody>
+    {% for r in pagination.items %}
+      <tr>
+        <td class="num ltr"><a href="{{ url_for('admin.report_detail', report_id=r.id) }}">{{ r.reference }}</a></td>
+        <td>{{ r.title }}{% if r.attachments %} <i class="bi bi-image ir-muted" title="{{ _('Has photos') }}"></i>{% endif %}</td>
+        <td class="small">{{ r.category.tr('name') }}</td>
+        <td class="num small">{{ r.km_marker|km }}{% if r.road_section %}<div class="ir-muted">{{ r.road_section.tr('name') }}</div>{% endif %}</td>
+        <td class="small"><i class="bi bi-circle-fill sev-{{ r.severity }}" style="font-size:8px"></i> {{ severity_label(r.severity) }}</td>
+        <td>{{ status_badge(r.status) }}</td>
+        <td class="small">{{ r.assigned_user.full_name if r.assigned_user else (r.assigned_team.tr('name') if r.assigned_team else '—') }}</td>
+        <td class="small ir-muted">{{ r.created_at|dt('short') }}</td>
+      </tr>
+    {% else %}<tr><td colspan="8">{{ empty('bi-search', _("No reports match the filters.")) }}</td></tr>{% endfor %}
+    </tbody></table></div>
+</div>
+<div class="small ir-muted mt-2">{{ _("Results") }}: <span class="num">{{ pagination.total }}</span></div>
+{{ pager(pagination, 'admin.reports') }}
+{% endblock %}

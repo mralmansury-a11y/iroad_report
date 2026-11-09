@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}{% block admin_title %}{{ _("Dashboard") }}{% endblock %} · {{ _("Administration") }}{% endblock %}
+{% block shell %}
+{% set ep = request.endpoint or '' %}
+<div class="ad-layout">
+  <aside class="ad-side" id="adSide" aria-label="{{ _('Administration menu') }}" tabindex="-1">
+    <div class="ad-side-head">
+      <a class="brand" href="{{ url_for('admin.dashboard') }}"><span class="ir-brand-tile"><img src="{{ url_for('static', filename='images/brand/irs-emblem.png') }}" alt="" width="36" height="36"></span>
+        <span>{{ _("Road services administration") }}</span></a>
+      <button type="button" class="btn btn-sm btn-outline-light ad-side-close" data-close-side aria-label="{{ _('Close menu') }}"><i class="bi bi-x-lg"></i></button>
+    </div>
+    <nav>
+      <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if ep == 'admin.dashboard' }}"><i class="bi bi-speedometer2"></i>{{ _("Dashboard") }}</a>
+      <a href="{{ url_for('admin.reports') }}" class="{{ 'active' if ep.startswith('admin.report') }}"><i class="bi bi-clipboard2-data"></i>{{ _("Reports") }}</a>
+      <a href="{{ url_for('admin.reports', mine=1) }}"><i class="bi bi-person-check"></i>{{ _("My assignments") }}</a>
+      {% if current_user.can('analytics.view') %}<a href="{{ url_for('admin.analytics') }}" class="{{ 'active' if ep == 'admin.analytics' }}"><i class="bi bi-graph-up"></i>{{ _("Analytics") }}</a>{% endif %}
+      {% if current_user.can('announcements.manage') or current_user.can('messages.manage') %}<div class="grp">{{ _("Communication") }}</div>{% endif %}
+      {% if current_user.can('announcements.manage') %}<a href="{{ url_for('admin.announcements') }}" class="{{ 'active' if ep.startswith('admin.announcement') }}"><i class="bi bi-megaphone"></i>{{ _("Announcements & alerts") }}</a>{% endif %}
+      {% if current_user.can('messages.manage') %}<a href="{{ url_for('admin.messages') }}" class="{{ 'active' if ep.startswith('admin.message') }}"><i class="bi bi-chat-left-text"></i>{{ _("Support messages") }}</a>{% endif %}
+      {% if current_user.can('users.view') or current_user.can('teams.manage') or current_user.can('employees.manage') %}<div class="grp">{{ _("People") }}</div>{% endif %}
+      {% if current_user.can('users.view') %}<a href="{{ url_for('admin.users') }}" class="{{ 'active' if ep.startswith('admin.user') }}"><i class="bi bi-people"></i>{{ _("Users") }}</a>{% endif %}
+      {% if current_user.can('employees.manage') or current_user.can('reports.assign') %}<a href="{{ url_for('admin.employees') }}" class="{{ 'active' if ep == 'admin.employees' }}"><i class="bi bi-person-badge"></i>{{ _("Employees") }}</a>{% endif %}
+      {% if current_user.can('teams.manage') %}<a href="{{ url_for('admin.teams') }}" class="{{ 'active' if ep.startswith('admin.team') }}"><i class="bi bi-diagram-3"></i>{{ _("Teams") }}</a>{% endif %}
+      {% if current_user.can('categories.manage') or current_user.can('sections.manage') or current_user.can('settings.manage') %}<div class="grp">{{ _("Configuration") }}</div>{% endif %}
+      {% if current_user.can('categories.manage') %}<a href="{{ url_for('admin.categories') }}" class="{{ 'active' if ep.startswith('admin.categor') }}"><i class="bi bi-tags"></i>{{ _("Categories") }}</a>{% endif %}
+      {% if current_user.can('sections.manage') %}<a href="{{ url_for('admin.sections') }}" class="{{ 'active' if ep.startswith('admin.section') }}"><i class="bi bi-signpost-2"></i>{{ _("Road sections") }}</a>{% endif %}
+      {% if current_user.can('settings.manage') %}<a href="{{ url_for('admin.settings') }}" class="{{ 'active' if ep == 'admin.settings' }}"><i class="bi bi-gear"></i>{{ _("System settings") }}</a>{% endif %}
+      {% if current_user.can('audit.view') %}<a href="{{ url_for('admin.audit_logs') }}" class="{{ 'active' if ep == 'admin.audit_logs' }}"><i class="bi bi-journal-text"></i>{{ _("Audit log") }}</a>{% endif %}
+      <div class="grp">{{ _("Account") }}</div>
+      <a href="{{ url_for('main.home') }}"><i class="bi bi-house"></i>{{ _("Public site") }}</a>
+      <a href="{{ url_for('main.profile') }}"><i class="bi bi-person"></i>{{ current_user.full_name }}</a>
+    </nav>
+  </aside>
+  <div class="ad-backdrop" data-close-side aria-hidden="true"></div>
+  <div class="ad-main">
+    <div class="ad-top">
+      <button class="ad-side-toggle" type="button" data-toggle-side aria-controls="adSide" aria-expanded="false" aria-label="{{ _('Menu') }}"><i class="bi bi-list"></i></button>
+      <h1 title="{{ self.admin_title()|striptags }}">{{ self.admin_title() }}</h1>
+      <div class="ad-top-tools">
+        <a class="ir-chip-btn" href="{{ url_for('main.set_language', code=other_lang) }}" lang="{{ other_lang }}" title="{{ _('Change language') }}"><i class="bi bi-translate" aria-hidden="true"></i><span class="lbl">{{ 'English' if other_lang == 'en' else 'العربية' }}</span></a>
+        <button type="button" class="ir-chip-btn icon" data-theme-toggle aria-label="{{ _('Toggle dark / light mode') }}"><i class="bi bi-sun-fill ir-theme-ico-dark"></i><i class="bi bi-moon-stars-fill ir-theme-ico-light"></i></button>
+        <a class="ir-chip-btn icon position-relative" href="{{ url_for('notifications.index') }}" aria-label="{{ _('Notifications') }}"><i class="bi bi-bell"></i>{% if unread_count %}<span class="ir-dot num">{{ unread_count }}</span>{% endif %}</a>
+      </div>
+    </div>
+    <main id="main" class="ad-content" tabindex="-1">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for cat, msg in messages %}<div class="alert alert-{{ 'danger' if cat == 'danger' else ('success' if cat == 'success' else 'info') }} ir-alert">{{ msg }}</div>{% endfor %}
+      {% endwith %}
+      {% block admin_content %}{% endblock %}
+    </main>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>{% endblock %}

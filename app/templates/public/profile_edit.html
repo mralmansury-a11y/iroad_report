@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, page_title %}
+{% block title %}{{ _("Edit personal details") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Edit personal details"), _("Update your personal information"), url_for('main.profile')) }}
+<div class="text-center mb-3"><span class="ir-avatar">{{ current_user.initials }}</span></div>
+<form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+  {{ form.csrf_token }}
+  <input type="hidden" name="action" value="profile">
+  {{ field(form.full_name, autocomplete="name") }}
+  {{ field(form.phone, autocomplete="tel", inputmode="tel", dir="ltr", placeholder="091-2345678") }}
+  {{ field(form.email, autocomplete="email", dir="ltr", placeholder="example@mail.com") }}
+  {{ field(form.home_section_id) }}
+  <button class="ir-cta mt-1" type="submit">{{ _("Save changes") }}</button>
+</form>
+
+<h2 class="fs-6 fw-bold mt-4">{{ _("Change password") }}</h2>
+<form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+  {{ pw_form.csrf_token }}
+  <input type="hidden" name="action" value="password">
+  {{ field(pw_form.current, autocomplete="current-password") }}
+  {{ field(pw_form.password, autocomplete="new-password") }}
+  {{ field(pw_form.confirm, autocomplete="new-password") }}
+  <button class="btn btn-outline-light w-100" type="submit">{{ _("Change password") }}</button>
+</form>
+</div>
+{% endblock %}

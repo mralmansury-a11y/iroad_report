@@ -1,0 +1,17 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block admin_title %}{{ _("Announcements & alerts") }}{% endblock %}
+{% block admin_content %}
+<div class="mb-3"><a class="btn btn-primary btn-sm" href="{{ url_for('admin.announcement_form') }}"><i class="bi bi-plus-lg"></i> {{ _("New announcement") }}</a></div>
+<div class="ir-card"><div class="table-responsive"><table class="table mb-0">
+  <thead><tr><th>{{ _("Type") }}</th><th>{{ _("Title") }}</th><th>{{ _("Location") }}</th><th>{{ _("Period") }}</th><th>{{ _("State") }}</th><th>{{ _("Notified") }}</th><th></th></tr></thead>
+  <tbody>{% for a in pagination.items %}
+    <tr><td class="small">{{ ann_kind_label(a.kind) }}</td><td>{{ a.title }}</td>
+      <td class="num small">{% if a.km_from %}{{ a.km_from|km }}{% if a.km_to %} – {{ a.km_to|km }}{% endif %}{% elif a.road_section %}{{ a.road_section.tr('name') }}{% else %}—{% endif %}</td>
+      <td class="small">{{ a.starts_at|dt('short') }}{% if a.ends_at %} → {{ a.ends_at|dt('short') }}{% endif %}</td>
+      <td>{% if a.is_published %}<span class="ir-badge tone-done">{{ _("Published") }}</span>{% else %}<span class="ir-badge tone-rejected">{{ _("Draft") }}</span>{% endif %}</td>
+      <td class="small ir-muted">{{ a.notified_at|reltime if a.notified_at else '—' }}</td>
+      <td class="text-end"><a class="btn btn-sm btn-outline-light" href="{{ url_for('admin.announcement_form', ann_id=a.id) }}">{{ _("Edit") }}</a></td></tr>
+  {% else %}<tr><td colspan="7">{{ empty('bi-megaphone', _("No announcements yet.")) }}</td></tr>{% endfor %}</tbody></table></div></div>
+{{ pager(pagination, 'admin.announcements') }}
+{% endblock %}

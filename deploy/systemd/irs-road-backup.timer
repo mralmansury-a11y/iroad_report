@@ -1,0 +1,10 @@
+[Unit]
+Description=Run the International Road Services backup every night
+
+[Timer]
+OnCalendar=*-*-* 02:40:00
+RandomizedDelaySec=15m
+Persistent=true
+
+[Install]
+WantedBy=timers.target

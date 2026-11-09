@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title, field %}
+{% block title %}{{ _("Track a report") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Track a report"), _("Enter the reference number and the phone number used in the report."), url_for('reports.index')) }}
+<form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+  {{ form.csrf_token }}
+  {{ field(form.reference, placeholder="IR-2026-000123", dir="ltr", autocomplete="off") }}
+  {{ field(form.phone, placeholder="091-2345678", inputmode="tel", dir="ltr") }}
+  <button class="btn btn-primary w-100" type="submit">{{ _("Show report") }}</button>
+</form>
+</div>
+{% endblock %}

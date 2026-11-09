@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, page_title %}
+{% block title %}{{ _("New password") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+  {{ page_title(_("New password")) }}
+  <form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+    {{ form.csrf_token }}
+    {{ field(form.password, autocomplete="new-password") }}
+    {{ field(form.confirm, autocomplete="new-password") }}
+    <button class="btn btn-primary w-100" type="submit">{{ _("Save") }}</button>
+  </form>
+</div>
+{% endblock %}

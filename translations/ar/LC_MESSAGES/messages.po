@@ -1,0 +1,1651 @@
+# Arabic translations for International Road Services - Libya.
+# Copyright (C) 2026 National Development Agency
+# This file is distributed under the same license as the International Road Services - Libya project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: International Road Services - Libya 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-09 10:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: IRS Libya\n"
+"Language: ar\n"
+"Language-Team: IRS Libya\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=0 && n%100<=2 ? 4 : 5);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#, python-format
+msgid "%(n)s d"
+msgstr "%(n)s يوم"
+
+#, python-format
+msgid "%(n)s h"
+msgstr "%(n)s س"
+
+#, python-format
+msgid "%(n)s min"
+msgstr "%(n)s د"
+
+#, python-format
+msgid "%(n)s reference points saved."
+msgstr "تم حفظ %(n)s نقطة مرجعية."
+
+msgid "A new version is available."
+msgstr "يتوفر إصدار جديد."
+
+msgid "A password is required for new accounts."
+msgstr "كلمة المرور مطلوبة للحسابات الجديدة."
+
+msgid "About the app"
+msgstr "عن التطبيق"
+
+msgid "Accept new public reports"
+msgstr "استقبال بلاغات جديدة من العموم"
+
+msgid "Accepted reports"
+msgstr "بلاغات مقبولة"
+
+msgid "Account"
+msgstr "الحساب"
+
+msgid "Account activated."
+msgstr "تم تفعيل الحساب."
+
+msgid "Account deactivated."
+msgstr "تم إيقاف الحساب."
+
+msgid "Action"
+msgstr "الإجراء"
+
+msgid "Activate"
+msgstr "تفعيل"
+
+msgid "Active"
+msgstr "مفعّل"
+
+msgid "Active account"
+msgstr "الحساب مفعّل"
+
+msgid "Active contributor"
+msgstr "مساهم نشط"
+
+msgid "Add a photo of the problem"
+msgstr "أضف صورة للعطل"
+
+msgid "Add note"
+msgstr "إضافة ملاحظة"
+
+msgid "Add report"
+msgstr "إضافة بلاغ"
+
+msgid "Add the app to your home screen for quick access."
+msgstr "أضف التطبيق إلى الشاشة الرئيسية للوصول السريع."
+
+msgid "Administration"
+msgstr "الإدارة"
+
+msgid "Administration menu"
+msgstr "قائمة الإدارة"
+
+msgid "All"
+msgstr "الكل"
+
+msgid "All reports on the coastal road"
+msgstr "كل البلاغات على الطريق الساحلي"
+
+#, python-format
+msgid "All rights reserved © %(y)s National Development Agency"
+msgstr "جميع الحقوق محفوظة © %(y)s الجهاز الوطني للتنمية"
+
+msgid "All statuses"
+msgstr "كل الحالات"
+
+msgid "Allow browser notifications to receive report updates and road alerts."
+msgstr "اسمح بإشعارات المتصفح لاستقبال تحديثات البلاغات وتنبيهات الطريق."
+
+msgid "Allow location access if the browser asks."
+msgstr "اسمح بالوصول إلى الموقع إذا طلب المتصفح ذلك."
+
+msgid "Allow location access to see nearby reports."
+msgstr "اسمح بالوصول إلى موقعك لعرض البلاغات القريبة."
+
+msgid "Allow reports without an account"
+msgstr "السماح بالإبلاغ دون حساب"
+
+msgid "Already notified"
+msgstr "تم الإشعار مسبقاً"
+
+msgid "Already registered?"
+msgstr "لديك حساب؟"
+
+msgid "An official app that lets citizens report problems and follow the status of the International Coastal Road, supervised by the National Development Agency — Sirte."
+msgstr "تطبيق رسمي يتيح للمواطنين الإبلاغ عن الأعطال ومتابعة حالة الطريق الساحلي الدولي، بإشراف الجهاز الوطني للتنمية — سرت."
+
+msgid "An unexpected error occurred. Please try again later."
+msgstr "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً."
+
+msgid "An unsent draft was restored."
+msgstr "تمت استعادة مسودة غير مرسلة."
+
+msgid "Analytics"
+msgstr "التحليلات"
+
+msgid "Android (Chrome / Edge / Samsung Internet)"
+msgstr "أندرويد (Chrome / Edge / Samsung Internet)"
+
+msgid "Announcement"
+msgstr "إعلان"
+
+msgid "Announcements & alerts"
+msgstr "الإعلانات والتنبيهات"
+
+msgid "Answered"
+msgstr "تم الرد"
+
+msgid "Are you sure?"
+msgstr "هل أنت متأكد؟"
+
+msgid "Assign"
+msgstr "إسناد"
+
+msgid "Assigned"
+msgstr "تم الإسناد"
+
+msgid "Assigned to"
+msgstr "مُسند إلى"
+
+msgid "Assignment history"
+msgstr "سجل الإسناد"
+
+msgid "At least 8 characters, with letters and numbers."
+msgstr "8 أحرف على الأقل، تتضمن حروفاً وأرقاماً."
+
+msgid "Audit log"
+msgstr "سجل التدقيق"
+
+msgid "Average resolution time"
+msgstr "متوسط زمن الإصلاح"
+
+msgid "Average response"
+msgstr "متوسط الاستجابة"
+
+msgid "Average response time"
+msgstr "متوسط زمن الاستجابة"
+
+msgid "Back"
+msgstr "رجوع"
+
+msgid "Back online."
+msgstr "عاد الاتصال."
+
+msgid "Back to home"
+msgstr "العودة للرئيسية"
+
+msgid "Can I send a report without logging in?"
+msgstr "هل يمكن إرسال بلاغ بدون تسجيل دخول؟"
+
+msgid "Cancel"
+msgstr "إلغاء"
+
+msgid "Categories"
+msgstr "التصنيفات"
+
+msgid "Category"
+msgstr "التصنيف"
+
+msgid "Change language"
+msgstr "تغيير اللغة"
+
+msgid "Change password"
+msgstr "تغيير كلمة المرور"
+
+msgid "Change status"
+msgstr "تغيير الحالة"
+
+msgid "Changes saved."
+msgstr "تم حفظ التغييرات."
+
+msgid "Chat with support"
+msgstr "الدردشة مع الدعم"
+
+msgid "Choose a road section"
+msgstr "اختر القاطع"
+
+msgid "Choose a team or an employee."
+msgstr "اختر فريقاً أو موظفاً."
+
+msgid "Choose the display language of the app"
+msgstr "اختر لغة عرض التطبيق"
+
+msgid "Choose the problem type."
+msgstr "اختر نوع العطل."
+
+msgid "Choose “Add to Home Screen”, then “Add”."
+msgstr "اختر «إضافة إلى الشاشة الرئيسية» ثم «إضافة»."
+
+msgid "Choose “Install app” or “Add to Home screen”."
+msgstr "اختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية»."
+
+msgid "Click the install icon in the address bar, or open the browser menu and choose “Install”."
+msgstr "اضغط أيقونة التثبيت في شريط العنوان، أو افتح قائمة المتصفح واختر «تثبيت»."
+
+msgid "Close menu"
+msgstr "إغلاق القائمة"
+
+msgid "Closed"
+msgstr "مغلق"
+
+msgid "Code"
+msgstr "الرمز"
+
+msgid "Communication"
+msgstr "التواصل"
+
+msgid "Completed"
+msgstr "المنجزة"
+
+msgid "Computer (Chrome / Edge)"
+msgstr "الحاسوب (Chrome / Edge)"
+
+msgid "Configuration"
+msgstr "الإعدادات العامة"
+
+msgid "Confirm password"
+msgstr "تأكيد كلمة المرور"
+
+msgid "Confirm."
+msgstr "أكّد العملية."
+
+msgid "Contact"
+msgstr "وسيلة التواصل"
+
+msgid "Contribution points"
+msgstr "نقاط المساهمة"
+
+msgid "Control which alerts you receive"
+msgstr "تحكّم بما يصلك من تنبيهات"
+
+msgid "Coordinates saved. The kilometre will be calculated when the report is sent."
+msgstr "تم حفظ الإحداثيات، وسيُحتسب الكيلومتر عند إرسال البلاغ."
+
+msgid "Create account"
+msgstr "إنشاء الحساب"
+
+msgid "Create an account"
+msgstr "إنشاء حساب"
+
+msgid "Current password"
+msgstr "كلمة المرور الحالية"
+
+msgid "Current password is incorrect."
+msgstr "كلمة المرور الحالية غير صحيحة."
+
+msgid "Dashboard"
+msgstr "لوحة التحكم"
+
+msgid "Data is used to improve road quality and prioritise maintenance, and is not used for any commercial or marketing purpose."
+msgstr "تُستخدم البيانات لتحسين جودة الطريق وتحديد أولويات الصيانة، ولا تُستخدم لأي غرض تجاري أو تسويقي."
+
+msgid "Data security"
+msgstr "أمان البيانات"
+
+msgid "Date"
+msgstr "التاريخ"
+
+msgid "Deactivate"
+msgstr "إيقاف"
+
+msgid "Deactivated"
+msgstr "موقوف"
+
+msgid "Default map latitude"
+msgstr "خط العرض الافتراضي للخريطة"
+
+msgid "Default map longitude"
+msgstr "خط الطول الافتراضي للخريطة"
+
+msgid "Default map zoom"
+msgstr "مستوى التكبير الافتراضي للخريطة"
+
+msgid "Default team"
+msgstr "الفريق الافتراضي"
+
+msgid "Delete image"
+msgstr "حذف الصورة"
+
+msgid "Description"
+msgstr "وصف الحالة"
+
+msgid "Description (Arabic)"
+msgstr "الوصف (عربي)"
+
+msgid "Description (English)"
+msgstr "الوصف (إنجليزي)"
+
+msgid "Details"
+msgstr "التفاصيل"
+
+msgid "Details and photos are visible only to the reporter and the road team."
+msgstr "التفاصيل والصور متاحة للمُبلِّغ وفريق الطريق فقط."
+
+msgid "Detected automatically, you can edit it"
+msgstr "تم تحديده تلقائياً، يمكن تعديله"
+
+msgid "Disable on this device"
+msgstr "الإيقاف على هذا الجهاز"
+
+msgid "Displayed app version"
+msgstr "رقم الإصدار المعروض"
+
+msgid "Draft"
+msgstr "مسودة"
+
+msgid "Draft saved on this device."
+msgstr "تم حفظ المسودة على هذا الجهاز."
+
+msgid "Drag to adjust the location"
+msgstr "اسحب لتعديل الموقع"
+
+msgid "E-mail"
+msgstr "البريد الإلكتروني"
+
+msgid "E-mail (optional)"
+msgstr "البريد الإلكتروني (اختياري)"
+
+msgid "Edit"
+msgstr "تعديل"
+
+msgid "Edit personal details"
+msgstr "تعديل البيانات الشخصية"
+
+msgid "Emergency"
+msgstr "طوارئ"
+
+msgid "Employee"
+msgstr "الموظف"
+
+msgid "Employee workload"
+msgstr "عبء العمل على الموظفين"
+
+msgid "Employees"
+msgstr "الموظفون"
+
+msgid "Enable on this device"
+msgstr "التفعيل على هذا الجهاز"
+
+msgid "End km must be greater than start km."
+msgstr "يجب أن يكون كيلومتر النهاية أكبر من كيلومتر البداية."
+
+msgid "Ends"
+msgstr "ينتهي في"
+
+msgid "Enter a phone number or an e-mail address."
+msgstr "أدخل رقم هاتف أو بريداً إلكترونياً."
+
+msgid "Enter a valid e-mail address."
+msgstr "أدخل بريداً إلكترونياً صحيحاً."
+
+msgid "Enter a valid phone number, e.g. 091-2345678."
+msgstr "أدخل رقم هاتف صحيحاً، مثل 091-2345678."
+
+msgid "Enter the e-mail of your account. Accounts registered with a phone only can contact technical support."
+msgstr "أدخل البريد الإلكتروني لحسابك. الحسابات المسجّلة برقم هاتف فقط يمكنها التواصل مع الدعم الفني."
+
+msgid "Enter the reference number and the phone number used in the report."
+msgstr "أدخل الرقم المرجعي ورقم الهاتف المستخدم في البلاغ."
+
+msgid "Enter your phone number so you can follow up the report."
+msgstr "أدخل رقم هاتفك لتتمكن من متابعة البلاغ."
+
+msgid "Expected congestion"
+msgstr "ازدحام متوقع"
+
+msgid "Filter"
+msgstr "تصفية"
+
+msgid "First response"
+msgstr "أول استجابة"
+
+msgid "Fog, wind or rain affecting the road"
+msgstr "ضباب أو رياح أو أمطار تؤثر على الطريق"
+
+msgid "Follow the report"
+msgstr "متابعة البلاغ"
+
+msgid "Follow your reports and receive road alerts."
+msgstr "تابع بلاغاتك واستقبل تنبيهات الطريق."
+
+msgid "For employees: the teams they work in."
+msgstr "للموظفين: الفرق التي يعملون ضمنها."
+
+msgid "Forgot password?"
+msgstr "نسيت كلمة المرور؟"
+
+msgid "Frequently asked questions"
+msgstr "الأسئلة الشائعة"
+
+msgid "From date"
+msgstr "من تاريخ"
+
+msgid "From km"
+msgstr "من الكيلومتر"
+
+msgid "Full name"
+msgstr "الاسم الكامل"
+
+msgid "GPS coordinates"
+msgstr "إحداثيات GPS"
+
+msgid "Get road alerts on this device."
+msgstr "استقبل تنبيهات الطريق على هذا الجهاز."
+
+msgid "Guest"
+msgstr "زائر"
+
+msgid "Handled by"
+msgstr "عولجت بواسطة"
+
+msgid "Has photos"
+msgstr "يحتوي صوراً"
+
+msgid "Help keep the road safe"
+msgstr "ساعد في الحفاظ على سلامة الطريق"
+
+msgid "Home"
+msgstr "الرئيسية"
+
+msgid "How data is used"
+msgstr "استخدام البيانات"
+
+msgid "How do I know the status of my report?"
+msgstr "كيف أعرف حالة بلاغي؟"
+
+msgid "I agree to the"
+msgstr "أوافق على"
+
+msgid "I agree to the privacy policy"
+msgstr "أوافق على سياسة الخصوصية"
+
+msgid "Icon (Bootstrap Icons class)"
+msgstr "الأيقونة (فئة Bootstrap Icons)"
+
+msgid "Icon names: see icons.getbootstrap.com, e.g. bi-cone-striped"
+msgstr "أسماء الأيقونات: راجع icons.getbootstrap.com، مثل bi-cone-striped"
+
+msgid "If the e-mail is registered, a reset link has been sent."
+msgstr "إذا كان البريد الإلكتروني مسجّلاً فقد أُرسل رابط إعادة التعيين."
+
+msgid "If the install button does not appear, follow the steps for your device below."
+msgstr "إذا لم يظهر زر التثبيت، اتبع الخطوات الخاصة بجهازك أدناه."
+
+msgid "Image deleted."
+msgstr "تم حذف الصورة."
+
+#, python-format
+msgid "Image is too large (maximum %(mb)s MB)."
+msgstr "حجم الصورة كبير (الحد الأقصى %(mb)s ميغابايت)."
+
+msgid "Import points"
+msgstr "استيراد النقاط"
+
+msgid "In progress"
+msgstr "قيد التنفيذ"
+
+msgid "Inactive"
+msgstr "غير مفعّل"
+
+msgid "Incorrect login details."
+msgstr "بيانات الدخول غير صحيحة."
+
+msgid "Information we collect"
+msgstr "جمع المعلومات"
+
+msgid "Install now"
+msgstr "ثبّت الآن"
+
+msgid "Install the app"
+msgstr "تثبيت التطبيق"
+
+msgid "Instructions"
+msgstr "التعليمات"
+
+msgid "Internal"
+msgstr "داخلية"
+
+msgid "Internal (staff only)"
+msgstr "داخلية (للموظفين فقط)"
+
+msgid "Internal note (staff only)"
+msgstr "ملاحظة داخلية (للموظفين فقط)"
+
+msgid "International Road Libya"
+msgstr "الطريق الدولي ليبيا"
+
+msgid "International Road Services Management"
+msgstr "إدارة خدمات الطريق الدولي"
+
+msgid "Intl. Road"
+msgstr "الطريق الدولي"
+
+msgid "Invalid coordinates."
+msgstr "إحداثيات غير صالحة."
+
+#, python-format
+msgid "Invalid lines: %(lines)s"
+msgstr "أسطر غير صالحة: %(lines)s"
+
+msgid "Invalid request"
+msgstr "طلب غير صالح"
+
+#, python-format
+msgid "Invalid value for %(key)s"
+msgstr "قيمة غير صالحة للحقل %(key)s"
+
+msgid "Invalid value."
+msgstr "قيمة غير صالحة."
+
+#, python-format
+msgid "JPG, PNG, WEBP or HEIC — up to %(n)s images, %(mb)s MB each"
+msgstr "JPG أو PNG أو WEBP أو HEIC — حتى %(n)s صور، بحد %(mb)s ميغابايت لكل صورة"
+
+msgid "Job title"
+msgstr "المسمى الوظيفي"
+
+msgid "Keep this number to follow up your report."
+msgstr "احتفظ بهذا الرقم لمتابعة بلاغك."
+
+msgid "Kilometre marker"
+msgstr "الكيلومتر"
+
+msgid "Kilometre reference points"
+msgstr "النقاط المرجعية للكيلومترات"
+
+msgid "Language"
+msgstr "اللغة"
+
+msgid "Last login"
+msgstr "آخر دخول"
+
+#, python-format
+msgid "Last updated: %(date)s"
+msgstr "آخر تحديث: %(date)s"
+
+msgid "Latest reports"
+msgstr "أحدث البلاغات"
+
+msgid "Latest reports on the road"
+msgstr "آخر البلاغات على الطريق"
+
+msgid "Leave empty to keep the current password."
+msgstr "اتركه فارغاً للإبقاء على كلمة المرور الحالية."
+
+msgid "Licences and compliance"
+msgstr "التراخيص والامتثال"
+
+msgid "Load the official survey data: the denser and more accurate the points, the better the conversion."
+msgstr "حمّل بيانات المسح الرسمية: كلما زادت كثافة النقاط ودقتها تحسّنت دقة التحويل."
+
+msgid "Local time (Libya)"
+msgstr "بالتوقيت المحلي (ليبيا)"
+
+msgid "Locating took too long. Make sure location (GPS) is turned on and try again."
+msgstr "استغرق تحديد الموقع وقتاً طويلاً. تأكد من تشغيل خدمة الموقع (GPS) ثم أعد المحاولة."
+
+msgid "Locating…"
+msgstr "جارٍ تحديد الموقع…"
+
+msgid "Location"
+msgstr "الموقع"
+
+msgid "Location access is blocked for this site. Allow it from the browser settings (lock icon next to the address) and try again."
+msgstr "الوصول إلى الموقع محظور لهذا الموقع. اسمح به من إعدادات المتصفح (أيقونة القفل بجانب العنوان) ثم أعد المحاولة."
+
+msgid "Location not set yet"
+msgstr "لم يُحدَّد الموقع بعد"
+
+msgid "Log in"
+msgstr "تسجيل الدخول"
+
+msgid "Log out"
+msgstr "تسجيل الخروج"
+
+msgid "Login required."
+msgstr "يجب تسجيل الدخول."
+
+msgid "Main navigation"
+msgstr "التنقل الرئيسي"
+
+msgid "Manual"
+msgstr "يدوي"
+
+msgid "Map"
+msgstr "الخريطة"
+
+msgid "Map data © OpenStreetMap contributors (ODbL). Interface built with Bootstrap (MIT), Bootstrap Icons (MIT), Leaflet (BSD-2), Chart.js (MIT) and the Tajawal font (SIL OFL)."
+msgstr "بيانات الخرائط © مساهمو OpenStreetMap (ترخيص ODbL). بُنيت الواجهة باستخدام Bootstrap (MIT) وBootstrap Icons (MIT) وLeaflet (BSD-2) وChart.js (MIT) وخط Tajawal (SIL OFL)."
+
+msgid "Map to pick the location"
+msgstr "خريطة لاختيار الموقع"
+
+msgid "Mark all as read"
+msgstr "تحديد الكل كمقروء"
+
+msgid "Members"
+msgstr "الأعضاء"
+
+msgid "Menu"
+msgstr "القائمة"
+
+msgid "Message"
+msgstr "الرسالة"
+
+msgid "Message us directly"
+msgstr "راسلنا مباشرة"
+
+msgid "Minimum records before showing an average"
+msgstr "الحد الأدنى من السجلات قبل عرض المتوسط"
+
+msgid "Minor"
+msgstr "بسيط"
+
+msgid "Moderate"
+msgstr "متوسط"
+
+msgid "Month"
+msgstr "الشهر"
+
+msgid "Monthly summary"
+msgstr "الملخص الشهري"
+
+msgid "My account"
+msgstr "حسابي"
+
+msgid "My assignments"
+msgstr "المهام المسندة إليّ"
+
+msgid "My report"
+msgstr "بلاغي"
+
+msgid "My reports"
+msgstr "بلاغاتي"
+
+msgid "Name"
+msgstr "الاسم"
+
+msgid "Name (Arabic)"
+msgstr "الاسم (عربي)"
+
+msgid "Name (English)"
+msgstr "الاسم (إنجليزي)"
+
+msgid "Name, phone or e-mail"
+msgstr "الاسم أو الهاتف أو البريد"
+
+msgid "National Development Agency"
+msgstr "الجهاز الوطني للتنمية"
+
+msgid "National Development Agency — Sirte"
+msgstr "الجهاز الوطني للتنمية — سرت"
+
+msgid "Nearby reports"
+msgstr "بلاغات قريبة"
+
+msgid "Network error. Please try again."
+msgstr "خطأ في الشبكة. يرجى المحاولة مجدداً."
+
+msgid "New"
+msgstr "جديد"
+
+msgid "New announcement"
+msgstr "إعلان جديد"
+
+msgid "New assignment"
+msgstr "إسناد جديد"
+
+msgid "New category"
+msgstr "تصنيف جديد"
+
+msgid "New employee"
+msgstr "موظف جديد"
+
+msgid "New password"
+msgstr "كلمة المرور الجديدة"
+
+msgid "New points"
+msgstr "نقاط جديدة"
+
+msgid "New problem report"
+msgstr "بلاغ عطل جديد"
+
+msgid "New report"
+msgstr "بلاغ جديد"
+
+msgid "New response on your report"
+msgstr "رد جديد على بلاغك"
+
+msgid "New section"
+msgstr "قاطع جديد"
+
+msgid "New status"
+msgstr "الحالة الجديدة"
+
+msgid "New support messages"
+msgstr "رسائل دعم جديدة"
+
+msgid "New team"
+msgstr "فريق جديد"
+
+msgid "New user"
+msgstr "مستخدم جديد"
+
+msgid "Newest first"
+msgstr "الأحدث أولاً"
+
+msgid "News about section openings and maintenance works"
+msgstr "أخبار افتتاح القواطع وأعمال الصيانة"
+
+msgid "Next"
+msgstr "التالي"
+
+msgid "No active alerts. Drive safely."
+msgstr "لا توجد تنبيهات حالياً. قُد بأمان."
+
+msgid "No announcements yet."
+msgstr "لا توجد إعلانات بعد."
+
+msgid "No employees yet."
+msgstr "لا يوجد موظفون بعد."
+
+msgid "No messages."
+msgstr "لا توجد رسائل."
+
+msgid "No notes yet."
+msgstr "لا توجد ملاحظات بعد."
+
+msgid "No notifications yet."
+msgstr "لا توجد تنبيهات بعد."
+
+msgid "No report matches this reference number and phone."
+msgstr "لا يوجد بلاغ يطابق هذا الرقم المرجعي ورقم الهاتف."
+
+msgid "No reports match the filters."
+msgstr "لا توجد بلاغات مطابقة للتصفية."
+
+msgid "No reports to show."
+msgstr "لا توجد بلاغات لعرضها."
+
+msgid "No reports yet."
+msgstr "لا توجد بلاغات بعد."
+
+msgid "No road sections defined yet."
+msgstr "لم تُعرَّف قواطع بعد."
+
+msgid "No users found."
+msgstr "لا يوجد مستخدمون."
+
+msgid "Not enough data yet"
+msgstr "لا تتوفر بيانات كافية بعد"
+
+msgid "Not enough data yet for meaningful statistics. Charts will become useful as reports accumulate."
+msgstr "لا تتوفر بيانات كافية بعد لإحصاءات ذات دلالة. ستصبح الرسوم مفيدة مع تراكم البلاغات."
+
+msgid "Not found."
+msgstr "غير موجود."
+
+msgid "Note"
+msgstr "الملاحظة"
+
+msgid "Note added."
+msgstr "تمت إضافة الملاحظة."
+
+msgid "Note to the reporter (visible)"
+msgstr "ملاحظة للمُبلِّغ (ظاهرة له)"
+
+msgid "Notes"
+msgstr "الملاحظات"
+
+msgid "Notification permission was denied in the browser."
+msgstr "تم رفض إذن الإشعارات في المتصفح."
+
+msgid "Notification settings"
+msgstr "إعدادات الإشعارات"
+
+msgid "Notifications"
+msgstr "التنبيهات"
+
+msgid "Notifications enabled on this device."
+msgstr "تم تفعيل الإشعارات على هذا الجهاز."
+
+msgid "Notifications on this device"
+msgstr "الإشعارات على هذا الجهاز"
+
+msgid "Notified"
+msgstr "الإشعار"
+
+#, python-format
+msgid "Notified users: %(n)s"
+msgstr "عدد المستخدمين الذين تم إشعارهم: %(n)s"
+
+msgid "Notify me when the status of a report I sent changes"
+msgstr "إشعار عند تغيّر حالة بلاغ أرسلته"
+
+msgid "Object"
+msgstr "العنصر"
+
+msgid "Official response (visible to reporter)"
+msgstr "رد رسمي (يظهر للمُبلِّغ)"
+
+msgid "Offline"
+msgstr "دون اتصال"
+
+msgid "Oldest first"
+msgstr "الأقدم أولاً"
+
+msgid "On iPhone: tap Share, then “Add to Home Screen”."
+msgstr "على آيفون: اضغط «مشاركة» ثم «إضافة إلى الشاشة الرئيسية»."
+
+msgid "Open assignments"
+msgstr "الإسنادات المفتوحة"
+
+msgid "Open report draft"
+msgstr "فتح مسودة البلاغ"
+
+msgid "Open reports and road sections"
+msgstr "البلاغات المفتوحة وقواطع الطريق"
+
+msgid "Open the browser menu (⋮)."
+msgstr "افتح قائمة المتصفح (⋮)."
+
+msgid "Open this site in Safari."
+msgstr "افتح هذا الموقع في متصفح Safari."
+
+msgid "Open “My reports” to see the current status and the full history. You also receive a notification whenever the status changes. Guests can use “Track a report” with the reference number."
+msgstr "افتح «بلاغاتي» لمعرفة الحالة الحالية والسجل الكامل، وسيصلك إشعار عند كل تغيير في الحالة. ويمكن للزوار استخدام «متابعة بلاغ» بالرقم المرجعي."
+
+msgid "Optional. The employee must belong to the selected team."
+msgstr "اختياري. يجب أن يكون الموظف عضواً في الفريق المختار."
+
+msgid "Or choose a section…"
+msgstr "أو اختر القاطع…"
+
+msgid "Order"
+msgstr "الترتيب"
+
+msgid "Page not found"
+msgstr "الصفحة غير موجودة"
+
+msgid "Pages"
+msgstr "الصفحات"
+
+msgid "Partially open"
+msgstr "مفتوح جزئياً"
+
+msgid "Password"
+msgstr "كلمة المرور"
+
+msgid "Password changed."
+msgstr "تم تغيير كلمة المرور."
+
+msgid "Password must be at least 8 characters and contain letters and numbers."
+msgstr "يجب ألا تقل كلمة المرور عن 8 أحرف وأن تتضمن حروفاً وأرقاماً."
+
+msgid "Password reset — International Road Libya"
+msgstr "إعادة تعيين كلمة المرور — الطريق الدولي ليبيا"
+
+msgid "Passwords do not match."
+msgstr "كلمتا المرور غير متطابقتين."
+
+msgid "People"
+msgstr "الأشخاص"
+
+msgid "Performance (last 30/90 days)"
+msgstr "الأداء (آخر 30/90 يوماً)"
+
+msgid "Period"
+msgstr "الفترة"
+
+msgid "Phone"
+msgstr "الهاتف"
+
+msgid "Phone call"
+msgstr "اتصال هاتفي"
+
+msgid "Phone number"
+msgstr "رقم الهاتف"
+
+msgid "Phone number (to follow up your report)"
+msgstr "رقم الهاتف (لمتابعة بلاغك)"
+
+msgid "Phone number or e-mail"
+msgstr "رقم الهاتف أو البريد الإلكتروني"
+
+msgid "Phone number used in the report"
+msgstr "رقم الهاتف المستخدم في البلاغ"
+
+msgid "Phone or e-mail"
+msgstr "الهاتف أو البريد الإلكتروني"
+
+msgid "Photo (optional)"
+msgstr "صورة (اختياري)"
+
+msgid "Pick on map"
+msgstr "اختر من الخريطة"
+
+msgid "Play a sound when a notification arrives"
+msgstr "تشغيل صوت عند وصول إشعار"
+
+msgid "Please correct the highlighted fields."
+msgstr "يرجى تصحيح الحقول المحددة."
+
+msgid "Please give the reporter a reason for rejection."
+msgstr "يرجى توضيح سبب الرفض للمُبلِّغ."
+
+msgid "Points and rewards"
+msgstr "النقاط والمكافآت"
+
+msgid "Points are added when the road team confirms and fixes the problem you reported."
+msgstr "تُضاف النقاط عندما يؤكد فريق الطريق العطل الذي أبلغت عنه ويصلحه."
+
+msgid "Points when a report is accepted for review"
+msgstr "النقاط عند قبول البلاغ للمراجعة"
+
+msgid "Points when a report is resolved"
+msgstr "النقاط عند إصلاح البلاغ"
+
+msgid "Previous"
+msgstr "السابق"
+
+msgid "Privacy policy"
+msgstr "سياسة الخصوصية"
+
+msgid "Privacy policy last update (YYYY-MM)"
+msgstr "آخر تحديث لسياسة الخصوصية (YYYY-MM)"
+
+msgid "Problem type"
+msgstr "نوع العطل"
+
+msgid "Profile"
+msgstr "حسابي"
+
+msgid "Progress"
+msgstr "مراحل المعالجة"
+
+msgid "Project update"
+msgstr "تحديث المشروع"
+
+msgid "Project updates"
+msgstr "تحديثات المشروع"
+
+msgid "Public site"
+msgstr "الموقع العام"
+
+msgid "Publish now"
+msgstr "نشر الآن"
+
+msgid "Published"
+msgstr "منشور"
+
+msgid "Push notifications on iPhone require iOS 16.4 or later and work only after installing to the home screen."
+msgstr "تتطلب الإشعارات الفورية على آيفون إصدار iOS 16.4 أو أحدث، ولا تعمل إلا بعد التثبيت على الشاشة الرئيسية."
+
+msgid "Push notifications on my devices"
+msgstr "الإشعارات الفورية على أجهزتي"
+
+msgid "Radius for “nearby reports” (km)"
+msgstr "نطاق «البلاغات القريبة» (كم)"
+
+msgid "Receive notifications on this device even when the app is closed"
+msgstr "استقبال الإشعارات على هذا الجهاز حتى عند إغلاق التطبيق"
+
+msgid "Received"
+msgstr "المستلمة"
+
+msgid "Reference"
+msgstr "الرقم المرجعي"
+
+msgid "Reference number"
+msgstr "الرقم المرجعي"
+
+msgid "Reference points (km,latitude,longitude — one per line)"
+msgstr "النقاط المرجعية (كم،خط العرض،خط الطول — نقطة في كل سطر)"
+
+msgid "Reference, title or description"
+msgstr "الرقم المرجعي أو العنوان أو الوصف"
+
+msgid "Region / section"
+msgstr "المنطقة / القاطع"
+
+msgid "Registered user"
+msgstr "مستخدم مسجّل"
+
+msgid "Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured."
+msgstr "يستلم المستخدمون المسجّلون الرد كإشعار، وتستلمه عناوين البريد الإلكتروني بالبريد عند إعداد خادم SMTP."
+
+msgid "Rejected"
+msgstr "مرفوض"
+
+msgid "Remember me"
+msgstr "تذكرني"
+
+msgid "Remove image"
+msgstr "إزالة الصورة"
+
+msgid "Replace all existing points"
+msgstr "استبدال جميع النقاط الحالية"
+
+msgid "Reply / handling note"
+msgstr "الرد / ملاحظة المعالجة"
+
+msgid "Reply from technical support"
+msgstr "رد من الدعم الفني"
+
+#, python-format
+msgid "Report \"%(title)s\" has been fixed. Thank you for your contribution."
+msgstr "تم إصلاح «%(title)s». شكراً لمساهمتك."
+
+#, python-format
+msgid "Report \"%(title)s\" is now under review."
+msgstr "بلاغ «%(title)s» قيد المراجعة الآن."
+
+#, python-format
+msgid "Report \"%(title)s\" is now: %(status)s"
+msgstr "حالة بلاغ «%(title)s» الآن: %(status)s"
+
+#, python-format
+msgid "Report \"%(title)s\" was rejected."
+msgstr "تم رفض بلاغ «%(title)s»."
+
+#, python-format
+msgid "Report %(ref)s \"%(title)s\" was assigned to you."
+msgstr "تم إسناد البلاغ %(ref)s «%(title)s» إليك."
+
+msgid "Report a road problem"
+msgstr "بلّغ عن عطل في الطريق"
+
+msgid "Report assigned."
+msgstr "تم إسناد البلاغ."
+
+msgid "Report photo"
+msgstr "صورة البلاغ"
+
+msgid "Report received"
+msgstr "تم استلام البلاغ"
+
+msgid "Report reference number"
+msgstr "الرقم المرجعي للبلاغ"
+
+msgid "Report rejected"
+msgstr "تم رفض البلاغ"
+
+msgid "Report resolved"
+msgstr "تم إصلاح العطل"
+
+msgid "Report road problems and follow the status of the International Road in Libya."
+msgstr "بلّغ عن أعطال الطريق وتابع حالة الطريق الدولي في ليبيا."
+
+msgid "Report sent"
+msgstr "تم إرسال البلاغ"
+
+msgid "Report status updated"
+msgstr "تم تحديث حالة البلاغ"
+
+msgid "Report submission is temporarily closed."
+msgstr "استقبال البلاغات متوقف مؤقتاً."
+
+msgid "Reporter"
+msgstr "المُبلِّغ"
+
+msgid "Reports"
+msgstr "البلاغات"
+
+msgid "Reports by category"
+msgstr "البلاغات حسب التصنيف"
+
+msgid "Reports by road section"
+msgstr "البلاغات حسب القاطع"
+
+msgid "Reports by status"
+msgstr "البلاغات حسب الحالة"
+
+msgid "Reports over time (12 months)"
+msgstr "البلاغات عبر الزمن (12 شهراً)"
+
+msgid "Reports sent"
+msgstr "بلاغات مُرسلة"
+
+msgid "Required when rejecting. Shown to the reporter."
+msgstr "مطلوبة عند الرفض، وتظهر للمُبلِّغ."
+
+msgid "Reset"
+msgstr "إعادة تعيين"
+
+msgid "Resolved"
+msgstr "تم الإصلاح"
+
+msgid "Responses from the road team"
+msgstr "ردود فريق الطريق"
+
+msgid "Results"
+msgstr "النتائج"
+
+msgid "Road Services Management"
+msgstr "إدارة خدمات الطريق الدولي"
+
+msgid "Road alerts"
+msgstr "تنبيهات الطريق"
+
+msgid "Road closed"
+msgstr "الطريق مغلق"
+
+msgid "Road closure"
+msgstr "إغلاق طريق"
+
+msgid "Road illustration with nearby reports"
+msgstr "رسم توضيحي للطريق مع البلاغات القريبة"
+
+msgid "Road map"
+msgstr "خريطة الطريق"
+
+msgid "Road open"
+msgstr "الطريق مفتوح"
+
+msgid "Road section"
+msgstr "القاطع"
+
+msgid "Road sections"
+msgstr "القواطع"
+
+msgid "Road services administration"
+msgstr "إدارة خدمات الطريق"
+
+msgid "Road status"
+msgstr "حالة الطريق"
+
+msgid "Role"
+msgstr "الدور"
+
+msgid "Roles"
+msgstr "الأدوار"
+
+msgid "Save"
+msgstr "حفظ"
+
+msgid "Save changes"
+msgstr "حفظ التغييرات"
+
+msgid "Search"
+msgstr "بحث"
+
+msgid "Search and filter"
+msgstr "البحث والتصفية"
+
+msgid "Secrets (database password, secret key, VAPID private key, SMTP password) are configured only in the server environment file and are never shown here."
+msgstr "الأسرار (كلمة مرور قاعدة البيانات، المفتاح السري، مفتاح VAPID الخاص، كلمة مرور SMTP) تُضبط فقط في ملف بيئة الخادم ولا تُعرض هنا إطلاقاً."
+
+msgid "Send a notification to users"
+msgstr "إرسال إشعار للمستخدمين"
+
+msgid "Send message"
+msgstr "إرسال الرسالة"
+
+msgid "Send report"
+msgstr "إرسال البلاغ"
+
+msgid "Send reset link"
+msgstr "إرسال رابط إعادة التعيين"
+
+msgid "Sending…"
+msgstr "جارٍ الإرسال…"
+
+msgid "Sends in-app notifications and push messages. Emergency alerts reach everyone; other types respect user preferences."
+msgstr "يرسل إشعارات داخل التطبيق ورسائل فورية. تنبيهات الطوارئ تصل للجميع، وبقية الأنواع تحترم تفضيلات المستخدم."
+
+msgid "Serious"
+msgstr "خطير"
+
+msgid "Serious reports awaiting action"
+msgstr "بلاغات خطيرة بانتظار الإجراء"
+
+msgid "Set the location with “Use my location” or “Pick on map”."
+msgstr "حدّد الموقع باستخدام «استخدم موقعي» أو «اختر من الخريطة»."
+
+msgid "Settings"
+msgstr "الإعدادات"
+
+msgid "Severity"
+msgstr "درجة الخطورة"
+
+msgid "Sharing information"
+msgstr "مشاركة المعلومات"
+
+msgid "Short title (optional)"
+msgstr "عنوان مختصر (اختياري)"
+
+msgid "Show report"
+msgstr "عرض البلاغ"
+
+msgid "Skip to content"
+msgstr "انتقل إلى المحتوى"
+
+msgid "Sort"
+msgstr "الترتيب"
+
+msgid "Sound notifications"
+msgstr "إشعارات صوتية"
+
+msgid "Specify the location: kilometre, section or GPS."
+msgstr "حدّد الموقع: الكيلومتر أو القاطع أو إحداثيات GPS."
+
+msgid "Staff accounts, their teams and current workload."
+msgstr "حسابات الموظفين وفرقهم وعبء العمل الحالي."
+
+msgid "Starts"
+msgstr "يبدأ في"
+
+msgid "State"
+msgstr "الوضع"
+
+msgid "Status"
+msgstr "الحالة"
+
+msgid "Status history"
+msgstr "سجل الحالات"
+
+msgid "Status updated."
+msgstr "تم تحديث الحالة."
+
+msgid "Submitted"
+msgstr "تاريخ الإرسال"
+
+msgid "Support"
+msgstr "الدعم"
+
+msgid "Support e-mail"
+msgstr "بريد الدعم"
+
+msgid "Support message"
+msgstr "رسالة دعم"
+
+msgid "Support messages"
+msgstr "رسائل الدعم"
+
+msgid "Support phone"
+msgstr "هاتف الدعم"
+
+msgid "System / reporter"
+msgstr "النظام / المُبلِّغ"
+
+msgid "System settings"
+msgstr "إعدادات النظام"
+
+msgid "Tap the Share button."
+msgstr "اضغط زر المشاركة."
+
+msgid "Tap the map or drag the marker to the exact place of the problem."
+msgstr "اضغط على الخريطة أو اسحب العلامة إلى مكان العطل بدقة."
+
+msgid "Team"
+msgstr "الفريق"
+
+msgid "Team members are managed from each employee's account (Users → Edit → Teams)."
+msgstr "تُدار عضوية الفرق من حساب كل موظف (المستخدمون ← تعديل ← الفرق)."
+
+msgid "Teams"
+msgstr "الفرق"
+
+msgid "Technical support"
+msgstr "الدعم الفني"
+
+msgid "Terms and privacy"
+msgstr "الشروط والخصوصية"
+
+msgid "Text (Arabic)"
+msgstr "النص (عربي)"
+
+msgid "Text (English)"
+msgstr "النص (إنجليزي)"
+
+msgid "Thank you for helping keep the road safe. The road team will review it."
+msgstr "شكراً لمساعدتك في الحفاظ على سلامة الطريق. سيقوم فريق الطريق بمراجعته."
+
+msgid "The browser allows location only over a secure connection (HTTPS)."
+msgstr "لا يسمح المتصفح بتحديد الموقع إلا عبر اتصال آمن (HTTPS)."
+
+msgid "The employee is not a member of the selected team."
+msgstr "الموظف ليس عضواً في الفريق المختار."
+
+msgid "The file is empty."
+msgstr "الملف فارغ."
+
+msgid "The file is not a valid image."
+msgstr "الملف ليس صورة صالحة."
+
+msgid "The form expired. Please reload the page and try again."
+msgstr "انتهت صلاحية النموذج. يرجى إعادة تحميل الصفحة والمحاولة مجدداً."
+
+msgid "The location was saved. It is outside the surveyed road points, so the kilometre will be set by the road team."
+msgstr "تم حفظ الموقع. يقع خارج النقاط المرجعية المسجّلة للطريق، لذلك سيحدد فريق الطريق رقم الكيلومتر."
+
+msgid "The map could not be loaded. Use “Use my location”."
+msgstr "تعذّر تحميل الخريطة. استخدم «استخدم موقعي»."
+
+msgid "The note is empty."
+msgstr "الملاحظة فارغة."
+
+msgid "The point chosen on the map was set"
+msgstr "تم تحديد النقطة المختارة على الخريطة"
+
+msgid "The reset link is invalid or has expired."
+msgstr "رابط إعادة التعيين غير صالح أو منتهي الصلاحية."
+
+#, python-format
+msgid "The road team replied to \"%(title)s\"."
+msgstr "ردّ فريق الطريق على «%(title)s»."
+
+msgid "The selected employee is not an active staff member."
+msgstr "الموظف المختار ليس موظفاً مفعّلاً."
+
+msgid "The uploaded file is too large"
+msgstr "الملف المرفوع كبير الحجم"
+
+msgid "These surveyed points convert a GPS position into a kilometre marker. Current points:"
+msgstr "تُستخدم هذه النقاط المساحية لتحويل موقع GPS إلى رقم كيلومتر. عدد النقاط الحالية:"
+
+msgid "This account is deactivated. Contact technical support."
+msgstr "هذا الحساب موقوف. تواصل مع الدعم الفني."
+
+msgid "This browser does not support location services."
+msgstr "هذا المتصفح لا يدعم خدمات الموقع."
+
+msgid "This browser does not support push notifications."
+msgstr "هذا المتصفح لا يدعم الإشعارات الفورية."
+
+msgid "This code is already used."
+msgstr "هذا الرمز مستخدم مسبقاً."
+
+msgid "This e-mail is already registered."
+msgstr "البريد الإلكتروني هذا مسجّل مسبقاً."
+
+msgid "This page is not available without a connection. Pages you opened before are still available, and unsent report drafts are kept on this device."
+msgstr "هذه الصفحة غير متاحة دون اتصال. الصفحات التي فتحتها سابقاً ما زالت متاحة، ومسودات البلاغات غير المرسلة محفوظة على هذا الجهاز."
+
+msgid "This phone number is already registered."
+msgstr "رقم الهاتف هذا مسجّل مسبقاً."
+
+msgid "This report belongs to a registered account. Log in to follow it."
+msgstr "هذا البلاغ مرتبط بحساب مسجّل. سجّل الدخول لمتابعته."
+
+msgid "This status change is not allowed."
+msgstr "تغيير الحالة هذا غير مسموح."
+
+msgid "Time"
+msgstr "الوقت"
+
+msgid "Title"
+msgstr "العنوان"
+
+msgid "Title (Arabic)"
+msgstr "العنوان (عربي)"
+
+msgid "Title (English)"
+msgstr "العنوان (إنجليزي)"
+
+msgid "To date"
+msgstr "إلى تاريخ"
+
+msgid "To km"
+msgstr "إلى الكيلومتر"
+
+msgid "To reset your password open this link (valid for 1 hour):"
+msgstr "لإعادة تعيين كلمة المرور افتح هذا الرابط (صالح لمدة ساعة):"
+
+msgid "Toggle dark / light mode"
+msgstr "تبديل الوضع الداكن / الفاتح"
+
+msgid "Too many images."
+msgstr "عدد الصور أكبر من المسموح."
+
+msgid "Too many requests. Please wait a moment and try again."
+msgstr "طلبات كثيرة. يرجى الانتظار قليلاً ثم المحاولة مجدداً."
+
+msgid "Total reports"
+msgstr "إجمالي البلاغات"
+
+msgid "Track a report"
+msgstr "متابعة بلاغ"
+
+msgid "Try again"
+msgstr "إعادة المحاولة"
+
+msgid "Type"
+msgstr "النوع"
+
+msgid "Under review"
+msgstr "قيد المراجعة"
+
+msgid "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
+msgstr "نوع الملف غير مدعوم. المسموح: JPG وPNG وWEBP وHEIC."
+
+msgid "Update"
+msgstr "تحديث"
+
+msgid "Update status"
+msgstr "تحديث الحالة"
+
+msgid "Update your personal information"
+msgstr "حدّث معلوماتك الشخصية"
+
+msgid "Updated"
+msgstr "آخر تحديث"
+
+msgid "Updates on my reports"
+msgstr "تحديثات على بلاغاتي"
+
+msgid "Use my location"
+msgstr "استخدم موقعي"
+
+msgid "Use your current location, or pick the exact point on the map."
+msgstr "استخدم موقعك الحالي، أو اختر النقطة بدقة من الخريطة."
+
+msgid "User"
+msgstr "المستخدم"
+
+msgid "User created."
+msgstr "تم إنشاء المستخدم."
+
+msgid "Users"
+msgstr "المستخدمون"
+
+msgid "Version"
+msgstr "الإصدار"
+
+msgid "View all"
+msgstr "عرض الكل"
+
+msgid "Visibility"
+msgstr "الظهور"
+
+msgid "Visibility rate"
+msgstr "معدل الوضوح"
+
+msgid "Visibility rate (%)"
+msgstr "معدل الوضوح (%)"
+
+msgid "Visible to reporter"
+msgstr "ظاهرة للمُبلِّغ"
+
+msgid "We are here to help"
+msgstr "نحن هنا للمساعدة"
+
+msgid "We collect limited data such as name, phone number and approximate location when you send a report, only to contact you and follow up the status of the report."
+msgstr "نقوم بجمع بيانات محدودة مثل الاسم ورقم الهاتف والموقع التقريبي عند إرسال بلاغ، وذلك لغرض التواصل ومتابعة حالة البلاغ فقط."
+
+msgid "We follow reasonable technical and organisational measures to protect your data from unauthorised access."
+msgstr "نتبع إجراءات حماية تقنية وتنظيمية معقولة للحفاظ على بياناتك من الوصول غير المصرح به."
+
+msgid "Weather alert"
+msgstr "تنبيه طقس"
+
+msgid "Weather alerts"
+msgstr "تنبيهات الطقس"
+
+msgid "Weather, traffic, closures and project news"
+msgstr "الطقس والحركة المرورية والإغلاقات وأخبار المشروع"
+
+msgid "WhatsApp"
+msgstr "واتساب"
+
+msgid "WhatsApp number (international, digits only)"
+msgstr "رقم واتساب (دولي، أرقام فقط)"
+
+msgid "When are contribution points counted?"
+msgstr "متى تُحتسب نقاط المساهمة؟"
+
+msgid "When you earn new contribution points"
+msgstr "عند حصولك على نقاط مساهمة جديدة"
+
+msgid "Write extra details that help the maintenance team..."
+msgstr "اكتب تفاصيل إضافية تساعد فريق الصيانة..."
+
+msgid "Write your question here..."
+msgstr "اكتب استفسارك هنا..."
+
+msgid "Year"
+msgstr "السنة"
+
+msgid "Yearly summary"
+msgstr "الملخص السنوي"
+
+msgid "Yes. Enter your phone number so you can follow up the report with its reference number. Registering lets you receive notifications and points."
+msgstr "نعم. أدخل رقم هاتفك لتتابع البلاغ برقمه المرجعي. ويتيح لك التسجيل استقبال الإشعارات والنقاط."
+
+msgid "You appear to be away from the International Road. Choose the location manually."
+msgstr "يبدو أنك بعيد عن الطريق الدولي. اختر الموقع يدوياً."
+
+msgid "You are here"
+msgstr "أنت هنا"
+
+msgid "You are not allowed to add notes."
+msgstr "غير مسموح لك بإضافة ملاحظات."
+
+msgid "You are not allowed to assign reports."
+msgstr "غير مسموح لك بإسناد البلاغات."
+
+msgid "You are offline"
+msgstr "أنت غير متصل بالإنترنت"
+
+msgid "You are offline. Some features are unavailable."
+msgstr "أنت غير متصل بالإنترنت. بعض الميزات غير متاحة."
+
+msgid "You are offline. The report was NOT sent; it is saved as a draft. Send it when you are back online."
+msgstr "أنت غير متصل. لم يُرسَل البلاغ، وقد حُفظ كمسودة. أرسله عند عودة الاتصال."
+
+msgid "You are sending as a guest. Keep the reference number to follow up your report, or"
+msgstr "أنت ترسل كزائر. احتفظ بالرقم المرجعي لمتابعة بلاغك، أو"
+
+msgid "You can also"
+msgstr "يمكنك أيضاً"
+
+msgid "You can also pick the point on the map."
+msgstr "يمكنك أيضاً اختيار النقطة من الخريطة."
+
+msgid "You can at any time request to correct your data or delete your account by contacting the technical support team."
+msgstr "يمكنك في أي وقت طلب تعديل بياناتك أو حذف حسابك من خلال التواصل مع فريق الدعم الفني."
+
+#, python-format
+msgid "You can attach up to %(n)s images."
+msgstr "يمكنك إرفاق %(n)s صور كحد أقصى."
+
+msgid "You can only grant roles below your own level."
+msgstr "يمكنك منح الأدوار الأدنى من مستواك فقط."
+
+msgid "You do not have permission to access this page"
+msgstr "ليست لديك صلاحية الوصول إلى هذه الصفحة"
+
+#, python-format
+msgid "You earned %(n)s points for your report \"%(title)s\"."
+msgstr "حصلت على %(n)s نقطة لمساهمتك في بلاغ «%(title)s»."
+
+msgid "You have been logged out."
+msgstr "تم تسجيل الخروج."
+
+msgid "Your account was created. Welcome!"
+msgstr "تم إنشاء حسابك. مرحباً بك!"
+
+msgid "Your approximate location on the road"
+msgstr "موقعك التقريبي على الطريق"
+
+msgid "Your current location was set"
+msgstr "تم تحديد موقعك الحالي"
+
+msgid "Your location could not be determined. Choose it manually."
+msgstr "تعذّر تحديد موقعك. اختره يدوياً."
+
+msgid "Your message was sent. The support team will contact you."
+msgstr "تم إرسال رسالتك. سيتواصل معك فريق الدعم."
+
+msgid "Your name"
+msgstr "اسمك"
+
+msgid "Your password was changed. You can log in now."
+msgstr "تم تغيير كلمة المرور. يمكنك تسجيل الدخول الآن."
+
+msgid "Your personal data is not shared with any party outside the National Development Agency and the technical teams responsible for the road."
+msgstr "لا تتم مشاركة بياناتك الشخصية مع أي جهة خارج الجهاز الوطني للتنمية والفرق الفنية المسؤولة عن الطريق."
+
+#, python-format
+msgid "Your report %(ref)s was received and will be reviewed."
+msgstr "تم استلام بلاغك %(ref)s وستتم مراجعته."
+
+msgid "Your report was accepted"
+msgstr "تم قبول بلاغك"
+
+msgid "Your report was received"
+msgstr "تم استلام بلاغك"
+
+msgid "Your rights"
+msgstr "حقوقك"
+
+msgid "by"
+msgstr "بواسطة"
+
+msgid "e.g. Deep pothole in the right lane"
+msgstr "مثال: حفرة عميقة في الحارة اليمنى"
+
+msgid "iPhone / iPad (Safari)"
+msgstr "آيفون / آيباد (Safari)"
+
+msgid "just now"
+msgstr "الآن"
+
+msgid "km"
+msgstr "كم"
+
+msgid "log in"
+msgstr "سجّل الدخول"
+
+msgid "privacy policy"
+msgstr "سياسة الخصوصية"
+
+msgid "send a report without an account"
+msgstr "إرسال بلاغ دون حساب"
+
+msgid "unread"
+msgstr "غير مقروء"
+
+msgid "until"
+msgstr "حتى"
+
+#~ msgid "Approximate location:"
+#~ msgstr "الموقع التقريبي:"
+
+#~ msgid "Location permission was denied. Choose your location manually."
+#~ msgstr "تم رفض إذن الموقع. اختر موقعك يدوياً."
+
+#~ msgid "Tap “Use my location” or enter the kilometre manually."
+#~ msgstr "اضغط «استخدم موقعي» أو أدخل الكيلومتر يدوياً."
+

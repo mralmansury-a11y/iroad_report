@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title, empty %}
+{% block title %}{{ _("Road alerts") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Road alerts"), _("Weather, traffic, closures and project news")) }}
+<div class="ir-list">
+  {% for a in announcements %}
+  <article class="ir-notif k-{{ a.notification_kind }}">
+    <span class="ico"><i class="bi {{ 'bi-cloud-fog2' if a.kind == 'weather' else ('bi-cone-striped' if a.kind in ('traffic','closure') else ('bi-exclamation-octagon' if a.kind == 'emergency' else 'bi-megaphone')) }}"></i></span>
+    <div>
+      <div class="small ir-muted">{{ ann_kind_label(a.kind) }}{% if a.km_from %} · <span class="num">{{ a.km_from|km }}{% if a.km_to %} – {{ a.km_to|km }}{% endif %}</span>{% endif %}</div>
+      <h2 class="t fs-6 mb-1">{{ a.title }}</h2>
+      {% if a.body %}<p class="b mb-0">{{ a.body }}</p>{% endif %}
+      <div class="w">{{ a.starts_at|reltime }}{% if a.ends_at %} · {{ _("until") }} {{ a.ends_at|dt('short') }}{% endif %}</div>
+    </div>
+  </article>
+  {% else %}
+    {{ empty('bi-check2-circle', _("No active alerts. Drive safely.")) }}
+  {% endfor %}
+</div>
+{% if not current_user.is_authenticated %}
+<div class="ir-card ir-card-pad mt-3">
+  <p class="small mb-2">{{ _("Get road alerts on this device.") }}</p>
+  <button type="button" class="btn btn-sm btn-outline-light" data-action="push-enable"><i class="bi bi-bell"></i> {{ _("Enable on this device") }}</button>
+  <a class="btn btn-sm btn-primary" href="{{ url_for('auth.login') }}">{{ _("Log in") }}</a>
+</div>
+{% endif %}
+</div>
+{% endblock %}

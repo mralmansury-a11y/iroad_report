@@ -1,0 +1,13 @@
+/var/log/irs-road/*.log {
+    weekly
+    rotate 12
+    compress
+    delaycompress
+    missingok
+    notifempty
+    su irsroad irsroad
+    create 0640 irsroad irsroad
+    postrotate
+        systemctl kill -s USR1 irs-road.service >/dev/null 2>&1 || true
+    endscript
+}

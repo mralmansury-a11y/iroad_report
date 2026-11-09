@@ -1,0 +1,24 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field %}
+{% block admin_title %}{{ _("Announcement") }}{% endblock %}
+{% block admin_content %}
+<form method="post" class="ir-form ir-card ir-card-pad" style="max-width:860px" novalidate>
+  {{ form.csrf_token }}
+  <div class="row">
+    <div class="col-md-4">{{ field(form.kind) }}</div>
+    <div class="col-md-4">{{ field(form.km_from, inputmode="decimal") }}</div>
+    <div class="col-md-4">{{ field(form.km_to, inputmode="decimal") }}</div>
+    <div class="col-md-6">{{ field(form.title_ar, dir="rtl", lang="ar") }}</div>
+    <div class="col-md-6">{{ field(form.title_en, dir="ltr", lang="en") }}</div>
+    <div class="col-md-6">{{ field(form.body_ar, rows=4, dir="rtl", lang="ar") }}</div>
+    <div class="col-md-6">{{ field(form.body_en, rows=4, dir="ltr", lang="en") }}</div>
+    <div class="col-md-4">{{ field(form.road_section_id) }}</div>
+    <div class="col-md-4">{{ field(form.starts_at, help=_("Local time (Libya)")) }}</div>
+    <div class="col-md-4">{{ field(form.ends_at) }}</div>
+    <div class="col-md-6">{{ field(form.is_published) }}</div>
+    <div class="col-md-6">{{ field(form.send_notification, help=_("Sends in-app notifications and push messages. Emergency alerts reach everyone; other types respect user preferences.")) }}</div>
+  </div>
+  {% if ann and ann.notified_at %}<p class="small ir-muted">{{ _("Already notified") }}: {{ ann.notified_at|dt('short') }}</p>{% endif %}
+  <div class="d-flex gap-2"><button class="btn btn-primary" type="submit">{{ _("Save") }}</button><a class="btn btn-outline-light" href="{{ url_for('admin.announcements') }}">{{ _("Cancel") }}</a></div>
+</form>
+{% endblock %}

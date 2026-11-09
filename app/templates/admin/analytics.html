@@ -1,0 +1,39 @@
+{% extends "admin/base_admin.html" %}
+{% block admin_title %}{{ _("Analytics") }}{% endblock %}
+{% block admin_content %}
+<script type="application/json" id="chartData">{{ {
+  "months": months, "created": created, "resolved": resolved,
+  "statusLabels": [_("New"), _("Under review"), _("Assigned"), _("In progress"), _("Resolved"), _("Rejected")],
+  "statusValues": [counts.new, counts.under_review, counts.assigned, counts.in_progress, counts.resolved, counts.rejected],
+  "catLabels": by_category | map(attribute=0) | list, "catValues": by_category | map(attribute=1) | list,
+  "secLabels": by_section | map(attribute=0) | list, "secValues": by_section | map(attribute=1) | list,
+  "lang": lang
+} | tojson }}</script>
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-3"><div class="ad-kpi"><span class="v num">{{ counts.total }}</span><span class="l">{{ _("Total reports") }}</span></div></div>
+  <div class="col-6 col-md-3"><div class="ad-kpi"><span class="v num">{{ counts.resolved }}</span><span class="l">{{ _("Resolved") }}</span></div></div>
+  <div class="col-6 col-md-3"><div class="ad-kpi"><span class="v num">{{ avg_response|hours }}</span><span class="l">{{ _("Average response time") }}</span></div></div>
+  <div class="col-6 col-md-3"><div class="ad-kpi"><span class="v num">{{ avg_resolution|hours }}</span><span class="l">{{ _("Average resolution time") }}</span></div></div>
+</div>
+{% if counts.total < min_samples %}<div class="alert alert-info ir-alert">{{ _("Not enough data yet for meaningful statistics. Charts will become useful as reports accumulate.") }}</div>{% endif %}
+<div class="row g-3">
+  <div class="col-lg-8"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports over time (12 months)") }}</h2><div class="ad-chart"><canvas id="chTime" aria-label="{{ _('Reports over time (12 months)') }}" role="img"></canvas></div></div></div>
+  <div class="col-lg-4"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports by status") }}</h2><div class="ad-chart"><canvas id="chStatus" role="img" aria-label="{{ _('Reports by status') }}"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports by category") }}</h2><div class="ad-chart"><canvas id="chCat" role="img" aria-label="{{ _('Reports by category') }}"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports by road section") }}</h2><div class="ad-chart"><canvas id="chSec" role="img" aria-label="{{ _('Reports by road section') }}"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Yearly summary") }}</h2>
+    <table class="table mb-0"><thead><tr><th>{{ _("Year") }}</th><th>{{ _("Received") }}</th><th>{{ _("Resolved") }}</th></tr></thead>
+    <tbody>{% for y, v in yearly.items() %}<tr><td class="num">{{ y }}</td><td class="num">{{ v.created }}</td><td class="num">{{ v.resolved }}</td></tr>{% else %}<tr><td colspan="3" class="ir-muted">—</td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Employee workload") }}</h2>
+    <table class="table mb-0"><thead><tr><th>{{ _("Employee") }}</th><th>{{ _("Open assignments") }}</th><th>{{ _("Completed") }}</th></tr></thead>
+    <tbody>{% for w in workload %}<tr><td>{{ w.user.full_name }}</td><td class="num">{{ w.active }}</td><td class="num">{{ w.done }}</td></tr>{% else %}<tr><td colspan="3" class="ir-muted">—</td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-12"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Monthly summary") }}</h2>
+    <div class="table-responsive"><table class="table mb-0 no-stack"><thead><tr><th>{{ _("Month") }}</th>{% for m in months %}<th class="num">{{ m }}</th>{% endfor %}</tr></thead>
+    <tbody><tr><td>{{ _("Received") }}</td>{% for v in created %}<td class="num">{{ v }}</td>{% endfor %}</tr><tr><td>{{ _("Resolved") }}</td>{% for v in resolved %}<td class="num">{{ v }}</td>{% endfor %}</tr></tbody></table></div></div></div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chartjs/chart.umd.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}" defer></script>
+{% endblock %}

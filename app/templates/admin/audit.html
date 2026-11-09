@@ -1,0 +1,18 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import pager %}
+{% block admin_title %}{{ _("Audit log") }}{% endblock %}
+{% block admin_content %}
+<form method="get" class="d-flex gap-2 mb-3" style="max-width:480px">
+  <label class="visually-hidden" for="aa">{{ _("Action") }}</label>
+  <input id="aa" class="form-control" name="action" value="{{ request.args.get('action','') }}" placeholder="auth. / report. / user." dir="ltr">
+  <button class="btn btn-primary">{{ _("Filter") }}</button>
+</form>
+<div class="ir-card"><div class="table-responsive"><table class="table table-sm mb-0">
+  <thead><tr><th>{{ _("Time") }}</th><th>{{ _("User") }}</th><th>{{ _("Action") }}</th><th>{{ _("Object") }}</th><th>{{ _("Details") }}</th><th>IP</th></tr></thead>
+  <tbody>{% for l in pagination.items %}
+    <tr><td class="small text-nowrap">{{ l.created_at|dt('short') }}</td><td class="small">{{ l.user.full_name if l.user else '—' }}</td>
+      <td class="ltr small"><code>{{ l.action }}</code></td><td class="ltr small">{{ l.entity_type or '' }} {{ l.entity_id or '' }}</td>
+      <td class="ltr small text-break">{{ l.details | tojson if l.details else '' }}</td><td class="ltr small">{{ l.ip_address or '' }}</td></tr>
+  {% endfor %}</tbody></table></div></div>
+{{ pager(pagination, 'admin.audit_logs') }}
+{% endblock %}

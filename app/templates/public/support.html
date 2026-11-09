@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title, field %}
+{% block title %}{{ _("Technical support") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Technical support"), _("We are here to help"), url_for('main.profile') if current_user.is_authenticated else url_for('main.home')) }}
+{% set phone = get_setting('support_phone') %}{% set wa = get_setting('support_whatsapp') %}{% set mail = get_setting('support_email') %}
+{% if phone or wa or mail %}
+<ul class="ir-menu">
+  {% if phone %}<li><a href="tel:{{ phone }}"><span class="mi"><i class="bi bi-telephone"></i></span>{{ _("Phone call") }}<span class="val num ltr">{{ phone }}</span></a></li>{% endif %}
+  {% if wa %}<li><a href="https://wa.me/{{ wa }}" target="_blank" rel="noopener"><span class="mi"><i class="bi bi-whatsapp"></i></span>{{ _("WhatsApp") }}<span class="val">{{ _("Chat with support") }}</span></a></li>{% endif %}
+  {% if mail %}<li><a href="mailto:{{ mail }}"><span class="mi"><i class="bi bi-envelope"></i></span>{{ _("E-mail") }}<span class="val ltr">{{ mail }}</span></a></li>{% endif %}
+</ul>
+{% endif %}
+
+<h2 class="fs-6 fw-bold mt-4">{{ _("Frequently asked questions") }}</h2>
+<div class="accordion" id="faq">
+  {% for q, a in [
+    (_("How do I know the status of my report?"), _("Open “My reports” to see the current status and the full history. You also receive a notification whenever the status changes. Guests can use “Track a report” with the reference number.")),
+    (_("When are contribution points counted?"), _("Points are added when the road team confirms and fixes the problem you reported.")),
+    (_("Can I send a report without logging in?"), _("Yes. Enter your phone number so you can follow up the report with its reference number. Registering lets you receive notifications and points.")),
+  ] %}
+  <div class="accordion-item ir-card mb-2" style="border-radius:14px;overflow:hidden">
+    <h3 class="accordion-header"><button class="accordion-button collapsed bg-transparent text-reset fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ loop.index }}" aria-expanded="false">{{ q }}</button></h3>
+    <div id="faq{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#faq"><div class="accordion-body ir-muted">{{ a }}</div></div>
+  </div>
+  {% endfor %}
+</div>
+
+<h2 class="fs-6 fw-bold mt-4">{{ _("Message us directly") }}</h2>
+<form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+  {{ form.csrf_token }}
+  {{ field(form.name, autocomplete="name") }}
+  {{ field(form.contact, dir="auto") }}
+  {{ field(form.body, rows=4, placeholder=_("Write your question here...")) }}
+  <button class="btn btn-primary w-100" type="submit">{{ _("Send message") }}</button>
+</form>
+</div>
+{% endblock %}

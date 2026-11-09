@@ -1,0 +1,20 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field %}
+{% block admin_title %}{{ user.full_name if user else _("New user") }}{% endblock %}
+{% block admin_content %}
+<form method="post" class="ir-form ir-card ir-card-pad" style="max-width:760px" novalidate>
+  {{ form.csrf_token }}
+  <div class="row">
+    <div class="col-md-6">{{ field(form.full_name) }}</div>
+    <div class="col-md-6">{{ field(form.job_title) }}</div>
+    <div class="col-md-6">{{ field(form.phone, dir="ltr", inputmode="tel") }}</div>
+    <div class="col-md-6">{{ field(form.email, dir="ltr") }}</div>
+    <div class="col-md-6">{{ field(form.locale) }}</div>
+    <div class="col-md-6">{{ field(form.password, autocomplete="new-password", help=(_("Leave empty to keep the current password.") if user else None)) }}</div>
+    <div class="col-md-6">{{ field(form.roles, size=5, help=_("You can only grant roles below your own level.")) }}</div>
+    <div class="col-md-6">{% if current_user.can('employees.manage') %}{{ field(form.teams, size=5, help=_("For employees: the teams they work in.")) }}{% endif %}</div>
+    {% if not user or user.id != current_user.id %}<div class="col-12">{{ field(form.active) }}</div>{% endif %}
+  </div>
+  <div class="d-flex gap-2"><button class="btn btn-primary" type="submit">{{ _("Save") }}</button><a class="btn btn-outline-light" href="{{ url_for('admin.users') }}">{{ _("Cancel") }}</a></div>
+</form>
+{% endblock %}

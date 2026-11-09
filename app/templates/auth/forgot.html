@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field, page_title %}
+{% block title %}{{ _("Forgot password?") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+  {{ page_title(_("Forgot password?"), _("Enter the e-mail of your account. Accounts registered with a phone only can contact technical support."), url_for('auth.login')) }}
+  <form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+    {{ form.csrf_token }}
+    {{ field(form.email, autocomplete="email", dir="ltr") }}
+    <button class="btn btn-primary w-100" type="submit">{{ _("Send reset link") }}</button>
+  </form>
+  <p class="text-center small mt-3"><a href="{{ url_for('main.support') }}">{{ _("Technical support") }}</a></p>
+</div>
+{% endblock %}

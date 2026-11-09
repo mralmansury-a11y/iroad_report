@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% from "_macros.html" import report_item, empty %}
+{% block content %}
+<div class="ir-titlebar">
+  <h1>{{ _("International Road Libya") }}</h1>
+  <a class="ir-icon-btn" href="{{ url_for('notifications.index') if current_user.is_authenticated else url_for('main.alerts') }}" aria-label="{{ _('Notifications') }}">
+    <i class="bi bi-bell"></i>{% if unread_count %}<span class="ir-dot num">{{ unread_count }}</span>{% endif %}
+  </a>
+</div>
+
+<div class="ir-home-grid">
+  <section aria-labelledby="locTitle">
+    {% for a in announcements %}
+      <a class="ir-ann k-{{ a.kind }} text-decoration-none" href="{{ url_for('main.alerts') }}">
+        <i class="bi {{ 'bi-exclamation-octagon-fill' if a.kind in ('emergency','closure') else 'bi-megaphone-fill' }}" aria-hidden="true"></i>
+        <span><strong>{{ a.title }}</strong>{% if a.km_from %} · <span class="num">{{ a.km_from|km }}</span>{% endif %}</span>
+      </a>
+    {% endfor %}
+
+    <div class="ir-card mt-3" id="locCard" data-sections='{{ sections | map(attribute="id") | list | tojson }}'>
+      <div class="ir-loc-head">
+        <div>
+          <div class="ir-loc-label" id="locTitle">{{ _("Your approximate location on the road") }}</div>
+          <div class="ir-loc-value" aria-live="polite">
+            <span class="ir-loc-km num" data-bind="km_label">—</span>
+            <span class="ir-loc-section" data-bind="section"></span>
+          </div>
+        </div>
+        <span class="ir-pill ir-pill-unknown" data-bind="road_status"><i class="bi bi-circle-fill" style="font-size:7px"></i><span>{{ _("Road status") }}</span></span>
+      </div>
+
+      <svg class="ir-road" viewBox="0 0 380 88" preserveAspectRatio="none" role="img" aria-label="{{ _('Road illustration with nearby reports') }}">
+        <path class="road-body" d="M-10,62 C70,70 120,40 190,52 C260,64 300,30 390,26"/>
+        <path class="road-dash" d="M-10,62 C70,70 120,40 190,52 C260,64 300,30 390,26"/>
+        <g data-markers></g>
+        <g data-you style="display:none">
+          <text class="you-label" text-anchor="middle" x="0" y="-12">{{ _("You are here") }}</text>
+          <ellipse class="you" cx="0" cy="0" rx="8" ry="6"/>
+        </g>
+      </svg>
+
+      <div class="ir-loc-actions" data-loc-actions>
+        <span class="ir-muted" data-bind="hint">{{ _("Allow location access to see nearby reports.") }}</span>
+        <button type="button" class="ir-link-btn" data-action="locate"><i class="bi bi-crosshair"></i> {{ _("Use my location") }}</button>
+        <label class="visually-hidden" for="manualSection">{{ _("Choose a road section") }}</label>
+        <select id="manualSection" class="form-select form-select-sm w-auto" data-action="section" style="min-height:32px">
+          <option value="">{{ _("Or choose a section…") }}</option>
+          {% for s in sections %}<option value="{{ s.id }}" data-km="{{ ((s.km_start + s.km_end) / 2) | float }}">{{ s.tr('name') }} (<bdi class="num">{{ s.km_start|km }} – {{ s.km_end|km }}</bdi>)</option>{% endfor %}
+        </select>
+      </div>
+
+      <div class="ir-stats">
+        <div class="ir-stat"><span class="v num" data-bind="nearby_count">—</span><span class="l">{{ _("Nearby reports") }}</span></div>
+        <div class="ir-stat"><span class="v num" data-bind="visibility">—</span><span class="l">{{ _("Visibility rate") }}</span></div>
+        <div class="ir-stat"><span class="v num" data-bind="avg_response">—</span><span class="l">{{ _("Average response") }}</span></div>
+      </div>
+    </div>
+
+    <a class="ir-cta" href="{{ url_for('reports.new') }}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>{{ _("Report a road problem") }}</a>
+  </section>
+
+  <section aria-labelledby="latestTitle">
+    <div class="ir-section-title">
+      <h2 id="latestTitle">{{ _("Latest reports on the road") }}</h2>
+      <a href="{{ url_for('reports.index') }}">{{ _("View all") }}</a>
+    </div>
+    <div class="ir-list">
+      {% for r in latest %}
+        {{ report_item(r, mine=(current_user.is_authenticated and r.reporter_id == current_user.id)) }}
+      {% else %}
+        {{ empty('bi-clipboard-check', _("No reports yet.")) }}
+      {% endfor %}
+    </div>
+    <div class="d-none d-lg-flex gap-2 mt-3">
+      <a class="btn btn-outline-light flex-fill" href="{{ url_for('main.road_map') }}"><i class="bi bi-map"></i> {{ _("Road map") }}</a>
+      <a class="btn btn-outline-light flex-fill" href="{{ url_for('reports.track') }}"><i class="bi bi-search"></i> {{ _("Track a report") }}</a>
+    </div>
+  </section>
+</div>
+{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/home.js') }}" defer></script>{% endblock %}

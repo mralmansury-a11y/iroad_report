@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title %}
+{% block title %}{{ _("Privacy policy") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Privacy policy"), _("Last updated: %(date)s", date=get_setting('privacy_updated', '2026-08')), url_for('main.profile') if current_user.is_authenticated else url_for('main.home')) }}
+<div class="ir-card ir-card-pad ir-prose">
+  <h2>{{ _("Information we collect") }}</h2>
+  <p>{{ _("We collect limited data such as name, phone number and approximate location when you send a report, only to contact you and follow up the status of the report.") }}</p>
+  <h2>{{ _("How data is used") }}</h2>
+  <p>{{ _("Data is used to improve road quality and prioritise maintenance, and is not used for any commercial or marketing purpose.") }}</p>
+  <h2>{{ _("Sharing information") }}</h2>
+  <p>{{ _("Your personal data is not shared with any party outside the National Development Agency and the technical teams responsible for the road.") }}</p>
+  <h2>{{ _("Data security") }}</h2>
+  <p>{{ _("We follow reasonable technical and organisational measures to protect your data from unauthorised access.") }}</p>
+  <h2>{{ _("Your rights") }}</h2>
+  <p class="mb-0">{{ _("You can at any time request to correct your data or delete your account by contacting the technical support team.") }}</p>
+</div>
+</div>
+{% endblock %}

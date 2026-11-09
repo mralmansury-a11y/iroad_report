@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title %}
+{% block title %}{{ _("Install the app") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Install the app"), _("Add the app to your home screen for quick access."), url_for('main.home')) }}
+<div class="ir-card ir-card-pad mb-3">
+  <button type="button" class="ir-cta mt-0 d-none" data-action="install"><i class="bi bi-download"></i>{{ _("Install now") }}</button>
+  <p class="small ir-muted mb-0" data-install-state>{{ _("If the install button does not appear, follow the steps for your device below.") }}</p>
+</div>
+<div class="ir-card ir-card-pad mb-3"><h2 class="fs-6 fw-bold"><i class="bi bi-android2"></i> {{ _("Android (Chrome / Edge / Samsung Internet)") }}</h2>
+  <ol class="mb-0 small"><li>{{ _("Open the browser menu (⋮).") }}</li><li>{{ _("Choose “Install app” or “Add to Home screen”.") }}</li><li>{{ _("Confirm.") }}</li></ol></div>
+<div class="ir-card ir-card-pad mb-3"><h2 class="fs-6 fw-bold"><i class="bi bi-apple"></i> {{ _("iPhone / iPad (Safari)") }}</h2>
+  <ol class="mb-0 small"><li>{{ _("Open this site in Safari.") }}</li><li>{{ _("Tap the Share button.") }}</li><li>{{ _("Choose “Add to Home Screen”, then “Add”.") }}</li>
+  <li>{{ _("Push notifications on iPhone require iOS 16.4 or later and work only after installing to the home screen.") }}</li></ol></div>
+<div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold"><i class="bi bi-laptop"></i> {{ _("Computer (Chrome / Edge)") }}</h2>
+  <p class="small mb-0">{{ _("Click the install icon in the address bar, or open the browser menu and choose “Install”.") }}</p></div>
+</div>
+{% endblock %}

@@ -1,0 +1,41 @@
+[Unit]
+Description=International Road Services - Libya (Flask/Gunicorn)
+Documentation=file:///opt/irs-road/app/docs/DEPLOYMENT.md
+After=network-online.target mariadb.service
+Wants=network-online.target
+
+[Service]
+Type=notify
+User=irsroad
+Group=irsroad
+WorkingDirectory=/opt/irs-road/app
+EnvironmentFile=/etc/irs-road/irs-road.env
+RuntimeDirectory=irs-road
+RuntimeDirectoryMode=0750
+ExecStart=/opt/irs-road/venv/bin/gunicorn -c /opt/irs-road/app/deploy/gunicorn.conf.py wsgi:app
+ExecReload=/bin/kill -s HUP $MAINPID
+KillMode=mixed
+TimeoutStopSec=30
+Restart=on-failure
+RestartSec=5
+
+# --- Hardening (does not affect other services) ---
+NoNewPrivileges=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictRealtime=true
+LockPersonality=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/irs-road /var/log/irs-road /run/irs-road
+CapabilityBoundingSet=
+SystemCallArchitectures=native
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

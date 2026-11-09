@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="{{ lang }}" dir="{{ dir }}" data-theme="{{ theme }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>{% block title %}{{ _("International Road Libya") }}{% endblock %}</title>
+  <meta name="description" content="{{ _('Report road problems and follow the status of the International Road in Libya.') }}">
+  <meta name="theme-color" content="#34668e">
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  <link rel="manifest" href="{{ url_for('main.manifest', lang=lang) }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" sizes="any">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='icons/favicon-32.png') }}">
+  <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon-180.png') }}">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="{{ _('Intl. Road') }}">
+  {% if dir == 'rtl' %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.rtl.min.css') }}">
+  {% else %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}">
+  {% endif %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.min.css') }}">
+  {% block head_extra %}{% endblock %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+</head>
+<body class="{% block body_class %}{% endblock %}">
+<a class="skip-link" href="#main">{{ _("Skip to content") }}</a>
+<div class="ir-offline" id="irOffline" role="status" aria-live="polite">{{ js_i18n.offline }}</div>
+<script type="application/json" id="ir-config">{{ {
+  "lang": lang, "dir": dir, "i18n": js_i18n, "vapid": vapid_public_key,
+  "authenticated": current_user.is_authenticated,
+  "endpoints": {"home": url_for('api.home_data'), "locate": url_for('api.locate'), "road": url_for('api.road'),
+                "pushSub": url_for('api.push_subscribe'), "pushUnsub": url_for('api.push_unsubscribe'),
+                "mapReports": url_for('api.reports_map')}
+} | tojson }}</script>
+
+{% block shell %}
+{% set ep = request.endpoint or '' %}
+<header class="ir-header" role="banner" data-sticky-header>
+  <div class="ir-header-inner">
+    <a class="ir-brand" href="{{ url_for('main.home') }}" aria-label="{{ _('International Road Services Management') }} — {{ _('Home') }}">
+      <span class="ir-brand-tile"><img src="{{ url_for('static', filename='images/brand/irs-emblem.png') }}" alt="" width="40" height="40" decoding="async"></span>
+      <span class="ir-brand-text"><strong>{{ _("Road Services Management") }}</strong><small>{{ _("National Development Agency") }}</small></span>
+    </a>
+    <nav class="ir-topnav" aria-label="{{ _('Main navigation') }}">
+      <a href="{{ url_for('main.home') }}" class="{{ 'active' if ep == 'main.home' }}" {{ 'aria-current=page' if ep == 'main.home' }}>{{ _("Home") }}</a>
+      <a href="{{ url_for('reports.index') }}" class="{{ 'active' if ep in ('reports.index', 'reports.detail', 'reports.track') }}">{{ _("Reports") }}</a>
+      <a href="{{ url_for('reports.new') }}" class="{{ 'active' if ep == 'reports.new' }}">{{ _("Add report") }}</a>
+      <a href="{{ url_for('main.road_map') }}" class="{{ 'active' if ep == 'main.road_map' }}">{{ _("Map") }}</a>
+      <a href="{{ url_for('main.alerts') }}" class="{{ 'active' if ep == 'main.alerts' }}">{{ _("Road alerts") }}</a>
+      <a href="{{ url_for('main.support') }}" class="{{ 'active' if ep == 'main.support' }}">{{ _("Support") }}</a>
+      {% if current_user.is_authenticated and current_user.is_staff %}<a href="{{ url_for('admin.dashboard') }}">{{ _("Dashboard") }}</a>{% endif %}
+    </nav>
+    <div class="ir-header-tools">
+      <img class="nda-logo" src="{{ url_for('static', filename='images/brand/nda-logo-on-blue.png') }}" alt="{{ _('National Development Agency') }}" width="148" height="34">
+      <span class="ir-header-sep" aria-hidden="true"></span>
+      <a class="ir-chip-btn" href="{{ url_for('main.set_language', code=other_lang) }}" hreflang="{{ other_lang }}" lang="{{ other_lang }}"
+         title="{{ _('Change language') }}"><i class="bi bi-translate" aria-hidden="true"></i><span>{{ 'EN' if other_lang == 'en' else 'ع' }}</span></a>
+      <button type="button" class="ir-chip-btn icon" data-theme-toggle aria-label="{{ _('Toggle dark / light mode') }}" title="{{ _('Toggle dark / light mode') }}">
+        <i class="bi bi-sun-fill ir-theme-ico-dark" aria-hidden="true"></i><i class="bi bi-moon-stars-fill ir-theme-ico-light" aria-hidden="true"></i></button>
+      {% if current_user.is_authenticated %}
+      <a class="ir-chip-btn ir-account-chip" href="{{ url_for('main.profile') }}" title="{{ _('My account') }}"><span class="avatar">{{ current_user.initials }}</span><span>{{ _("My account") }}</span></a>
+      {% else %}
+      <a class="ir-chip-btn ir-account-chip" href="{{ url_for('auth.login') }}"><i class="bi bi-box-arrow-in-left ir-flip" aria-hidden="true"></i><span>{{ _("Log in") }}</span></a>
+      {% endif %}
+    </div>
+  </div>
+</header>
+<div class="ir-shell">
+  <main id="main" class="ir-main" tabindex="-1">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for cat, msg in messages %}
+        <div class="alert alert-{{ 'danger' if cat == 'danger' else ('success' if cat == 'success' else ('warning' if cat == 'warning' else 'info')) }} ir-alert mt-3" role="alert">{{ msg }}</div>
+      {% endfor %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <nav class="ir-bottomnav" aria-label="{{ _('Main navigation') }}">
+    <ul>
+      <li><a href="{{ url_for('main.home') }}" class="{{ 'active' if ep == 'main.home' }}" {{ 'aria-current=page' if ep == 'main.home' }}><i class="bi bi-house-door-fill"></i><span>{{ _("Home") }}</span></a></li>
+      <li><a href="{{ url_for('reports.index', tab='mine') if current_user.is_authenticated else url_for('reports.index') }}" class="{{ 'active' if ep.startswith('reports.') and ep != 'reports.new' }}"><i class="bi bi-clipboard2-fill"></i><span>{{ _("My reports") }}</span></a></li>
+      <li><a href="{{ url_for('reports.new') }}" class="fab" aria-label="{{ _('Add report') }}"><i class="bi bi-plus-lg"></i></a></li>
+      <li><a href="{{ url_for('notifications.index') if current_user.is_authenticated else url_for('main.alerts') }}" class="{{ 'active' if ep.startswith('notifications.') or ep == 'main.alerts' }}">
+        <i class="bi bi-bell-fill"></i><span>{{ _("Notifications") }}</span>{% if unread_count %}<span class="ir-dot num">{{ unread_count }}</span>{% endif %}</a></li>
+      <li><a href="{{ url_for('main.profile') if current_user.is_authenticated else url_for('auth.login') }}" class="{{ 'active' if ep.startswith('main.profile') or ep.startswith('auth.') or ep in ('main.language','main.notification_settings','main.privacy','main.about','main.support') }}"><i class="bi bi-person-fill"></i><span>{{ _("Profile") }}</span></a></li>
+    </ul>
+  </nav>
+</div>
+{% endblock %}
+
+<div class="ir-toast" id="irToast" role="status" aria-live="polite"><span class="msg"></span><button type="button" class="btn btn-sm btn-primary ms-auto d-none" data-action></button></div>
+<script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

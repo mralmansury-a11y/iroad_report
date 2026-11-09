@@ -1,0 +1,31 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import empty %}
+{% block admin_title %}{{ _("Employees") }}{% endblock %}
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <p class="ir-muted m-0">{{ _("Staff accounts, their teams and current workload.") }}</p>
+  {% if current_user.can('users.manage') %}<a class="btn btn-primary btn-sm" href="{{ url_for('admin.user_new') }}"><i class="bi bi-person-plus"></i> {{ _("New employee") }}</a>{% endif %}
+</div>
+<div class="ir-card mb-4"><div class="table-responsive"><table class="table mb-0">
+  <thead><tr><th>{{ _("Name") }}</th><th>{{ _("Role") }}</th><th>{{ _("Teams") }}</th><th>{{ _("Open assignments") }}</th><th>{{ _("Completed") }}</th><th>{{ _("State") }}</th><th></th></tr></thead>
+  <tbody>
+  {% for u in staff %}{% set w = workload.get(u.id) %}
+    <tr><td>{{ u.full_name }}{% if u.job_title %}<div class="small ir-muted">{{ u.job_title }}</div>{% endif %}</td>
+      <td class="small">{{ role_label(u.primary_role()) }}</td>
+      <td class="small">{% for m in u.team_memberships %}{{ m.team.tr('name') }}{{ ', ' if not loop.last }}{% else %}—{% endfor %}</td>
+      <td class="num">{{ w.active if w else 0 }}</td><td class="num">{{ w.done if w else 0 }}</td>
+      <td>{% if u.active %}<span class="ir-badge tone-done">{{ _("Active") }}</span>{% else %}<span class="ir-badge tone-new">{{ _("Deactivated") }}</span>{% endif %}</td>
+      <td class="text-end">{% if current_user.can('users.manage') %}<a class="btn btn-sm btn-outline-light" href="{{ url_for('admin.user_edit', user_id=u.id) }}">{{ _("Edit") }}</a>{% endif %}</td></tr>
+  {% else %}<tr><td colspan="7">{{ empty('bi-person-badge', _("No employees yet.")) }}</td></tr>{% endfor %}
+  </tbody></table></div></div>
+<h2 class="fs-6 fw-bold">{{ _("Teams") }}</h2>
+<div class="row g-3">
+  {% for t in teams %}
+  <div class="col-md-6 col-xl-4"><div class="ir-card ir-card-pad h-100">
+    <div class="fw-bold">{{ t.tr('name') }} {% if not t.is_active %}<span class="ir-badge tone-rejected">{{ _("Inactive") }}</span>{% endif %}</div>
+    <div class="small ir-muted mb-2">{{ _("Members") }}: <span class="num">{{ t.members|length }}</span></div>
+    <ul class="small mb-0 ps-3">{% for m in t.members %}<li>{{ m.user.full_name }}</li>{% endfor %}</ul>
+  </div></div>
+  {% endfor %}
+</div>
+{% endblock %}

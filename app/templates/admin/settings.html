@@ -1,0 +1,25 @@
+{% extends "admin/base_admin.html" %}
+{% block admin_title %}{{ _("System settings") }}{% endblock %}
+{% block admin_content %}
+{% set labels = {
+  'site_open_for_reports': _('Accept new public reports'), 'allow_guest_reports': _('Allow reports without an account'),
+  'nearby_radius_km': _('Radius for “nearby reports” (km)'), 'stats_min_samples': _('Minimum records before showing an average'),
+  'points_per_resolved': _('Points when a report is resolved'), 'points_per_accepted': _('Points when a report is accepted for review'),
+  'support_phone': _('Support phone'), 'support_whatsapp': _('WhatsApp number (international, digits only)'), 'support_email': _('Support e-mail'),
+  'app_version': _('Displayed app version'), 'privacy_updated': _('Privacy policy last update (YYYY-MM)'),
+  'default_map_lat': _('Default map latitude'), 'default_map_lng': _('Default map longitude'), 'default_map_zoom': _('Default map zoom') } %}
+<form method="post" class="ir-form ir-card ir-card-pad" style="max-width:760px">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {% for key, d in defs.items() %}
+    {% if d[1] == 'bool' %}
+      <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" role="switch" id="s_{{ key }}" name="{{ key }}" {{ 'checked' if values[key] }}>
+        <label class="form-check-label" for="s_{{ key }}">{{ labels.get(key, key) }}</label></div>
+    {% else %}
+      <div class="mb-3"><label class="form-label" for="s_{{ key }}">{{ labels.get(key, key) }}</label>
+        <input class="form-control {{ 'num' if d[1] == 'int' }}" id="s_{{ key }}" name="{{ key }}" value="{{ values[key] if values[key] is not none else '' }}" dir="{{ 'ltr' if d[1] == 'int' or key.startswith(('support','default','app','privacy')) else 'auto' }}"></div>
+    {% endif %}
+  {% endfor %}
+  <p class="small ir-muted">{{ _("Secrets (database password, secret key, VAPID private key, SMTP password) are configured only in the server environment file and are never shown here.") }}</p>
+  <button class="btn btn-primary" type="submit">{{ _("Save") }}</button>
+</form>
+{% endblock %}

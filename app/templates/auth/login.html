@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "_macros.html" import field %}
+{% block title %}{{ _("Log in") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+  <div class="ir-auth-hero">
+    <img src="{{ url_for('static', filename='images/brand/irs-logo.png') }}" alt="" width="110" height="110">
+    <h1 class="fs-3 mt-3 mb-1">{{ _("International Road Libya") }}</h1>
+    <p class="ir-muted">{{ _("National Development Agency — Sirte") }}</p>
+  </div>
+  <form method="post" class="ir-form ir-card ir-card-pad" novalidate>
+    {{ form.csrf_token }}
+    {{ field(form.identifier, autocomplete="username", dir="auto", inputmode="email") }}
+    {{ field(form.password, autocomplete="current-password") }}
+    {{ field(form.remember) }}
+    <button class="btn btn-primary w-100" type="submit">{{ _("Log in") }}</button>
+    <div class="d-flex justify-content-between mt-3 small">
+      <a href="{{ url_for('auth.forgot') }}">{{ _("Forgot password?") }}</a>
+      <a href="{{ url_for('auth.register') }}">{{ _("Create an account") }}</a>
+    </div>
+  </form>
+  <p class="text-center small ir-muted mt-3">{{ _("You can also") }} <a href="{{ url_for('reports.new') }}">{{ _("send a report without an account") }}</a>.</p>
+</div>
+{% endblock %}

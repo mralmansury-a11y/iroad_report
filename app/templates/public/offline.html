@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Offline") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow text-center py-5">
+  <i class="bi bi-wifi-off" style="font-size:48px" aria-hidden="true"></i>
+  <h1 class="fs-4 mt-3">{{ _("You are offline") }}</h1>
+  <p class="ir-muted">{{ _("This page is not available without a connection. Pages you opened before are still available, and unsent report drafts are kept on this device.") }}</p>
+  <div class="d-grid gap-2">
+    <button type="button" class="btn btn-primary" data-action="reload">{{ _("Try again") }}</button>
+    <a class="btn btn-outline-light" href="{{ url_for('reports.new') }}">{{ _("Open report draft") }}</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block title %}{{ _("Notifications") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+<div class="ir-titlebar">
+  <h1>{{ _("Notifications") }}</h1>
+  {% if unread_count %}
+  <form method="post" action="{{ url_for('notifications.read_all') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button class="btn btn-sm btn-outline-light" type="submit">{{ _("Mark all as read") }}</button></form>
+  {% endif %}
+</div>
+{% set icons = {'report_update': 'bi-check2-circle', 'weather': 'bi-cloud-fog2', 'traffic': 'bi-cone-striped', 'project': 'bi-signpost-split',
+               'announcement': 'bi-megaphone', 'points': 'bi-star-fill', 'emergency': 'bi-exclamation-octagon', 'assignment': 'bi-person-check', 'admin': 'bi-info-circle'} %}
+<div class="ir-list">
+  {% for n in pagination.items %}
+  <form method="post" action="{{ url_for('notifications.open_one', nid=n.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="ir-notif k-{{ n.kind }} {{ 'unread' if not n.is_read }}">
+      <span class="ico" aria-hidden="true"><i class="bi {{ icons.get(n.kind, 'bi-bell') }}"></i></span>
+      <span class="d-block">
+        <span class="t d-block">{{ n.title() }}{% if not n.is_read %} <span class="visually-hidden">({{ _("unread") }})</span>{% endif %}</span>
+        {% if n.body() %}<span class="b d-block">{{ n.body() }}</span>{% endif %}
+        <span class="w d-block">{{ n.created_at|reltime }}</span>
+      </span>
+    </button>
+  </form>
+  {% else %}
+    {{ empty('bi-bell-slash', _("No notifications yet.")) }}
+  {% endfor %}
+</div>
+{{ pager(pagination, 'notifications.index') }}
+<p class="text-center mt-3"><a class="small" href="{{ url_for('main.notification_settings') }}">{{ _("Notification settings") }}</a> · <a class="small" href="{{ url_for('main.alerts') }}">{{ _("Road alerts") }}</a></p>
+</div>
+{% endblock %}

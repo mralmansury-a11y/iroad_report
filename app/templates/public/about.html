@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title %}
+{% block title %}{{ _("About the app") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("About the app"), None, url_for('main.profile') if current_user.is_authenticated else url_for('main.home')) }}
+<div class="ir-card ir-card-pad text-center">
+  <img src="{{ url_for('static', filename='images/brand/irs-logo.png') }}" alt="" width="96" height="96" class="rounded-4 bg-white">
+  <h2 class="fs-4 mt-3 mb-0">{{ _("International Road Libya") }}</h2>
+  <div class="ir-muted">{{ _("Version") }} <span class="num">{{ get_setting('app_version', '1.0.0') }}</span></div>
+  <p class="mt-3 mb-0">{{ _("An official app that lets citizens report problems and follow the status of the International Coastal Road, supervised by the National Development Agency — Sirte.") }}</p>
+</div>
+<ul class="ir-menu mt-3">
+  <li><a href="{{ url_for('main.privacy') }}"><span class="mi"><i class="bi bi-file-text"></i></span>{{ _("Terms and privacy") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.install') }}"><span class="mi"><i class="bi bi-phone"></i></span>{{ _("Install the app") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.support') }}"><span class="mi"><i class="bi bi-headset"></i></span>{{ _("Technical support") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+</ul>
+<div class="ir-card ir-card-pad mt-3 small ir-muted">
+  <div class="fw-bold mb-1">{{ _("Licences and compliance") }}</div>
+  {{ _("Map data © OpenStreetMap contributors (ODbL). Interface built with Bootstrap (MIT), Bootstrap Icons (MIT), Leaflet (BSD-2), Chart.js (MIT) and the Tajawal font (SIL OFL).") }}
+</div>
+<p class="text-center small ir-muted mt-3">{{ _("All rights reserved © %(y)s National Development Agency", y=2026) }}</p>
+</div>
+{% endblock %}

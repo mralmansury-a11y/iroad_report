@@ -1,0 +1,1651 @@
+# English translations for International Road Services - Libya.
+# Copyright (C) 2026 National Development Agency
+# This file is distributed under the same license as the International Road Services - Libya project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: International Road Services - Libya 1.0\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-11-09 10:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: IRS Libya\n"
+"Language: en\n"
+"Language-Team: IRS Libya\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#, python-format
+msgid "%(n)s d"
+msgstr "%(n)s d"
+
+#, python-format
+msgid "%(n)s h"
+msgstr "%(n)s h"
+
+#, python-format
+msgid "%(n)s min"
+msgstr "%(n)s min"
+
+#, python-format
+msgid "%(n)s reference points saved."
+msgstr "%(n)s reference points saved."
+
+msgid "A new version is available."
+msgstr "A new version is available."
+
+msgid "A password is required for new accounts."
+msgstr "A password is required for new accounts."
+
+msgid "About the app"
+msgstr "About the app"
+
+msgid "Accept new public reports"
+msgstr "Accept new public reports"
+
+msgid "Accepted reports"
+msgstr "Accepted reports"
+
+msgid "Account"
+msgstr "Account"
+
+msgid "Account activated."
+msgstr "Account activated."
+
+msgid "Account deactivated."
+msgstr "Account deactivated."
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Activate"
+msgstr "Activate"
+
+msgid "Active"
+msgstr "Active"
+
+msgid "Active account"
+msgstr "Active account"
+
+msgid "Active contributor"
+msgstr "Active contributor"
+
+msgid "Add a photo of the problem"
+msgstr "Add a photo of the problem"
+
+msgid "Add note"
+msgstr "Add note"
+
+msgid "Add report"
+msgstr "Add report"
+
+msgid "Add the app to your home screen for quick access."
+msgstr "Add the app to your home screen for quick access."
+
+msgid "Administration"
+msgstr "Administration"
+
+msgid "Administration menu"
+msgstr "Administration menu"
+
+msgid "All"
+msgstr "All"
+
+msgid "All reports on the coastal road"
+msgstr "All reports on the coastal road"
+
+#, python-format
+msgid "All rights reserved © %(y)s National Development Agency"
+msgstr "All rights reserved © %(y)s National Development Agency"
+
+msgid "All statuses"
+msgstr "All statuses"
+
+msgid "Allow browser notifications to receive report updates and road alerts."
+msgstr "Allow browser notifications to receive report updates and road alerts."
+
+msgid "Allow location access if the browser asks."
+msgstr "Allow location access if the browser asks."
+
+msgid "Allow location access to see nearby reports."
+msgstr "Allow location access to see nearby reports."
+
+msgid "Allow reports without an account"
+msgstr "Allow reports without an account"
+
+msgid "Already notified"
+msgstr "Already notified"
+
+msgid "Already registered?"
+msgstr "Already registered?"
+
+msgid "An official app that lets citizens report problems and follow the status of the International Coastal Road, supervised by the National Development Agency — Sirte."
+msgstr "An official app that lets citizens report problems and follow the status of the International Coastal Road, supervised by the National Development Agency — Sirte."
+
+msgid "An unexpected error occurred. Please try again later."
+msgstr "An unexpected error occurred. Please try again later."
+
+msgid "An unsent draft was restored."
+msgstr "An unsent draft was restored."
+
+msgid "Analytics"
+msgstr "Analytics"
+
+msgid "Android (Chrome / Edge / Samsung Internet)"
+msgstr "Android (Chrome / Edge / Samsung Internet)"
+
+msgid "Announcement"
+msgstr "Announcement"
+
+msgid "Announcements & alerts"
+msgstr "Announcements & alerts"
+
+msgid "Answered"
+msgstr "Answered"
+
+msgid "Are you sure?"
+msgstr "Are you sure?"
+
+msgid "Assign"
+msgstr "Assign"
+
+msgid "Assigned"
+msgstr "Assigned"
+
+msgid "Assigned to"
+msgstr "Assigned to"
+
+msgid "Assignment history"
+msgstr "Assignment history"
+
+msgid "At least 8 characters, with letters and numbers."
+msgstr "At least 8 characters, with letters and numbers."
+
+msgid "Audit log"
+msgstr "Audit log"
+
+msgid "Average resolution time"
+msgstr "Average resolution time"
+
+msgid "Average response"
+msgstr "Average response"
+
+msgid "Average response time"
+msgstr "Average response time"
+
+msgid "Back"
+msgstr "Back"
+
+msgid "Back online."
+msgstr "Back online."
+
+msgid "Back to home"
+msgstr "Back to home"
+
+msgid "Can I send a report without logging in?"
+msgstr "Can I send a report without logging in?"
+
+msgid "Cancel"
+msgstr "Cancel"
+
+msgid "Categories"
+msgstr "Categories"
+
+msgid "Category"
+msgstr "Category"
+
+msgid "Change language"
+msgstr "Change language"
+
+msgid "Change password"
+msgstr "Change password"
+
+msgid "Change status"
+msgstr "Change status"
+
+msgid "Changes saved."
+msgstr "Changes saved."
+
+msgid "Chat with support"
+msgstr "Chat with support"
+
+msgid "Choose a road section"
+msgstr "Choose a road section"
+
+msgid "Choose a team or an employee."
+msgstr "Choose a team or an employee."
+
+msgid "Choose the display language of the app"
+msgstr "Choose the display language of the app"
+
+msgid "Choose the problem type."
+msgstr "Choose the problem type."
+
+msgid "Choose “Add to Home Screen”, then “Add”."
+msgstr "Choose “Add to Home Screen”, then “Add”."
+
+msgid "Choose “Install app” or “Add to Home screen”."
+msgstr "Choose “Install app” or “Add to Home screen”."
+
+msgid "Click the install icon in the address bar, or open the browser menu and choose “Install”."
+msgstr "Click the install icon in the address bar, or open the browser menu and choose “Install”."
+
+msgid "Close menu"
+msgstr "Close menu"
+
+msgid "Closed"
+msgstr "Closed"
+
+msgid "Code"
+msgstr "Code"
+
+msgid "Communication"
+msgstr "Communication"
+
+msgid "Completed"
+msgstr "Completed"
+
+msgid "Computer (Chrome / Edge)"
+msgstr "Computer (Chrome / Edge)"
+
+msgid "Configuration"
+msgstr "Configuration"
+
+msgid "Confirm password"
+msgstr "Confirm password"
+
+msgid "Confirm."
+msgstr "Confirm."
+
+msgid "Contact"
+msgstr "Contact"
+
+msgid "Contribution points"
+msgstr "Contribution points"
+
+msgid "Control which alerts you receive"
+msgstr "Control which alerts you receive"
+
+msgid "Coordinates saved. The kilometre will be calculated when the report is sent."
+msgstr "Coordinates saved. The kilometre will be calculated when the report is sent."
+
+msgid "Create account"
+msgstr "Create account"
+
+msgid "Create an account"
+msgstr "Create an account"
+
+msgid "Current password"
+msgstr "Current password"
+
+msgid "Current password is incorrect."
+msgstr "Current password is incorrect."
+
+msgid "Dashboard"
+msgstr "Dashboard"
+
+msgid "Data is used to improve road quality and prioritise maintenance, and is not used for any commercial or marketing purpose."
+msgstr "Data is used to improve road quality and prioritise maintenance, and is not used for any commercial or marketing purpose."
+
+msgid "Data security"
+msgstr "Data security"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Deactivate"
+msgstr "Deactivate"
+
+msgid "Deactivated"
+msgstr "Deactivated"
+
+msgid "Default map latitude"
+msgstr "Default map latitude"
+
+msgid "Default map longitude"
+msgstr "Default map longitude"
+
+msgid "Default map zoom"
+msgstr "Default map zoom"
+
+msgid "Default team"
+msgstr "Default team"
+
+msgid "Delete image"
+msgstr "Delete image"
+
+msgid "Description"
+msgstr "Description"
+
+msgid "Description (Arabic)"
+msgstr "Description (Arabic)"
+
+msgid "Description (English)"
+msgstr "Description (English)"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Details and photos are visible only to the reporter and the road team."
+msgstr "Details and photos are visible only to the reporter and the road team."
+
+msgid "Detected automatically, you can edit it"
+msgstr "Detected automatically, you can edit it"
+
+msgid "Disable on this device"
+msgstr "Disable on this device"
+
+msgid "Displayed app version"
+msgstr "Displayed app version"
+
+msgid "Draft"
+msgstr "Draft"
+
+msgid "Draft saved on this device."
+msgstr "Draft saved on this device."
+
+msgid "Drag to adjust the location"
+msgstr "Drag to adjust the location"
+
+msgid "E-mail"
+msgstr "E-mail"
+
+msgid "E-mail (optional)"
+msgstr "E-mail (optional)"
+
+msgid "Edit"
+msgstr "Edit"
+
+msgid "Edit personal details"
+msgstr "Edit personal details"
+
+msgid "Emergency"
+msgstr "Emergency"
+
+msgid "Employee"
+msgstr "Employee"
+
+msgid "Employee workload"
+msgstr "Employee workload"
+
+msgid "Employees"
+msgstr "Employees"
+
+msgid "Enable on this device"
+msgstr "Enable on this device"
+
+msgid "End km must be greater than start km."
+msgstr "End km must be greater than start km."
+
+msgid "Ends"
+msgstr "Ends"
+
+msgid "Enter a phone number or an e-mail address."
+msgstr "Enter a phone number or an e-mail address."
+
+msgid "Enter a valid e-mail address."
+msgstr "Enter a valid e-mail address."
+
+msgid "Enter a valid phone number, e.g. 091-2345678."
+msgstr "Enter a valid phone number, e.g. 091-2345678."
+
+msgid "Enter the e-mail of your account. Accounts registered with a phone only can contact technical support."
+msgstr "Enter the e-mail of your account. Accounts registered with a phone only can contact technical support."
+
+msgid "Enter the reference number and the phone number used in the report."
+msgstr "Enter the reference number and the phone number used in the report."
+
+msgid "Enter your phone number so you can follow up the report."
+msgstr "Enter your phone number so you can follow up the report."
+
+msgid "Expected congestion"
+msgstr "Expected congestion"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "First response"
+msgstr "First response"
+
+msgid "Fog, wind or rain affecting the road"
+msgstr "Fog, wind or rain affecting the road"
+
+msgid "Follow the report"
+msgstr "Follow the report"
+
+msgid "Follow your reports and receive road alerts."
+msgstr "Follow your reports and receive road alerts."
+
+msgid "For employees: the teams they work in."
+msgstr "For employees: the teams they work in."
+
+msgid "Forgot password?"
+msgstr "Forgot password?"
+
+msgid "Frequently asked questions"
+msgstr "Frequently asked questions"
+
+msgid "From date"
+msgstr "From date"
+
+msgid "From km"
+msgstr "From km"
+
+msgid "Full name"
+msgstr "Full name"
+
+msgid "GPS coordinates"
+msgstr "GPS coordinates"
+
+msgid "Get road alerts on this device."
+msgstr "Get road alerts on this device."
+
+msgid "Guest"
+msgstr "Guest"
+
+msgid "Handled by"
+msgstr "Handled by"
+
+msgid "Has photos"
+msgstr "Has photos"
+
+msgid "Help keep the road safe"
+msgstr "Help keep the road safe"
+
+msgid "Home"
+msgstr "Home"
+
+msgid "How data is used"
+msgstr "How data is used"
+
+msgid "How do I know the status of my report?"
+msgstr "How do I know the status of my report?"
+
+msgid "I agree to the"
+msgstr "I agree to the"
+
+msgid "I agree to the privacy policy"
+msgstr "I agree to the privacy policy"
+
+msgid "Icon (Bootstrap Icons class)"
+msgstr "Icon (Bootstrap Icons class)"
+
+msgid "Icon names: see icons.getbootstrap.com, e.g. bi-cone-striped"
+msgstr "Icon names: see icons.getbootstrap.com, e.g. bi-cone-striped"
+
+msgid "If the e-mail is registered, a reset link has been sent."
+msgstr "If the e-mail is registered, a reset link has been sent."
+
+msgid "If the install button does not appear, follow the steps for your device below."
+msgstr "If the install button does not appear, follow the steps for your device below."
+
+msgid "Image deleted."
+msgstr "Image deleted."
+
+#, python-format
+msgid "Image is too large (maximum %(mb)s MB)."
+msgstr "Image is too large (maximum %(mb)s MB)."
+
+msgid "Import points"
+msgstr "Import points"
+
+msgid "In progress"
+msgstr "In progress"
+
+msgid "Inactive"
+msgstr "Inactive"
+
+msgid "Incorrect login details."
+msgstr "Incorrect login details."
+
+msgid "Information we collect"
+msgstr "Information we collect"
+
+msgid "Install now"
+msgstr "Install now"
+
+msgid "Install the app"
+msgstr "Install the app"
+
+msgid "Instructions"
+msgstr "Instructions"
+
+msgid "Internal"
+msgstr "Internal"
+
+msgid "Internal (staff only)"
+msgstr "Internal (staff only)"
+
+msgid "Internal note (staff only)"
+msgstr "Internal note (staff only)"
+
+msgid "International Road Libya"
+msgstr "International Road Libya"
+
+msgid "International Road Services Management"
+msgstr "International Road Services Management"
+
+msgid "Intl. Road"
+msgstr "Intl. Road"
+
+msgid "Invalid coordinates."
+msgstr "Invalid coordinates."
+
+#, python-format
+msgid "Invalid lines: %(lines)s"
+msgstr "Invalid lines: %(lines)s"
+
+msgid "Invalid request"
+msgstr "Invalid request"
+
+#, python-format
+msgid "Invalid value for %(key)s"
+msgstr "Invalid value for %(key)s"
+
+msgid "Invalid value."
+msgstr "Invalid value."
+
+#, python-format
+msgid "JPG, PNG, WEBP or HEIC — up to %(n)s images, %(mb)s MB each"
+msgstr "JPG, PNG, WEBP or HEIC — up to %(n)s images, %(mb)s MB each"
+
+msgid "Job title"
+msgstr "Job title"
+
+msgid "Keep this number to follow up your report."
+msgstr "Keep this number to follow up your report."
+
+msgid "Kilometre marker"
+msgstr "Kilometre marker"
+
+msgid "Kilometre reference points"
+msgstr "Kilometre reference points"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Last login"
+msgstr "Last login"
+
+#, python-format
+msgid "Last updated: %(date)s"
+msgstr "Last updated: %(date)s"
+
+msgid "Latest reports"
+msgstr "Latest reports"
+
+msgid "Latest reports on the road"
+msgstr "Latest reports on the road"
+
+msgid "Leave empty to keep the current password."
+msgstr "Leave empty to keep the current password."
+
+msgid "Licences and compliance"
+msgstr "Licences and compliance"
+
+msgid "Load the official survey data: the denser and more accurate the points, the better the conversion."
+msgstr "Load the official survey data: the denser and more accurate the points, the better the conversion."
+
+msgid "Local time (Libya)"
+msgstr "Local time (Libya)"
+
+msgid "Locating took too long. Make sure location (GPS) is turned on and try again."
+msgstr "Locating took too long. Make sure location (GPS) is turned on and try again."
+
+msgid "Locating…"
+msgstr "Locating…"
+
+msgid "Location"
+msgstr "Location"
+
+msgid "Location access is blocked for this site. Allow it from the browser settings (lock icon next to the address) and try again."
+msgstr "Location access is blocked for this site. Allow it from the browser settings (lock icon next to the address) and try again."
+
+msgid "Location not set yet"
+msgstr "Location not set yet"
+
+msgid "Log in"
+msgstr "Log in"
+
+msgid "Log out"
+msgstr "Log out"
+
+msgid "Login required."
+msgstr "Login required."
+
+msgid "Main navigation"
+msgstr "Main navigation"
+
+msgid "Manual"
+msgstr "Manual"
+
+msgid "Map"
+msgstr "Map"
+
+msgid "Map data © OpenStreetMap contributors (ODbL). Interface built with Bootstrap (MIT), Bootstrap Icons (MIT), Leaflet (BSD-2), Chart.js (MIT) and the Tajawal font (SIL OFL)."
+msgstr "Map data © OpenStreetMap contributors (ODbL). Interface built with Bootstrap (MIT), Bootstrap Icons (MIT), Leaflet (BSD-2), Chart.js (MIT) and the Tajawal font (SIL OFL)."
+
+msgid "Map to pick the location"
+msgstr "Map to pick the location"
+
+msgid "Mark all as read"
+msgstr "Mark all as read"
+
+msgid "Members"
+msgstr "Members"
+
+msgid "Menu"
+msgstr "Menu"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Message us directly"
+msgstr "Message us directly"
+
+msgid "Minimum records before showing an average"
+msgstr "Minimum records before showing an average"
+
+msgid "Minor"
+msgstr "Minor"
+
+msgid "Moderate"
+msgstr "Moderate"
+
+msgid "Month"
+msgstr "Month"
+
+msgid "Monthly summary"
+msgstr "Monthly summary"
+
+msgid "My account"
+msgstr "My account"
+
+msgid "My assignments"
+msgstr "My assignments"
+
+msgid "My report"
+msgstr "My report"
+
+msgid "My reports"
+msgstr "My reports"
+
+msgid "Name"
+msgstr "Name"
+
+msgid "Name (Arabic)"
+msgstr "Name (Arabic)"
+
+msgid "Name (English)"
+msgstr "Name (English)"
+
+msgid "Name, phone or e-mail"
+msgstr "Name, phone or e-mail"
+
+msgid "National Development Agency"
+msgstr "National Development Agency"
+
+msgid "National Development Agency — Sirte"
+msgstr "National Development Agency — Sirte"
+
+msgid "Nearby reports"
+msgstr "Nearby reports"
+
+msgid "Network error. Please try again."
+msgstr "Network error. Please try again."
+
+msgid "New"
+msgstr "New"
+
+msgid "New announcement"
+msgstr "New announcement"
+
+msgid "New assignment"
+msgstr "New assignment"
+
+msgid "New category"
+msgstr "New category"
+
+msgid "New employee"
+msgstr "New employee"
+
+msgid "New password"
+msgstr "New password"
+
+msgid "New points"
+msgstr "New points"
+
+msgid "New problem report"
+msgstr "New problem report"
+
+msgid "New report"
+msgstr "New report"
+
+msgid "New response on your report"
+msgstr "New response on your report"
+
+msgid "New section"
+msgstr "New section"
+
+msgid "New status"
+msgstr "New status"
+
+msgid "New support messages"
+msgstr "New support messages"
+
+msgid "New team"
+msgstr "New team"
+
+msgid "New user"
+msgstr "New user"
+
+msgid "Newest first"
+msgstr "Newest first"
+
+msgid "News about section openings and maintenance works"
+msgstr "News about section openings and maintenance works"
+
+msgid "Next"
+msgstr "Next"
+
+msgid "No active alerts. Drive safely."
+msgstr "No active alerts. Drive safely."
+
+msgid "No announcements yet."
+msgstr "No announcements yet."
+
+msgid "No employees yet."
+msgstr "No employees yet."
+
+msgid "No messages."
+msgstr "No messages."
+
+msgid "No notes yet."
+msgstr "No notes yet."
+
+msgid "No notifications yet."
+msgstr "No notifications yet."
+
+msgid "No report matches this reference number and phone."
+msgstr "No report matches this reference number and phone."
+
+msgid "No reports match the filters."
+msgstr "No reports match the filters."
+
+msgid "No reports to show."
+msgstr "No reports to show."
+
+msgid "No reports yet."
+msgstr "No reports yet."
+
+msgid "No road sections defined yet."
+msgstr "No road sections defined yet."
+
+msgid "No users found."
+msgstr "No users found."
+
+msgid "Not enough data yet"
+msgstr "Not enough data yet"
+
+msgid "Not enough data yet for meaningful statistics. Charts will become useful as reports accumulate."
+msgstr "Not enough data yet for meaningful statistics. Charts will become useful as reports accumulate."
+
+msgid "Not found."
+msgstr "Not found."
+
+msgid "Note"
+msgstr "Note"
+
+msgid "Note added."
+msgstr "Note added."
+
+msgid "Note to the reporter (visible)"
+msgstr "Note to the reporter (visible)"
+
+msgid "Notes"
+msgstr "Notes"
+
+msgid "Notification permission was denied in the browser."
+msgstr "Notification permission was denied in the browser."
+
+msgid "Notification settings"
+msgstr "Notification settings"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+msgid "Notifications enabled on this device."
+msgstr "Notifications enabled on this device."
+
+msgid "Notifications on this device"
+msgstr "Notifications on this device"
+
+msgid "Notified"
+msgstr "Notified"
+
+#, python-format
+msgid "Notified users: %(n)s"
+msgstr "Notified users: %(n)s"
+
+msgid "Notify me when the status of a report I sent changes"
+msgstr "Notify me when the status of a report I sent changes"
+
+msgid "Object"
+msgstr "Object"
+
+msgid "Official response (visible to reporter)"
+msgstr "Official response (visible to reporter)"
+
+msgid "Offline"
+msgstr "Offline"
+
+msgid "Oldest first"
+msgstr "Oldest first"
+
+msgid "On iPhone: tap Share, then “Add to Home Screen”."
+msgstr "On iPhone: tap Share, then “Add to Home Screen”."
+
+msgid "Open assignments"
+msgstr "Open assignments"
+
+msgid "Open report draft"
+msgstr "Open report draft"
+
+msgid "Open reports and road sections"
+msgstr "Open reports and road sections"
+
+msgid "Open the browser menu (⋮)."
+msgstr "Open the browser menu (⋮)."
+
+msgid "Open this site in Safari."
+msgstr "Open this site in Safari."
+
+msgid "Open “My reports” to see the current status and the full history. You also receive a notification whenever the status changes. Guests can use “Track a report” with the reference number."
+msgstr "Open “My reports” to see the current status and the full history. You also receive a notification whenever the status changes. Guests can use “Track a report” with the reference number."
+
+msgid "Optional. The employee must belong to the selected team."
+msgstr "Optional. The employee must belong to the selected team."
+
+msgid "Or choose a section…"
+msgstr "Or choose a section…"
+
+msgid "Order"
+msgstr "Order"
+
+msgid "Page not found"
+msgstr "Page not found"
+
+msgid "Pages"
+msgstr "Pages"
+
+msgid "Partially open"
+msgstr "Partially open"
+
+msgid "Password"
+msgstr "Password"
+
+msgid "Password changed."
+msgstr "Password changed."
+
+msgid "Password must be at least 8 characters and contain letters and numbers."
+msgstr "Password must be at least 8 characters and contain letters and numbers."
+
+msgid "Password reset — International Road Libya"
+msgstr "Password reset — International Road Libya"
+
+msgid "Passwords do not match."
+msgstr "Passwords do not match."
+
+msgid "People"
+msgstr "People"
+
+msgid "Performance (last 30/90 days)"
+msgstr "Performance (last 30/90 days)"
+
+msgid "Period"
+msgstr "Period"
+
+msgid "Phone"
+msgstr "Phone"
+
+msgid "Phone call"
+msgstr "Phone call"
+
+msgid "Phone number"
+msgstr "Phone number"
+
+msgid "Phone number (to follow up your report)"
+msgstr "Phone number (to follow up your report)"
+
+msgid "Phone number or e-mail"
+msgstr "Phone number or e-mail"
+
+msgid "Phone number used in the report"
+msgstr "Phone number used in the report"
+
+msgid "Phone or e-mail"
+msgstr "Phone or e-mail"
+
+msgid "Photo (optional)"
+msgstr "Photo (optional)"
+
+msgid "Pick on map"
+msgstr "Pick on map"
+
+msgid "Play a sound when a notification arrives"
+msgstr "Play a sound when a notification arrives"
+
+msgid "Please correct the highlighted fields."
+msgstr "Please correct the highlighted fields."
+
+msgid "Please give the reporter a reason for rejection."
+msgstr "Please give the reporter a reason for rejection."
+
+msgid "Points and rewards"
+msgstr "Points and rewards"
+
+msgid "Points are added when the road team confirms and fixes the problem you reported."
+msgstr "Points are added when the road team confirms and fixes the problem you reported."
+
+msgid "Points when a report is accepted for review"
+msgstr "Points when a report is accepted for review"
+
+msgid "Points when a report is resolved"
+msgstr "Points when a report is resolved"
+
+msgid "Previous"
+msgstr "Previous"
+
+msgid "Privacy policy"
+msgstr "Privacy policy"
+
+msgid "Privacy policy last update (YYYY-MM)"
+msgstr "Privacy policy last update (YYYY-MM)"
+
+msgid "Problem type"
+msgstr "Problem type"
+
+msgid "Profile"
+msgstr "Profile"
+
+msgid "Progress"
+msgstr "Progress"
+
+msgid "Project update"
+msgstr "Project update"
+
+msgid "Project updates"
+msgstr "Project updates"
+
+msgid "Public site"
+msgstr "Public site"
+
+msgid "Publish now"
+msgstr "Publish now"
+
+msgid "Published"
+msgstr "Published"
+
+msgid "Push notifications on iPhone require iOS 16.4 or later and work only after installing to the home screen."
+msgstr "Push notifications on iPhone require iOS 16.4 or later and work only after installing to the home screen."
+
+msgid "Push notifications on my devices"
+msgstr "Push notifications on my devices"
+
+msgid "Radius for “nearby reports” (km)"
+msgstr "Radius for “nearby reports” (km)"
+
+msgid "Receive notifications on this device even when the app is closed"
+msgstr "Receive notifications on this device even when the app is closed"
+
+msgid "Received"
+msgstr "Received"
+
+msgid "Reference"
+msgstr "Reference"
+
+msgid "Reference number"
+msgstr "Reference number"
+
+msgid "Reference points (km,latitude,longitude — one per line)"
+msgstr "Reference points (km,latitude,longitude — one per line)"
+
+msgid "Reference, title or description"
+msgstr "Reference, title or description"
+
+msgid "Region / section"
+msgstr "Region / section"
+
+msgid "Registered user"
+msgstr "Registered user"
+
+msgid "Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured."
+msgstr "Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured."
+
+msgid "Rejected"
+msgstr "Rejected"
+
+msgid "Remember me"
+msgstr "Remember me"
+
+msgid "Remove image"
+msgstr "Remove image"
+
+msgid "Replace all existing points"
+msgstr "Replace all existing points"
+
+msgid "Reply / handling note"
+msgstr "Reply / handling note"
+
+msgid "Reply from technical support"
+msgstr "Reply from technical support"
+
+#, python-format
+msgid "Report \"%(title)s\" has been fixed. Thank you for your contribution."
+msgstr "Report \"%(title)s\" has been fixed. Thank you for your contribution."
+
+#, python-format
+msgid "Report \"%(title)s\" is now under review."
+msgstr "Report \"%(title)s\" is now under review."
+
+#, python-format
+msgid "Report \"%(title)s\" is now: %(status)s"
+msgstr "Report \"%(title)s\" is now: %(status)s"
+
+#, python-format
+msgid "Report \"%(title)s\" was rejected."
+msgstr "Report \"%(title)s\" was rejected."
+
+#, python-format
+msgid "Report %(ref)s \"%(title)s\" was assigned to you."
+msgstr "Report %(ref)s \"%(title)s\" was assigned to you."
+
+msgid "Report a road problem"
+msgstr "Report a road problem"
+
+msgid "Report assigned."
+msgstr "Report assigned."
+
+msgid "Report photo"
+msgstr "Report photo"
+
+msgid "Report received"
+msgstr "Report received"
+
+msgid "Report reference number"
+msgstr "Report reference number"
+
+msgid "Report rejected"
+msgstr "Report rejected"
+
+msgid "Report resolved"
+msgstr "Report resolved"
+
+msgid "Report road problems and follow the status of the International Road in Libya."
+msgstr "Report road problems and follow the status of the International Road in Libya."
+
+msgid "Report sent"
+msgstr "Report sent"
+
+msgid "Report status updated"
+msgstr "Report status updated"
+
+msgid "Report submission is temporarily closed."
+msgstr "Report submission is temporarily closed."
+
+msgid "Reporter"
+msgstr "Reporter"
+
+msgid "Reports"
+msgstr "Reports"
+
+msgid "Reports by category"
+msgstr "Reports by category"
+
+msgid "Reports by road section"
+msgstr "Reports by road section"
+
+msgid "Reports by status"
+msgstr "Reports by status"
+
+msgid "Reports over time (12 months)"
+msgstr "Reports over time (12 months)"
+
+msgid "Reports sent"
+msgstr "Reports sent"
+
+msgid "Required when rejecting. Shown to the reporter."
+msgstr "Required when rejecting. Shown to the reporter."
+
+msgid "Reset"
+msgstr "Reset"
+
+msgid "Resolved"
+msgstr "Resolved"
+
+msgid "Responses from the road team"
+msgstr "Responses from the road team"
+
+msgid "Results"
+msgstr "Results"
+
+msgid "Road Services Management"
+msgstr "Road Services Management"
+
+msgid "Road alerts"
+msgstr "Road alerts"
+
+msgid "Road closed"
+msgstr "Road closed"
+
+msgid "Road closure"
+msgstr "Road closure"
+
+msgid "Road illustration with nearby reports"
+msgstr "Road illustration with nearby reports"
+
+msgid "Road map"
+msgstr "Road map"
+
+msgid "Road open"
+msgstr "Road open"
+
+msgid "Road section"
+msgstr "Road section"
+
+msgid "Road sections"
+msgstr "Road sections"
+
+msgid "Road services administration"
+msgstr "Road services administration"
+
+msgid "Road status"
+msgstr "Road status"
+
+msgid "Role"
+msgstr "Role"
+
+msgid "Roles"
+msgstr "Roles"
+
+msgid "Save"
+msgstr "Save"
+
+msgid "Save changes"
+msgstr "Save changes"
+
+msgid "Search"
+msgstr "Search"
+
+msgid "Search and filter"
+msgstr "Search and filter"
+
+msgid "Secrets (database password, secret key, VAPID private key, SMTP password) are configured only in the server environment file and are never shown here."
+msgstr "Secrets (database password, secret key, VAPID private key, SMTP password) are configured only in the server environment file and are never shown here."
+
+msgid "Send a notification to users"
+msgstr "Send a notification to users"
+
+msgid "Send message"
+msgstr "Send message"
+
+msgid "Send report"
+msgstr "Send report"
+
+msgid "Send reset link"
+msgstr "Send reset link"
+
+msgid "Sending…"
+msgstr "Sending…"
+
+msgid "Sends in-app notifications and push messages. Emergency alerts reach everyone; other types respect user preferences."
+msgstr "Sends in-app notifications and push messages. Emergency alerts reach everyone; other types respect user preferences."
+
+msgid "Serious"
+msgstr "Serious"
+
+msgid "Serious reports awaiting action"
+msgstr "Serious reports awaiting action"
+
+msgid "Set the location with “Use my location” or “Pick on map”."
+msgstr "Set the location with “Use my location” or “Pick on map”."
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Severity"
+msgstr "Severity"
+
+msgid "Sharing information"
+msgstr "Sharing information"
+
+msgid "Short title (optional)"
+msgstr "Short title (optional)"
+
+msgid "Show report"
+msgstr "Show report"
+
+msgid "Skip to content"
+msgstr "Skip to content"
+
+msgid "Sort"
+msgstr "Sort"
+
+msgid "Sound notifications"
+msgstr "Sound notifications"
+
+msgid "Specify the location: kilometre, section or GPS."
+msgstr "Specify the location: kilometre, section or GPS."
+
+msgid "Staff accounts, their teams and current workload."
+msgstr "Staff accounts, their teams and current workload."
+
+msgid "Starts"
+msgstr "Starts"
+
+msgid "State"
+msgstr "State"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Status history"
+msgstr "Status history"
+
+msgid "Status updated."
+msgstr "Status updated."
+
+msgid "Submitted"
+msgstr "Submitted"
+
+msgid "Support"
+msgstr "Support"
+
+msgid "Support e-mail"
+msgstr "Support e-mail"
+
+msgid "Support message"
+msgstr "Support message"
+
+msgid "Support messages"
+msgstr "Support messages"
+
+msgid "Support phone"
+msgstr "Support phone"
+
+msgid "System / reporter"
+msgstr "System / reporter"
+
+msgid "System settings"
+msgstr "System settings"
+
+msgid "Tap the Share button."
+msgstr "Tap the Share button."
+
+msgid "Tap the map or drag the marker to the exact place of the problem."
+msgstr "Tap the map or drag the marker to the exact place of the problem."
+
+msgid "Team"
+msgstr "Team"
+
+msgid "Team members are managed from each employee's account (Users → Edit → Teams)."
+msgstr "Team members are managed from each employee's account (Users → Edit → Teams)."
+
+msgid "Teams"
+msgstr "Teams"
+
+msgid "Technical support"
+msgstr "Technical support"
+
+msgid "Terms and privacy"
+msgstr "Terms and privacy"
+
+msgid "Text (Arabic)"
+msgstr "Text (Arabic)"
+
+msgid "Text (English)"
+msgstr "Text (English)"
+
+msgid "Thank you for helping keep the road safe. The road team will review it."
+msgstr "Thank you for helping keep the road safe. The road team will review it."
+
+msgid "The browser allows location only over a secure connection (HTTPS)."
+msgstr "The browser allows location only over a secure connection (HTTPS)."
+
+msgid "The employee is not a member of the selected team."
+msgstr "The employee is not a member of the selected team."
+
+msgid "The file is empty."
+msgstr "The file is empty."
+
+msgid "The file is not a valid image."
+msgstr "The file is not a valid image."
+
+msgid "The form expired. Please reload the page and try again."
+msgstr "The form expired. Please reload the page and try again."
+
+msgid "The location was saved. It is outside the surveyed road points, so the kilometre will be set by the road team."
+msgstr "The location was saved. It is outside the surveyed road points, so the kilometre will be set by the road team."
+
+msgid "The map could not be loaded. Use “Use my location”."
+msgstr "The map could not be loaded. Use “Use my location”."
+
+msgid "The note is empty."
+msgstr "The note is empty."
+
+msgid "The point chosen on the map was set"
+msgstr "The point chosen on the map was set"
+
+msgid "The reset link is invalid or has expired."
+msgstr "The reset link is invalid or has expired."
+
+#, python-format
+msgid "The road team replied to \"%(title)s\"."
+msgstr "The road team replied to \"%(title)s\"."
+
+msgid "The selected employee is not an active staff member."
+msgstr "The selected employee is not an active staff member."
+
+msgid "The uploaded file is too large"
+msgstr "The uploaded file is too large"
+
+msgid "These surveyed points convert a GPS position into a kilometre marker. Current points:"
+msgstr "These surveyed points convert a GPS position into a kilometre marker. Current points:"
+
+msgid "This account is deactivated. Contact technical support."
+msgstr "This account is deactivated. Contact technical support."
+
+msgid "This browser does not support location services."
+msgstr "This browser does not support location services."
+
+msgid "This browser does not support push notifications."
+msgstr "This browser does not support push notifications."
+
+msgid "This code is already used."
+msgstr "This code is already used."
+
+msgid "This e-mail is already registered."
+msgstr "This e-mail is already registered."
+
+msgid "This page is not available without a connection. Pages you opened before are still available, and unsent report drafts are kept on this device."
+msgstr "This page is not available without a connection. Pages you opened before are still available, and unsent report drafts are kept on this device."
+
+msgid "This phone number is already registered."
+msgstr "This phone number is already registered."
+
+msgid "This report belongs to a registered account. Log in to follow it."
+msgstr "This report belongs to a registered account. Log in to follow it."
+
+msgid "This status change is not allowed."
+msgstr "This status change is not allowed."
+
+msgid "Time"
+msgstr "Time"
+
+msgid "Title"
+msgstr "Title"
+
+msgid "Title (Arabic)"
+msgstr "Title (Arabic)"
+
+msgid "Title (English)"
+msgstr "Title (English)"
+
+msgid "To date"
+msgstr "To date"
+
+msgid "To km"
+msgstr "To km"
+
+msgid "To reset your password open this link (valid for 1 hour):"
+msgstr "To reset your password open this link (valid for 1 hour):"
+
+msgid "Toggle dark / light mode"
+msgstr "Toggle dark / light mode"
+
+msgid "Too many images."
+msgstr "Too many images."
+
+msgid "Too many requests. Please wait a moment and try again."
+msgstr "Too many requests. Please wait a moment and try again."
+
+msgid "Total reports"
+msgstr "Total reports"
+
+msgid "Track a report"
+msgstr "Track a report"
+
+msgid "Try again"
+msgstr "Try again"
+
+msgid "Type"
+msgstr "Type"
+
+msgid "Under review"
+msgstr "Under review"
+
+msgid "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
+msgstr "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
+
+msgid "Update"
+msgstr "Update"
+
+msgid "Update status"
+msgstr "Update status"
+
+msgid "Update your personal information"
+msgstr "Update your personal information"
+
+msgid "Updated"
+msgstr "Updated"
+
+msgid "Updates on my reports"
+msgstr "Updates on my reports"
+
+msgid "Use my location"
+msgstr "Use my location"
+
+msgid "Use your current location, or pick the exact point on the map."
+msgstr "Use your current location, or pick the exact point on the map."
+
+msgid "User"
+msgstr "User"
+
+msgid "User created."
+msgstr "User created."
+
+msgid "Users"
+msgstr "Users"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "View all"
+msgstr "View all"
+
+msgid "Visibility"
+msgstr "Visibility"
+
+msgid "Visibility rate"
+msgstr "Visibility rate"
+
+msgid "Visibility rate (%)"
+msgstr "Visibility rate (%)"
+
+msgid "Visible to reporter"
+msgstr "Visible to reporter"
+
+msgid "We are here to help"
+msgstr "We are here to help"
+
+msgid "We collect limited data such as name, phone number and approximate location when you send a report, only to contact you and follow up the status of the report."
+msgstr "We collect limited data such as name, phone number and approximate location when you send a report, only to contact you and follow up the status of the report."
+
+msgid "We follow reasonable technical and organisational measures to protect your data from unauthorised access."
+msgstr "We follow reasonable technical and organisational measures to protect your data from unauthorised access."
+
+msgid "Weather alert"
+msgstr "Weather alert"
+
+msgid "Weather alerts"
+msgstr "Weather alerts"
+
+msgid "Weather, traffic, closures and project news"
+msgstr "Weather, traffic, closures and project news"
+
+msgid "WhatsApp"
+msgstr "WhatsApp"
+
+msgid "WhatsApp number (international, digits only)"
+msgstr "WhatsApp number (international, digits only)"
+
+msgid "When are contribution points counted?"
+msgstr "When are contribution points counted?"
+
+msgid "When you earn new contribution points"
+msgstr "When you earn new contribution points"
+
+msgid "Write extra details that help the maintenance team..."
+msgstr "Write extra details that help the maintenance team..."
+
+msgid "Write your question here..."
+msgstr "Write your question here..."
+
+msgid "Year"
+msgstr "Year"
+
+msgid "Yearly summary"
+msgstr "Yearly summary"
+
+msgid "Yes. Enter your phone number so you can follow up the report with its reference number. Registering lets you receive notifications and points."
+msgstr "Yes. Enter your phone number so you can follow up the report with its reference number. Registering lets you receive notifications and points."
+
+msgid "You appear to be away from the International Road. Choose the location manually."
+msgstr "You appear to be away from the International Road. Choose the location manually."
+
+msgid "You are here"
+msgstr "You are here"
+
+msgid "You are not allowed to add notes."
+msgstr "You are not allowed to add notes."
+
+msgid "You are not allowed to assign reports."
+msgstr "You are not allowed to assign reports."
+
+msgid "You are offline"
+msgstr "You are offline"
+
+msgid "You are offline. Some features are unavailable."
+msgstr "You are offline. Some features are unavailable."
+
+msgid "You are offline. The report was NOT sent; it is saved as a draft. Send it when you are back online."
+msgstr "You are offline. The report was NOT sent; it is saved as a draft. Send it when you are back online."
+
+msgid "You are sending as a guest. Keep the reference number to follow up your report, or"
+msgstr "You are sending as a guest. Keep the reference number to follow up your report, or"
+
+msgid "You can also"
+msgstr "You can also"
+
+msgid "You can also pick the point on the map."
+msgstr "You can also pick the point on the map."
+
+msgid "You can at any time request to correct your data or delete your account by contacting the technical support team."
+msgstr "You can at any time request to correct your data or delete your account by contacting the technical support team."
+
+#, python-format
+msgid "You can attach up to %(n)s images."
+msgstr "You can attach up to %(n)s images."
+
+msgid "You can only grant roles below your own level."
+msgstr "You can only grant roles below your own level."
+
+msgid "You do not have permission to access this page"
+msgstr "You do not have permission to access this page"
+
+#, python-format
+msgid "You earned %(n)s points for your report \"%(title)s\"."
+msgstr "You earned %(n)s points for your report \"%(title)s\"."
+
+msgid "You have been logged out."
+msgstr "You have been logged out."
+
+msgid "Your account was created. Welcome!"
+msgstr "Your account was created. Welcome!"
+
+msgid "Your approximate location on the road"
+msgstr "Your approximate location on the road"
+
+msgid "Your current location was set"
+msgstr "Your current location was set"
+
+msgid "Your location could not be determined. Choose it manually."
+msgstr "Your location could not be determined. Choose it manually."
+
+msgid "Your message was sent. The support team will contact you."
+msgstr "Your message was sent. The support team will contact you."
+
+msgid "Your name"
+msgstr "Your name"
+
+msgid "Your password was changed. You can log in now."
+msgstr "Your password was changed. You can log in now."
+
+msgid "Your personal data is not shared with any party outside the National Development Agency and the technical teams responsible for the road."
+msgstr "Your personal data is not shared with any party outside the National Development Agency and the technical teams responsible for the road."
+
+#, python-format
+msgid "Your report %(ref)s was received and will be reviewed."
+msgstr "Your report %(ref)s was received and will be reviewed."
+
+msgid "Your report was accepted"
+msgstr "Your report was accepted"
+
+msgid "Your report was received"
+msgstr "Your report was received"
+
+msgid "Your rights"
+msgstr "Your rights"
+
+msgid "by"
+msgstr "by"
+
+msgid "e.g. Deep pothole in the right lane"
+msgstr "e.g. Deep pothole in the right lane"
+
+msgid "iPhone / iPad (Safari)"
+msgstr "iPhone / iPad (Safari)"
+
+msgid "just now"
+msgstr "just now"
+
+msgid "km"
+msgstr "km"
+
+msgid "log in"
+msgstr "log in"
+
+msgid "privacy policy"
+msgstr "privacy policy"
+
+msgid "send a report without an account"
+msgstr "send a report without an account"
+
+msgid "unread"
+msgstr "unread"
+
+msgid "until"
+msgstr "until"
+
+#~ msgid "Approximate location:"
+#~ msgstr "Approximate location:"
+
+#~ msgid "Location permission was denied. Choose your location manually."
+#~ msgstr "Location permission was denied. Choose your location manually."
+
+#~ msgid "Tap “Use my location” or enter the kilometre manually."
+#~ msgstr "Tap “Use my location” or enter the kilometre manually."
+

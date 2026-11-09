@@ -1,0 +1,13 @@
+{% extends "admin/base_admin.html" %}
+{% block admin_title %}{{ _("Categories") }}{% endblock %}
+{% block admin_content %}
+<div class="mb-3"><a class="btn btn-primary btn-sm" href="{{ url_for('admin.category_form') }}"><i class="bi bi-plus-lg"></i> {{ _("New category") }}</a></div>
+<div class="ir-card"><div class="table-responsive"><table class="table mb-0">
+  <thead><tr><th></th><th>{{ _("Code") }}</th><th>{{ _("Name (Arabic)") }}</th><th>{{ _("Name (English)") }}</th><th>{{ _("Default team") }}</th><th>{{ _("Order") }}</th><th>{{ _("State") }}</th><th></th></tr></thead>
+  <tbody>{% for c in categories %}
+    <tr><td><i class="bi {{ c.icon }} fs-5"></i></td><td class="ltr small">{{ c.code }}</td><td lang="ar" dir="rtl">{{ c.tr('name','ar') }}</td><td lang="en" dir="ltr">{{ c.tr('name','en') }}</td>
+      <td class="small">{{ c.default_team.tr('name') if c.default_team else '—' }}</td><td class="num">{{ c.sort_order }}</td>
+      <td>{% if c.is_active %}<span class="ir-badge tone-done">{{ _("Active") }}</span>{% else %}<span class="ir-badge tone-rejected">{{ _("Inactive") }}</span>{% endif %}</td>
+      <td class="text-end"><a class="btn btn-sm btn-outline-light" href="{{ url_for('admin.category_form', cat_id=c.id) }}">{{ _("Edit") }}</a></td></tr>
+  {% endfor %}</tbody></table></div></div>
+{% endblock %}

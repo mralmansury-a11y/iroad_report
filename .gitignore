@@ -1,0 +1,26 @@
+# secrets
+.env
+*.env
+!.env.example
+instance/
+# python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+# runtime
+*.db
+*.sqlite
+*.log
+/uploads/
+/backups/
+# compiled catalogues are rebuilt on deploy (kept in releases for convenience)
+# translations/*/LC_MESSAGES/*.mo
+# editors
+.vscode/*
+!.vscode/launch.json
+.idea/
+.DS_Store

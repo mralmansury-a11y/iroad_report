@@ -1,0 +1,28 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field %}
+{% block admin_title %}{{ _("Road sections") }}{% endblock %}
+{% block admin_content %}
+<div class="mb-3"><a class="btn btn-primary btn-sm" href="{{ url_for('admin.section_form') }}"><i class="bi bi-plus-lg"></i> {{ _("New section") }}</a></div>
+<div class="ir-card mb-4"><div class="table-responsive"><table class="table mb-0">
+  <thead><tr><th>{{ _("Code") }}</th><th>{{ _("Name") }}</th><th>{{ _("From km") }}</th><th>{{ _("To km") }}</th><th>{{ _("Road status") }}</th><th>{{ _("Visibility rate") }}</th><th>{{ _("Updated") }}</th><th></th></tr></thead>
+  <tbody>{% for s in sections %}
+    <tr><td class="ltr small">{{ s.code }}</td><td>{{ s.tr('name') }}</td><td class="num">{{ s.km_start|km }}</td><td class="num">{{ s.km_end|km }}</td>
+      <td><span class="ir-pill ir-pill-{{ s.road_status }}">{{ road_status_label(s.road_status) }}</span></td>
+      <td class="num">{{ s.visibility_pct|pct }}</td><td class="small ir-muted">{{ s.condition_updated_at|reltime }}</td>
+      <td class="text-end"><a class="btn btn-sm btn-outline-light" href="{{ url_for('admin.section_form', section_id=s.id) }}">{{ _("Edit") }}</a></td></tr>
+  {% else %}<tr><td colspan="8" class="ir-muted">{{ _("No road sections defined yet.") }}</td></tr>{% endfor %}</tbody></table></div></div>
+
+<div class="ir-card ir-card-pad" style="max-width:860px">
+  <h2 class="fs-6 fw-bold">{{ _("Kilometre reference points") }}</h2>
+  <p class="small ir-muted">{{ _("These surveyed points convert a GPS position into a kilometre marker. Current points:") }} <strong class="num">{{ npoints }}</strong>.
+    {{ _("Load the official survey data: the denser and more accurate the points, the better the conversion.") }}</p>
+  {% if current_user.can('settings.manage') %}
+  <form method="post" class="ir-form" novalidate>
+    {{ pts_form.csrf_token }}
+    {{ field(pts_form.csv, rows=6, dir="ltr", placeholder="0,32.317000,15.095000,Misrata\n50,31.990000,15.320000") }}
+    {{ field(pts_form.replace) }}
+    <button class="btn btn-outline-light" type="submit" data-confirm>{{ _("Import points") }}</button>
+  </form>
+  {% endif %}
+</div>
+{% endblock %}

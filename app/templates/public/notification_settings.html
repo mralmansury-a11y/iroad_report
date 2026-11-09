@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title %}
+{% block title %}{{ _("Notification settings") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("Notification settings"), _("Control which alerts you receive"), url_for('main.profile')) }}
+<form method="post" novalidate>
+  {{ form.csrf_token }}
+  <div class="ir-card">
+    {% for f, desc in [
+      (form.report_updates, _("Notify me when the status of a report I sent changes")),
+      (form.weather_alerts, _("Fog, wind or rain affecting the road")),
+      (form.project_updates, _("News about section openings and maintenance works")),
+      (form.points_rewards, _("When you earn new contribution points")),
+      (form.sound, _("Play a sound when a notification arrives")),
+      (form.push_enabled, _("Receive notifications on this device even when the app is closed")),
+    ] %}
+    <div class="ir-toggle">
+      <label for="{{ f.id }}"><span class="fw-bold d-block">{{ f.label.text }}</span><span class="d">{{ desc }}</span></label>
+      <div class="form-check form-switch">{{ f(class="form-check-input", role="switch") }}</div>
+    </div>
+    {% endfor %}
+  </div>
+  <button type="submit" class="ir-cta">{{ _("Save changes") }}</button>
+</form>
+
+<div class="ir-card ir-card-pad mt-3">
+  <div class="fw-bold mb-1">{{ _("Notifications on this device") }}</div>
+  <p class="small ir-muted mb-2" data-push-state>{{ _("Allow browser notifications to receive report updates and road alerts.") }}</p>
+  <button type="button" class="btn btn-outline-light btn-sm" data-action="push-enable"><i class="bi bi-bell"></i> {{ _("Enable on this device") }}</button>
+  <button type="button" class="btn btn-outline-light btn-sm d-none" data-action="push-disable"><i class="bi bi-bell-slash"></i> {{ _("Disable on this device") }}</button>
+</div>
+</div>
+{% endblock %}

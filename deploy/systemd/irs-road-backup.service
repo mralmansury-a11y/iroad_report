@@ -1,0 +1,10 @@
+[Unit]
+Description=International Road Services - nightly backup (MariaDB + uploads + config)
+After=mariadb.service
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/opt/irs-road/app/deploy/scripts/backup.sh
+Nice=10
+IOSchedulingClass=idle

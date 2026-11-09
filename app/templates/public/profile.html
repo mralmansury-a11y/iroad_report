@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}{{ _("My account") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+<div class="ir-titlebar"><h1>{{ _("My account") }}</h1>
+  {% if current_user.is_staff %}<a class="btn btn-sm btn-primary" href="{{ url_for('admin.dashboard') }}"><i class="bi bi-speedometer2"></i> {{ _("Dashboard") }}</a>{% endif %}</div>
+
+<div class="ir-card ir-card-pad text-center">
+  <span class="ir-avatar" aria-hidden="true">{{ current_user.initials }}</span>
+  <h2 class="fs-5 mt-2 mb-0">{{ current_user.full_name }}</h2>
+  {% if current_user.phone %}<div class="ir-muted num ltr d-inline-block">{{ current_user.phone }}</div>{% endif %}
+  {% if current_user.email %}<div class="ir-muted small ltr">{{ current_user.email }}</div>{% endif %}
+  <div class="small mt-1" style="color:#59b9c0">{{ _("Active contributor") }}{% if current_user.home_section %} — {{ current_user.home_section.tr('name') }}{% endif %}</div>
+  <div class="ir-stats mt-3">
+    <div class="ir-stat"><span class="v num">{{ contrib.sent }}</span><span class="l">{{ _("Reports sent") }}</span></div>
+    <div class="ir-stat"><span class="v num">{{ contrib.points }}</span><span class="l">{{ _("Contribution points") }}</span></div>
+    <div class="ir-stat"><span class="v num">{{ contrib.accepted }}</span><span class="l">{{ _("Accepted reports") }}</span></div>
+  </div>
+</div>
+
+<h2 class="fs-6 fw-bold mt-4 mb-2 ir-muted">{{ _("Settings") }}</h2>
+<ul class="ir-menu">
+  <li><a href="{{ url_for('main.profile_edit') }}"><span class="mi"><i class="bi bi-person"></i></span>{{ _("Edit personal details") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.notification_settings') }}"><span class="mi"><i class="bi bi-bell"></i></span>{{ _("Notification settings") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.language') }}"><span class="mi"><i class="bi bi-translate"></i></span>{{ _("Language") }}<span class="val">{{ LANGUAGES[lang] }}</span><i class="bi bi-chevron-right ir-flip chev"></i></a></li>
+  <li><a href="{{ url_for('main.privacy') }}"><span class="mi"><i class="bi bi-shield-lock"></i></span>{{ _("Privacy policy") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.support') }}"><span class="mi"><i class="bi bi-headset"></i></span>{{ _("Technical support") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.install') }}"><span class="mi"><i class="bi bi-phone"></i></span>{{ _("Install the app") }}<i class="bi bi-chevron-right ir-flip chev ms-auto"></i></a></li>
+  <li><a href="{{ url_for('main.about') }}"><span class="mi"><i class="bi bi-info-circle"></i></span>{{ _("About the app") }}<span class="val">{{ _("Version") }} <span class="num">{{ get_setting('app_version', '1.0.0') }}</span></span><i class="bi bi-chevron-right ir-flip chev"></i></a></li>
+  <li><form method="post" action="{{ url_for('auth.logout') }}"><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="danger"><span class="mi"><i class="bi bi-box-arrow-right ir-flip"></i></span>{{ _("Log out") }}</button></form></li>
+</ul>
+</div>
+{% endblock %}

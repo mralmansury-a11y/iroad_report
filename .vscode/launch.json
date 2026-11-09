@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "IRS Road (Flask)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "flask",
+      "args": ["run", "--debug", "--port", "5000"],
+      "envFile": "${workspaceFolder}/.env",
+      "jinja": true
+    }
+  ]
+}

@@ -1,0 +1,35 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block admin_title %}{{ _("Users") }}{% endblock %}
+{% block admin_content %}
+{% set uf = request.args.get('q') or request.args.get('role') or request.args.get('state') %}
+<form method="get" class="ir-card ir-card-pad ad-filters mb-3">
+  <button type="button" class="btn btn-outline-light btn-sm w-100 ad-filters-toggle justify-content-center gap-2" data-filters-toggle aria-controls="adUserFilters" aria-expanded="false">
+    <i class="bi bi-funnel"></i> {{ _("Search and filter") }}</button>
+  <div class="row g-2 align-items-end ad-filters-body" id="adUserFilters" data-active="{{ 1 if uf else 0 }}">
+  <div class="col-12 col-md-5"><label class="form-label small" for="uq">{{ _("Search") }}</label><input id="uq" class="form-control" name="q" value="{{ request.args.get('q','') }}" placeholder="{{ _('Name, phone or e-mail') }}"></div>
+  <div class="col-6 col-md-3"><label class="form-label small" for="ur">{{ _("Role") }}</label>
+    <select id="ur" class="form-select" name="role"><option value="">{{ _("All") }}</option>{% for r in roles %}<option value="{{ r.code }}" {{ 'selected' if request.args.get('role') == r.code }}>{{ role_label(r) }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><label class="form-label small" for="us">{{ _("State") }}</label>
+    <select id="us" class="form-select" name="state"><option value="">{{ _("All") }}</option><option value="inactive" {{ 'selected' if request.args.get('state') == 'inactive' }}>{{ _("Deactivated") }}</option></select></div>
+  <div class="col-12 col-md-2 d-flex gap-2"><button class="btn btn-primary flex-fill">{{ _("Filter") }}</button>
+    {% if current_user.can('users.manage') %}<a class="btn btn-outline-light" href="{{ url_for('admin.user_new') }}" aria-label="{{ _('New user') }}"><i class="bi bi-person-plus"></i></a>{% endif %}</div>
+  </div>
+</form>
+<div class="ir-card"><div class="table-responsive"><table class="table table-hover mb-0">
+  <thead><tr><th>{{ _("Name") }}</th><th>{{ _("Phone") }}</th><th>{{ _("E-mail") }}</th><th>{{ _("Roles") }}</th><th>{{ _("State") }}</th><th>{{ _("Last login") }}</th><th></th></tr></thead>
+  <tbody>
+  {% for u in pagination.items %}
+    <tr><td>{{ u.full_name }}{% if u.job_title %}<div class="small ir-muted">{{ u.job_title }}</div>{% endif %}</td>
+      <td class="num ltr">{{ u.phone or '—' }}</td><td class="ltr small">{{ u.email or '—' }}</td>
+      <td class="small">{% for r in u.roles %}<span class="ir-badge tone-{{ 'assigned' if r.level >= 10 else 'rejected' }}">{{ role_label(r) }}</span> {% endfor %}</td>
+      <td>{% if u.active %}<span class="ir-badge tone-done">{{ _("Active") }}</span>{% else %}<span class="ir-badge tone-new">{{ _("Deactivated") }}</span>{% endif %}</td>
+      <td class="small ir-muted">{{ u.last_login_at|dt('short') if u.last_login_at else '—' }}</td>
+      <td class="text-end"><div class="ad-actions">{% if current_user.can('users.manage') and u.id != current_user.id %}
+        <a class="btn btn-sm btn-outline-light" href="{{ url_for('admin.user_edit', user_id=u.id) }}">{{ _("Edit") }}</a>
+        <form method="post" action="{{ url_for('admin.user_toggle', user_id=u.id) }}" class="d-inline" data-confirm><input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="btn btn-sm btn-outline-light" type="submit">{{ _("Deactivate") if u.active else _("Activate") }}</button></form>{% endif %}</div></td></tr>
+  {% else %}<tr><td colspan="7">{{ empty('bi-people', _("No users found.")) }}</td></tr>{% endfor %}
+  </tbody></table></div></div>
+{{ pager(pagination, 'admin.users') }}
+{% endblock %}

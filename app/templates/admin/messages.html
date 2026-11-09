@@ -1,0 +1,19 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import pager, empty %}
+{% block admin_title %}{{ _("Support messages") }}{% endblock %}
+{% block admin_content %}
+<div class="ir-seg mb-3">
+  {% for code, label in [('', _('All')), ('new', _('New')), ('answered', _('Answered')), ('closed', _('Closed'))] %}
+  <a href="{{ url_for('admin.messages', status=code or None) }}" class="{{ 'active' if (request.args.get('status') or '') == code }}">{{ label }}</a>
+  {% endfor %}
+</div>
+<div class="ir-card"><div class="table-responsive"><table class="table table-hover mb-0">
+  <thead><tr><th>{{ _("Name") }}</th><th>{{ _("Contact") }}</th><th>{{ _("Message") }}</th><th>{{ _("Status") }}</th><th>{{ _("Date") }}</th></tr></thead>
+  <tbody>{% for m in pagination.items %}
+    <tr><td><a href="{{ url_for('admin.message_detail', msg_id=m.id) }}">{{ m.name }}</a>{% if m.user %} <i class="bi bi-person-check ir-muted" title="{{ _('Registered user') }}"></i>{% endif %}</td>
+      <td class="ltr small">{{ m.contact }}</td><td class="small">{{ m.body|truncate(80) }}</td>
+      <td><span class="ir-badge tone-{{ 'new' if m.status == 'new' else ('done' if m.status == 'answered' else 'rejected') }}">{{ {'new': _('New'), 'answered': _('Answered'), 'closed': _('Closed')}[m.status] }}</span></td>
+      <td class="small ir-muted">{{ m.created_at|dt('short') }}</td></tr>
+  {% else %}<tr><td colspan="5">{{ empty('bi-inbox', _("No messages.")) }}</td></tr>{% endfor %}</tbody></table></div></div>
+{{ pager(pagination, 'admin.messages') }}
+{% endblock %}

@@ -1,0 +1,111 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import status_badge, field %}
+{% block admin_title %}{{ report.reference }}{% endblock %}
+{% block head_extra %}<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">{% endblock %}
+{% block admin_content %}
+<div class="row g-3">
+  <div class="col-lg-7">
+    <div class="ir-card ir-card-pad mb-3">
+      <div class="d-flex justify-content-between gap-2 align-items-start">
+        <div><h2 class="fs-5 fw-bold mb-1">{{ report.title }}</h2>
+          <div class="small ir-muted">{{ report.category.tr('name') }} · <span class="num ltr d-inline-block">{{ report.reference }}</span></div></div>
+        {{ status_badge(report.status) }}
+      </div>
+      <dl class="row small mt-3 mb-0">
+        <dt class="col-5 col-md-4">{{ _("Severity") }}</dt><dd class="col-7 col-md-8"><i class="bi bi-circle-fill sev-{{ report.severity }}" style="font-size:8px"></i> {{ severity_label(report.severity) }}</dd>
+        <dt class="col-5 col-md-4">{{ _("Kilometre marker") }}</dt><dd class="col-7 col-md-8 num">{{ report.km_marker|km }}</dd>
+        <dt class="col-5 col-md-4">{{ _("Road section") }}</dt><dd class="col-7 col-md-8">{{ report.road_section.tr('name') if report.road_section else '—' }}</dd>
+        <dt class="col-5 col-md-4">{{ _("GPS coordinates") }}</dt><dd class="col-7 col-md-8 num">{% if report.latitude is not none %}<bdi dir="ltr">{{ '%.6f'|format(report.latitude) }}, {{ '%.6f'|format(report.longitude) }}</bdi> <span class="ir-muted">({{ {'gps': 'GPS', 'map': _('Map'), 'manual': _('Manual')}[report.location_source] }})</span>{% else %}—{% endif %}</dd>
+        <dt class="col-5 col-md-4">{{ _("Reporter") }}</dt><dd class="col-7 col-md-8">
+          {% if report.reporter %}{{ report.reporter.full_name }} <span class="num ltr d-inline-block">{{ report.reporter.phone or report.reporter.email or '' }}</span>
+          {% else %}{{ report.guest_name or _("Guest") }} <span class="num ltr d-inline-block">{{ report.guest_phone or '' }}</span> <span class="ir-badge tone-rejected">{{ _("Guest") }}</span>{% endif %}</dd>
+        <dt class="col-5 col-md-4">{{ _("Submitted") }}</dt><dd class="col-7 col-md-8">{{ report.created_at|dt }}</dd>
+        <dt class="col-5 col-md-4">{{ _("First response") }}</dt><dd class="col-7 col-md-8">{{ report.first_response_at|dt }}</dd>
+        <dt class="col-5 col-md-4">{{ _("Resolved") }}</dt><dd class="col-7 col-md-8">{{ report.resolved_at|dt }}</dd>
+        <dt class="col-5 col-md-4">{{ _("Assigned to") }}</dt><dd class="col-7 col-md-8">{{ report.assigned_user.full_name if report.assigned_user else '' }}{% if report.assigned_team %} ({{ report.assigned_team.tr('name') }}){% endif %}{% if not report.assigned_user and not report.assigned_team %}—{% endif %}</dd>
+      </dl>
+      {% if report.description %}<hr><div class="small ir-muted mb-1">{{ _("Description") }} ({{ 'العربية' if report.language == 'ar' else 'English' }})</div><p dir="auto" lang="{{ report.language }}" class="mb-0">{{ report.description }}</p>{% endif %}
+      {% if report.attachments %}
+      <hr><div class="ir-previews">
+        {% for a in report.attachments %}
+        <figure><a href="{{ url_for('reports.attachment', att_id=a.id) }}" target="_blank" rel="noopener"><img src="{{ url_for('reports.attachment', att_id=a.id) }}" alt="{{ _('Report photo') }} {{ loop.index }}" loading="lazy"></a>
+          {% if current_user.can('reports.review') %}<form method="post" action="{{ url_for('admin.attachment_delete', att_id=a.id) }}" data-confirm><input type="hidden" name="csrf_token" value="{{ csrf_token() }}"><button type="submit" aria-label="{{ _('Delete image') }}"><i class="bi bi-x"></i></button></form>{% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% if report.latitude is not none %}<div id="reportMap" class="ir-map-sm mt-3" data-lat="{{ report.latitude }}" data-lng="{{ report.longitude }}" data-tiles="{{ config.MAP_TILE_URL }}"></div>{% endif %}
+    </div>
+
+    <div class="ir-card ir-card-pad" id="notes">
+      <h3 class="fs-6 fw-bold">{{ _("Status history") }}</h3>
+      <ol class="ir-timeline">
+        {% for h in report.history %}
+        <li><strong>{{ status_label(h.to_status) }}</strong> <span class="small ir-muted">· {{ h.created_at|dt('short') }} · {{ h.changed_by.full_name if h.changed_by else _("System / reporter") }}</span>
+          {% if h.public_note %}<div class="small"><i class="bi bi-eye"></i> {{ h.public_note }}</div>{% endif %}
+          {% if h.internal_note %}<div class="small ir-muted"><i class="bi bi-lock"></i> {{ h.internal_note }}</div>{% endif %}</li>
+        {% endfor %}
+      </ol>
+      <h3 class="fs-6 fw-bold mt-3">{{ _("Notes") }}</h3>
+      {% for n in report.notes %}
+        <div class="border rounded-3 p-2 mb-2 small" style="border-color:var(--ir-border)!important">
+          <div class="ir-muted">{{ n.author.full_name if n.author else '' }} · {{ n.created_at|dt('short') }} ·
+            {% if n.is_internal %}<i class="bi bi-lock"></i> {{ _("Internal") }}{% else %}<i class="bi bi-eye"></i> {{ _("Visible to reporter") }}{% endif %}</div>
+          <div dir="auto">{{ n.body }}</div>
+        </div>
+      {% else %}<p class="small ir-muted">{{ _("No notes yet.") }}</p>{% endfor %}
+      {% if current_user.can('reports.internal_notes') %}
+      <form method="post" action="{{ url_for('admin.report_note', report_id=report.id) }}" class="ir-form" novalidate>
+        {{ note_form.csrf_token }}
+        {{ field(note_form.body, rows=3) }}
+        <div class="d-flex gap-2 align-items-end">{{ field(note_form.visibility, cls="flex-fill mb-0") }}<button class="btn btn-outline-light" type="submit">{{ _("Add note") }}</button></div>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="col-lg-5">
+    {% if status_form.to_status.choices %}
+    <div class="ir-card ir-card-pad mb-3">
+      <h3 class="fs-6 fw-bold">{{ _("Change status") }}</h3>
+      <form method="post" action="{{ url_for('admin.report_status', report_id=report.id) }}" class="ir-form" novalidate>
+        {{ status_form.csrf_token }}
+        {{ field(status_form.to_status) }}
+        {{ field(status_form.public_note, rows=2, help=_("Required when rejecting. Shown to the reporter.")) }}
+        {{ field(status_form.internal_note, rows=2) }}
+        <button class="btn btn-primary w-100" type="submit">{{ _("Update status") }}</button>
+      </form>
+    </div>
+    {% endif %}
+    {% if current_user.can('reports.assign') and report.status_code not in ('resolved', 'rejected') %}
+    <div class="ir-card ir-card-pad mb-3">
+      <h3 class="fs-6 fw-bold">{{ _("Assign") }}</h3>
+      <form method="post" action="{{ url_for('admin.report_assign', report_id=report.id) }}" class="ir-form" novalidate>
+        {{ assign_form.csrf_token }}
+        {{ field(assign_form.team_id) }}
+        {{ field(assign_form.assignee_id, help=_("Optional. The employee must belong to the selected team.")) }}
+        {{ field(assign_form.note, rows=2) }}
+        <button class="btn btn-primary w-100" type="submit">{{ _("Assign") }}</button>
+      </form>
+    </div>
+    {% endif %}
+    {% if report.assignments %}
+    <div class="ir-card ir-card-pad">
+      <h3 class="fs-6 fw-bold">{{ _("Assignment history") }}</h3>
+      <ul class="list-unstyled small mb-0">
+        {% for a in report.assignments|reverse %}
+        <li class="py-1 border-bottom" style="border-color:var(--ir-border)!important">{{ a.assignee.full_name if a.assignee else '' }} {% if a.team %}({{ a.team.tr('name') }}){% endif %}
+          <span class="ir-muted">· {{ a.assigned_at|dt('short') }} · {{ _("by") }} {{ a.assigned_by.full_name if a.assigned_by else '' }}</span>
+          {% if a.is_active %}<span class="ir-badge tone-assigned">{{ _("Active") }}</span>{% elif a.completed_at %}<span class="ir-badge tone-done">{{ _("Completed") }}</span>{% endif %}
+          {% if a.note %}<div>{{ a.note }}</div>{% endif %}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+{% endblock %}

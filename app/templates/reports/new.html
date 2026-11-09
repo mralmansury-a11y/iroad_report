@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% from "_macros.html" import page_title %}
+{% block title %}{{ _("New problem report") }} · {{ super() }}{% endblock %}
+{% block content %}
+<div class="ir-narrow">
+{{ page_title(_("New problem report"), _("Help keep the road safe"), url_for('main.home')) }}
+
+<form method="post" enctype="multipart/form-data" class="ir-form" id="reportForm" novalidate
+      data-max-images="{{ config.MAX_IMAGES_PER_REPORT }}" data-max-bytes="{{ config.MAX_IMAGE_BYTES }}"
+      data-draft-key="report-draft-{{ current_user.id if current_user.is_authenticated else 'guest' }}">
+  {{ form.csrf_token }}
+  <div class="alert alert-danger ir-alert d-none" data-form-error role="alert"></div>
+
+  <fieldset class="mb-3">
+    <legend class="form-label fs-6">{{ form.category_id.label.text }}</legend>
+    <div class="ir-choice-grid">
+      {% for c in categories %}
+      <div class="ir-choice">
+        <input type="radio" name="{{ form.category_id.name }}" id="cat{{ c.id }}" value="{{ c.id }}" data-name="{{ c.tr('name') }}" {{ 'checked' if form.category_id.data == c.id }} required>
+        <label for="cat{{ c.id }}"><i class="bi {{ c.icon }}" aria-hidden="true"></i>{{ c.tr('name') }}</label>
+      </div>
+      {% endfor %}
+    </div>
+    {% for e in form.category_id.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+    <div class="invalid-feedback" data-err="category_id"></div>
+  </fieldset>
+
+  <div class="mb-3">
+    <label class="form-label" for="title">{{ form.title.label.text }}</label>
+    {{ form.title(class="form-control", id="title", maxlength=160, placeholder=_("e.g. Deep pothole in the right lane")) }}
+  </div>
+
+  <fieldset class="mb-3">
+    <legend class="form-label fs-6">{{ _("Location") }}</legend>
+    {% set has_loc = form.latitude.data is not none %}
+    <div class="ir-card ir-card-pad ir-loc-picker" data-loc-picker data-state="{{ 'ok' if has_loc else ('error' if form.latitude.errors else 'empty') }}"
+         data-tiles="{{ config.MAP_TILE_URL }}">
+      <div class="d-flex align-items-start gap-3" aria-live="polite">
+        <span class="ir-loc-ico" aria-hidden="true"><i class="bi bi-geo-alt-fill"></i></span>
+        <div class="flex-fill min-w-0">
+          <div class="fw-bold" data-loc-label>{{ _("Location not set yet") }}</div>
+          <div class="small ir-muted" data-loc-hint>{{ _("Use your current location, or pick the exact point on the map.") }}</div>
+          <div class="ir-loc-coords num" data-loc-coords>{% if has_loc %}{{ '%.6f'|format(form.latitude.data) }}, {{ '%.6f'|format(form.longitude.data) }}{% endif %}</div>
+        </div>
+      </div>
+      <div class="ir-loc-btns">
+        <button type="button" class="ir-loc-btn primary" data-action="gps"><i class="bi bi-crosshair" aria-hidden="true"></i><span>{{ _("Use my location") }}</span></button>
+        <button type="button" class="ir-loc-btn" data-action="pick-map" aria-pressed="false" aria-controls="pickMap"><i class="bi bi-map" aria-hidden="true"></i><span>{{ _("Pick on map") }}</span></button>
+      </div>
+      <div id="pickMap" class="ir-pick-map d-none" role="application" aria-label="{{ _('Map to pick the location') }}"></div>
+      <div class="ir-pick-help d-none" data-pick-help>{{ _("Tap the map or drag the marker to the exact place of the problem.") }}</div>
+      {# Location values are filled ONLY by GPS or the map; the server recalculates the kilometre and section #}
+      <input type="hidden" name="latitude" id="latitude" value="{{ form.latitude.data if has_loc else '' }}">
+      <input type="hidden" name="longitude" id="longitude" value="{{ form.longitude.data if has_loc else '' }}">
+      <input type="hidden" name="location_source" id="location_source" value="{{ form.location_source.data or '' }}">
+      {% for e in form.latitude.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+      <div class="invalid-feedback" data-err="latitude"></div>
+    </div>
+  </fieldset>
+
+  <fieldset class="mb-3">
+    <legend class="form-label fs-6">{{ form.severity.label.text }}</legend>
+    <div class="ir-sev">
+      {% for val, label in form.severity.choices %}
+      <div class="ir-choice">
+        <input type="radio" name="{{ form.severity.name }}" id="sev-{{ val }}" value="{{ val }}" {{ 'checked' if form.severity.data == val }}>
+        <label for="sev-{{ val }}"><i class="bi bi-circle-fill sev-{{ val }}" style="font-size:10px" aria-hidden="true"></i>{{ label }}</label>
+      </div>
+      {% endfor %}
+    </div>
+  </fieldset>
+
+  <div class="mb-3">
+    <span class="form-label d-block">{{ form.images.label.text }}</span>
+    <label class="ir-dropzone" for="images">
+      <i class="bi bi-camera fs-3" aria-hidden="true"></i>
+      <span>{{ _("Add a photo of the problem") }}</span>
+      <small>{{ _("JPG, PNG, WEBP or HEIC — up to %(n)s images, %(mb)s MB each", n=config.MAX_IMAGES_PER_REPORT, mb=config.MAX_IMAGE_BYTES // 1048576) }}</small>
+    </label>
+    <input type="file" id="images" name="{{ form.images.name }}" accept="image/jpeg,image/png,image/webp,image/heic,image/heif" capture="environment" multiple class="visually-hidden">
+    <div class="ir-previews" data-previews></div>
+    {% for e in form.images.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+    <div class="invalid-feedback" data-err="images"></div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label" for="description">{{ form.description.label.text }}</label>
+    {{ form.description(class="form-control", id="description", rows=4, maxlength=3000, placeholder=_("Write extra details that help the maintenance team...")) }}
+  </div>
+
+  {% if not current_user.is_authenticated %}
+  <div class="ir-card ir-card-pad mb-3">
+    <p class="small ir-muted mb-2">{{ _("You are sending as a guest. Keep the reference number to follow up your report, or") }} <a href="{{ url_for('auth.login', next=request.path) }}">{{ _("log in") }}</a>.</p>
+    <div class="row g-2">
+      <div class="col-sm-6"><label class="form-label small" for="guest_name">{{ form.guest_name.label.text }}</label>{{ form.guest_name(class="form-control", id="guest_name") }}</div>
+      <div class="col-sm-6"><label class="form-label small" for="guest_phone">{{ form.guest_phone.label.text }}</label>{{ form.guest_phone(class="form-control num" + (" is-invalid" if form.guest_phone.errors else ""), id="guest_phone", inputmode="tel", placeholder="091-2345678") }}
+        {% for e in form.guest_phone.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}<div class="invalid-feedback" data-err="guest_phone"></div></div>
+    </div>
+  </div>
+  {% endif %}
+
+  <button type="submit" class="ir-cta" data-submit><i class="bi bi-send-fill" aria-hidden="true"></i><span>{{ _("Send report") }}</span></button>
+  <p class="small ir-muted text-center mt-2" data-draft-note></p>
+</form>
+</div>
+{% endblock %}
+{% block head_extra %}<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/report-form.js') }}" defer></script>
+{% endblock %}

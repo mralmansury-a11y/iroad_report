@@ -1,0 +1,64 @@
+{% macro status_badge(status) -%}
+<span class="ir-badge tone-{{ status.tone }}">{{ status_label(status) }}</span>
+{%- endmacro %}
+
+{% macro report_item(r, href=None, mine=False) -%}
+<a class="ir-item" href="{{ href or url_for('reports.detail', reference=r.reference) }}">
+  <span class="ico tone-{{ r.status.tone }}" aria-hidden="true"><i class="bi {{ r.category.icon }}"></i></span>
+  <span class="body">
+    <span class="t d-block">{{ r.title }}</span>
+    <span class="m d-block"><span class="num">{{ r.km_marker | km }}</span> · {{ r.created_at | reltime }}</span>
+  </span>
+  <span class="end">
+    {{ status_badge(r.status) }}
+    {% if mine %}<span class="ir-badge ir-badge-mine">{{ _("My report") }}</span>{% endif %}
+  </span>
+</a>
+{%- endmacro %}
+
+{% macro field(f, type=None, help=None, cls="") -%}
+<div class="mb-3 {{ cls }}">
+  {% if f.type == 'BooleanField' %}
+    <div class="form-check form-switch">
+      {{ f(class="form-check-input" + (" is-invalid" if f.errors else ""), role="switch") }}
+      {{ f.label(class="form-check-label") }}
+    </div>
+  {% else %}
+    {{ f.label(class="form-label") }}
+    {% if f.type in ('SelectField', 'SelectMultipleField') %}
+      {{ f(class="form-select" + (" is-invalid" if f.errors else ""), **kwargs) }}
+    {% else %}
+      {{ f(class="form-control" + (" is-invalid" if f.errors else ""), **kwargs) }}
+    {% endif %}
+  {% endif %}
+  {% if help %}<div class="form-text">{{ help }}</div>{% endif %}
+  {% for e in f.errors %}<div class="invalid-feedback">{{ e }}</div>{% endfor %}
+</div>
+{%- endmacro %}
+
+{% macro pager(p, endpoint) -%}
+{% if p.pages > 1 %}
+<nav aria-label="{{ _('Pages') }}" class="mt-3">
+  <ul class="pagination justify-content-center">
+    {% set args = request.args.to_dict() %}
+    {% if p.has_prev %}{% set _ = args.update(page=p.prev_num) %}<li class="page-item"><a class="page-link" href="{{ url_for(endpoint, **args) }}">{{ _("Previous") }}</a></li>{% endif %}
+    <li class="page-item disabled"><span class="page-link num">{{ p.page }} / {{ p.pages }}</span></li>
+    {% if p.has_next %}{% set _ = args.update(page=p.next_num) %}<li class="page-item"><a class="page-link" href="{{ url_for(endpoint, **args) }}">{{ _("Next") }}</a></li>{% endif %}
+  </ul>
+</nav>
+{% endif %}
+{%- endmacro %}
+
+{% macro page_title(title, sub=None, back=None) -%}
+<div class="ir-titlebar">
+  <div>
+    <h1>{{ title }}</h1>
+    {% if sub %}<p class="sub">{{ sub }}</p>{% endif %}
+  </div>
+  {% if back %}<a class="ir-icon-btn" href="{{ back }}" aria-label="{{ _('Back') }}"><i class="bi bi-arrow-left ir-flip"></i></a>{% endif %}
+</div>
+{%- endmacro %}
+
+{% macro empty(icon, text) -%}
+<div class="ir-empty"><i class="bi {{ icon }}" aria-hidden="true"></i>{{ text }}</div>
+{%- endmacro %}

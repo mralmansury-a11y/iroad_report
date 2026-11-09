@@ -1,0 +1,18 @@
+{% extends "admin/base_admin.html" %}
+{% from "_macros.html" import field %}
+{% block admin_title %}{{ _("Support message") }}{% endblock %}
+{% block admin_content %}
+<div class="ir-card ir-card-pad mb-3" style="max-width:760px">
+  <div class="fw-bold">{{ msg.name }}</div>
+  <div class="small ir-muted ltr">{{ msg.contact }}</div>
+  <div class="small ir-muted">{{ msg.created_at|dt }}</div>
+  <hr><p dir="auto" class="mb-0" style="white-space:pre-wrap">{{ msg.body }}</p>
+</div>
+<form method="post" class="ir-form ir-card ir-card-pad" style="max-width:760px" novalidate>
+  {{ form.csrf_token }}
+  {{ field(form.status) }}
+  {{ field(form.reply, rows=4, help=_("Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured.")) }}
+  {% if msg.handled_by %}<p class="small ir-muted">{{ _("Handled by") }} {{ msg.handled_by.full_name }} · {{ msg.handled_at|dt('short') }}</p>{% endif %}
+  <div class="d-flex gap-2"><button class="btn btn-primary" type="submit">{{ _("Save") }}</button><a class="btn btn-outline-light" href="{{ url_for('admin.messages') }}">{{ _("Back") }}</a></div>
+</form>
+{% endblock %}

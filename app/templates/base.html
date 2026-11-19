@@ -1,3 +1,12 @@
+{#- Immersive 3D/4D layer: public interface only — the admin dashboard keeps its own look. -#}
+{% set immersive_ui = request.blueprint != 'admin' -%}
+{#- Backdrop photos (static/images/scenes). `focus` = object-position kept in view on wide screens. -#}
+{% set backdrop_scenes = [
+  {"file": "canyon-road.webp",   "focus": "50% 55%"},
+  {"file": "desert-track.webp",  "focus": "50% 68%"},
+  {"file": "mesa-highway.webp",  "focus": "50% 30%"},
+  {"file": "desert-aerial.webp", "focus": "50% 45%"},
+] -%}
 <!doctype html>
 <html lang="{{ lang }}" dir="{{ dir }}" data-theme="{{ theme }}">
 <head>
@@ -23,9 +32,15 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='vendor/bootstrap-icons/bootstrap-icons.min.css') }}">
   {% block head_extra %}{% endblock %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  {% if immersive_ui %}<link rel="stylesheet" href="{{ url_for('static', filename='css/immersive.css') }}">{% endif %}
 </head>
 <body class="{% block body_class %}{% endblock %}">
 <a class="skip-link" href="#main">{{ _("Skip to content") }}</a>
+{% if immersive_ui %}
+<div class="ir-backdrop" aria-hidden="true" data-backdrop
+     data-base="{{ url_for('static', filename='images/scenes/') }}"
+     data-scenes='{{ backdrop_scenes | tojson }}'></div>
+{% endif %}
 <div class="ir-offline" id="irOffline" role="status" aria-live="polite">{{ js_i18n.offline }}</div>
 <script type="application/json" id="ir-config">{{ {
   "lang": lang, "dir": dir, "i18n": js_i18n, "vapid": vapid_public_key,
@@ -93,6 +108,11 @@
 <div class="ir-toast" id="irToast" role="status" aria-live="polite"><span class="msg"></span><button type="button" class="btn btn-sm btn-primary ms-auto d-none" data-action></button></div>
 <script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+{% if immersive_ui %}
+<script src="{{ url_for('static', filename='js/immersive/scene.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/immersive/tilt.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/immersive/reveal.js') }}" defer></script>
+{% endif %}
 {% block scripts %}{% endblock %}
 </body>
 </html>

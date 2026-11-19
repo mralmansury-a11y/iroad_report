@@ -1,0 +1,412 @@
+/* =====================================================================
+   International Road Services – Libya · Immersive layer (3D / 4D)
+   ---------------------------------------------------------------------
+   Loaded ONLY by the public interface (never by /admin), on top of app.css.
+   Adds depth (perspective, glass, elevation) and time (motion) without
+   changing markup semantics. Every effect degrades gracefully:
+     - no JS            → static depth, no tilt / scroll reveal / photo backdrop
+     - reduced motion   → all animation and tilt disabled
+     - no color-mix()   → solid surfaces instead of glass
+   Logical properties only (RTL/LTR safe).
+   ===================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --ir-perspective: 900px;
+  --ir-ease-out: cubic-bezier(.2, .8, .2, 1);
+  --ir-ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+
+  --ir-glass: var(--ir-surface);
+  --ir-glass-strong: var(--ir-surface);
+  --ir-glass-edge: rgba(255, 255, 255, .07);
+  --ir-glass-highlight: rgba(255, 255, 255, .06);
+  --ir-glass-blur: blur(14px) saturate(140%);
+
+  --ir-elev-1: 0 1px 2px rgba(0, 0, 0, .22), 0 6px 14px rgba(0, 0, 0, .18);
+  --ir-elev-2: 0 2px 4px rgba(0, 0, 0, .2), 0 12px 28px rgba(0, 0, 0, .28);
+  --ir-elev-3: 0 4px 8px rgba(0, 0, 0, .22), 0 22px 44px rgba(0, 0, 0, .38);
+  --ir-text-depth: 0 1px 0 rgba(0, 0, 0, .35), 0 2px 0 rgba(0, 0, 0, .22), 0 8px 18px rgba(0, 0, 0, .4);
+
+  --ir-cta-edge: #07474d;
+  --ir-cta-top: #17909a;
+
+  /* Photo backdrop: readability veil over the photographs */
+  --ir-veil-top: rgba(12, 15, 14, .32);
+  --ir-veil-mid: rgba(16, 19, 17, .6);
+  --ir-veil-bottom: rgba(20, 23, 21, .84);
+
+}
+
+[data-theme="light"] {
+  --ir-glass-edge: rgba(255, 255, 255, .7);
+  --ir-glass-highlight: rgba(255, 255, 255, .55);
+
+  --ir-elev-1: 0 1px 2px rgba(24, 27, 25, .06), 0 6px 14px rgba(24, 27, 25, .07);
+  --ir-elev-2: 0 2px 4px rgba(24, 27, 25, .06), 0 14px 30px rgba(24, 27, 25, .1);
+  --ir-elev-3: 0 4px 8px rgba(24, 27, 25, .08), 0 24px 46px rgba(24, 27, 25, .16);
+  --ir-text-depth: 0 1px 0 rgba(255, 255, 255, .9), 0 6px 14px rgba(24, 27, 25, .12);
+
+  --ir-veil-top: rgba(246, 242, 231, .35);
+  --ir-veil-mid: rgba(246, 242, 231, .7);
+  --ir-veil-bottom: rgba(246, 242, 231, .88);
+
+}
+
+@supports (background: color-mix(in srgb, red 50%, transparent)) {
+  :root, [data-theme] {
+    --ir-glass: color-mix(in srgb, var(--ir-surface) 72%, transparent);
+    --ir-glass-strong: color-mix(in srgb, var(--ir-surface) 86%, transparent);
+  }
+}
+
+/* ---------- 2. Photo backdrop (markup in base.html, behaviour in scene.js) ---------- */
+body { background: transparent; }
+
+.ir-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--ir-bg);
+}
+.ir-backdrop::after {               /* veil: keeps text readable on any photo, in both themes */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 35%, transparent 0%, rgba(0, 0, 0, .18) 70%, rgba(0, 0, 0, .35) 100%),
+    linear-gradient(to bottom, var(--ir-veil-top) 0%, var(--ir-veil-mid) 45%, var(--ir-veil-bottom) 100%);
+  transition: background .4s ease;
+}
+[data-theme="light"] .ir-backdrop::after {
+  background: linear-gradient(to bottom, var(--ir-veil-top) 0%, var(--ir-veil-mid) 45%, var(--ir-veil-bottom) 100%);
+}
+
+.ir-backdrop-stage {
+  position: absolute;
+  inset: -4%;                       /* bleed so parallax never reveals an edge */
+  transform: translate3d(var(--ir-bd-x, 0px), var(--ir-bd-y, 0px), 0);
+  will-change: transform;
+}
+
+.ir-backdrop-layer {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  opacity: 0;
+  transform-origin: var(--ir-kb-origin, 50% 50%);
+  transition: opacity var(--ir-backdrop-fade, 2400ms) ease-in-out;
+}
+.ir-backdrop-layer.is-active { opacity: 1; z-index: 1; }
+.ir-backdrop-layer.is-leaving { opacity: 0; z-index: 0; }
+.ir-backdrop-layer.is-active,
+.ir-backdrop-layer.is-leaving { animation: ir-ken-burns 22s ease-in-out both; }
+
+/* Back plane: blurred copy that fills whatever the photo does not cover */
+.ir-backdrop-ambient {
+  position: absolute;
+  inset: -6%;
+  width: 112%;
+  height: 112%;
+  object-fit: cover;
+  filter: blur(32px) saturate(115%) brightness(.8);
+}
+
+/* Front plane: the photo itself, never stretched; moves further than the back plane (depth) */
+.ir-backdrop-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                /* portrait screens: fill, the photos are portrait too */
+  transform: translate3d(calc(var(--ir-bd-x, 0px) * .8), calc(var(--ir-bd-y, 0px) * .8), 0);
+}
+@media (min-aspect-ratio: 4/5) {    /* wide screens: whole photo at its true ratio, edges melt into the back plane */
+  .ir-backdrop-photo {
+    inset-inline-start: 50%;
+    width: auto;
+    max-width: none;
+    object-fit: initial;
+    transform: translate3d(calc(-50% + var(--ir-bd-x, 0px) * .8), calc(var(--ir-bd-y, 0px) * .8), 0);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+    mask-image: linear-gradient(to right, transparent, #000 14%, #000 86%, transparent);
+  }
+  [dir="rtl"] .ir-backdrop-photo { transform: translate3d(calc(50% + var(--ir-bd-x, 0px) * .8), calc(var(--ir-bd-y, 0px) * .8), 0); }
+}
+
+/* ---------- 3. Glass surfaces & elevation ---------- */
+.ir-card,
+.ir-menu {
+  background: var(--ir-glass);
+  -webkit-backdrop-filter: var(--ir-glass-blur);
+  backdrop-filter: var(--ir-glass-blur);
+  border-color: var(--ir-glass-edge);
+  box-shadow: inset 0 1px 0 var(--ir-glass-highlight), var(--ir-elev-2);
+}
+
+.ir-item,
+.ir-notif,
+.ir-icon-btn,
+.ir-seg,
+.ir-choice label,
+.ir-loc-btn {
+  background-color: var(--ir-glass-strong);
+  border-color: var(--ir-glass-edge);
+  box-shadow: inset 0 1px 0 var(--ir-glass-highlight), var(--ir-elev-1);
+}
+
+.ir-item:hover,
+.ir-notif:hover {
+  border-color: var(--ir-primary);
+  box-shadow: inset 0 1px 0 var(--ir-glass-highlight), var(--ir-elev-3), 0 0 0 1px rgba(14, 110, 118, .35);
+}
+
+.ir-icon-btn { transition: transform .3s var(--ir-ease-spring), box-shadow .3s ease; }
+.ir-icon-btn:hover { transform: translateY(-2px); box-shadow: inset 0 1px 0 var(--ir-glass-highlight), var(--ir-elev-2); }
+
+.ir-map,
+.ir-map-sm,
+.ir-pick-map { box-shadow: var(--ir-elev-2); }
+
+.ir-ann {
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, .28), rgba(255, 255, 255, 0) 70%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .4), var(--ir-elev-1);
+}
+
+/* Raised icon tiles (pop out of the card while it tilts) */
+.ir-item .ico,
+.ir-notif .ico,
+.ir-menu .mi {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .45), inset 0 -3px 0 rgba(0, 0, 0, .12), 0 4px 10px rgba(0, 0, 0, .22);
+}
+
+/* Inset fields */
+.form-control:not(:focus),
+.form-select:not(:focus) { box-shadow: inset 0 2px 4px rgba(0, 0, 0, .18); }
+
+/* ---------- 4. Header (glass band with depth) ---------- */
+.ir-header {
+  background: linear-gradient(135deg, rgba(58, 116, 161, .88) 0%, rgba(52, 102, 142, .82) 55%, rgba(43, 88, 124, .92) 100%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), inset 0 -1px 0 rgba(0, 0, 0, .18), 0 10px 30px rgba(0, 0, 0, .22);
+}
+.ir-header.is-scrolled { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), inset 0 -1px 0 rgba(0, 0, 0, .18), 0 18px 44px rgba(0, 0, 0, .38); }
+
+.ir-brand { perspective: 420px; }
+.ir-brand-tile {
+  transform-style: preserve-3d;
+  transition: transform .6s var(--ir-ease-spring), box-shadow .4s ease;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -3px 0 rgba(0, 0, 0, .1), 0 6px 0 rgba(0, 0, 0, .12), 0 12px 24px rgba(0, 0, 0, .3);
+}
+.ir-brand:hover .ir-brand-tile,
+.ir-brand:focus-visible .ir-brand-tile {
+  transform: rotateY(-16deg) rotateX(8deg) translateZ(12px);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -3px 0 rgba(0, 0, 0, .1), 10px 10px 0 rgba(0, 0, 0, .1), 0 18px 30px rgba(0, 0, 0, .36);
+}
+
+.ir-chip-btn { transition: background .15s ease, border-color .15s ease, transform .3s var(--ir-ease-spring); }
+.ir-chip-btn:hover { transform: translateY(-1px); }
+
+/* ---------- 5. Typography depth ---------- */
+.ir-titlebar h1,
+.ir-loc-km,
+.ir-stat .v,
+.ir-avatar { text-shadow: var(--ir-text-depth); }
+
+/* ---------- 6. Home: road strip in perspective + lane flow ---------- */
+.ir-road {
+  transform: perspective(420px) rotateX(30deg);
+  transform-origin: 50% 75%;
+  filter: drop-shadow(0 12px 10px rgba(0, 0, 0, .3));
+}
+.ir-road .road-dash { animation: ir-lane-flow 1.1s linear infinite; }
+.ir-road .you { filter: drop-shadow(0 0 6px rgba(47, 163, 173, .95)); }
+.ir-road .mk-high,
+.ir-road .mk-medium,
+.ir-road .mk-low {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: ir-marker-pulse 2.4s ease-in-out infinite;
+}
+.ir-road .mk-medium { animation-delay: .4s; }
+.ir-road .mk-low { animation-delay: .8s; }
+
+/* ---------- 7. Primary CTA (physical, pressable) ---------- */
+.ir-cta,
+.ir-cta:hover {
+  background-color: var(--ir-primary);
+  background-image:
+    linear-gradient(105deg, transparent 42%, rgba(255, 255, 255, .22) 50%, transparent 58%),
+    linear-gradient(180deg, var(--ir-cta-top), var(--ir-primary) 55%, var(--ir-primary-hover));
+  background-size: 260% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .28), 0 6px 0 var(--ir-cta-edge), 0 16px 30px rgba(14, 110, 118, .42);
+  animation: ir-sheen 5s ease-in-out infinite;
+  transition: transform .15s ease, box-shadow .15s ease, filter .2s ease;
+}
+.ir-cta:hover { filter: brightness(1.06); }
+.ir-cta:active {
+  transform: translateY(5px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 1px 0 var(--ir-cta-edge), 0 6px 14px rgba(14, 110, 118, .35);
+}
+
+/* ---------- 8. Segmented control & choice tiles ---------- */
+.ir-seg .active {
+  background-image: linear-gradient(180deg, var(--ir-cta-top), var(--ir-primary));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25), 0 4px 10px rgba(14, 110, 118, .4);
+}
+.ir-choice input:checked + label {
+  box-shadow: inset 0 3px 8px rgba(0, 0, 0, .22), 0 0 0 1px var(--ir-primary);
+}
+
+/* ---------- 9. Floating bottom dock (mobile / tablet) ---------- */
+@media (max-width: 991.98px) {
+  .ir-shell { padding-bottom: calc(var(--ir-nav-h) + 40px + env(safe-area-inset-bottom)); }
+
+  .ir-bottomnav {
+    inset-inline: 12px;
+    bottom: calc(10px + env(safe-area-inset-bottom));
+    max-width: calc(var(--ir-maxw-mobile) - 8px);
+    height: var(--ir-nav-h);
+    margin-inline: auto;
+    padding-bottom: 0;
+    border: 1px solid var(--ir-glass-edge);
+    border-radius: 26px;
+    background: var(--ir-glass-strong);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+    box-shadow: inset 0 1px 0 var(--ir-glass-highlight), var(--ir-elev-3);
+  }
+  .ir-bottomnav a i { transition: transform .35s var(--ir-ease-spring); }
+  .ir-bottomnav a.active i { transform: translateY(-2px) scale(1.12); }
+  .ir-bottomnav a.active::after {
+    content: "";
+    position: absolute;
+    bottom: -7px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+
+  .ir-bottomnav .fab {
+    border: 0;
+    background: radial-gradient(circle at 35% 28%, #3cc2cb 0%, var(--ir-primary) 52%, #06444a 100%);
+    box-shadow: inset 0 2px 3px rgba(255, 255, 255, .35), inset 0 -5px 10px rgba(0, 0, 0, .3), 0 12px 24px rgba(14, 110, 118, .55), 0 0 0 5px var(--ir-glass-strong);
+    transition: transform .3s var(--ir-ease-spring), box-shadow .3s ease;
+  }
+  .ir-bottomnav .fab:hover { transform: translateY(-3px) rotate(90deg); }
+  .ir-bottomnav .fab:active { transform: translateY(1px) scale(.94); }
+
+  .ir-toast { bottom: calc(var(--ir-nav-h) + 26px + env(safe-area-inset-bottom)); }
+}
+
+/* ---------- 10. Desktop top navigation ---------- */
+@media (min-width: 992px) {
+  .ir-topnav a { transition: background .2s ease, transform .3s var(--ir-ease-spring); }
+  .ir-topnav a:hover { transform: translateY(-1px); }
+  .ir-topnav a.active { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .22), 0 6px 14px rgba(0, 0, 0, .18); }
+}
+
+/* ---------- 11. Auth hero (floating emblem) ---------- */
+.ir-auth-hero { perspective: 600px; }
+.ir-auth-hero img {
+  box-shadow: inset 0 1px 0 #fff, 0 8px 0 rgba(0, 0, 0, .12), 0 22px 40px rgba(0, 0, 0, .35);
+  animation: ir-float 6s ease-in-out infinite;
+}
+
+/* ---------- 12. Pointer tilt (classes set by js/immersive/tilt.js) ---------- */
+.ir-tilt {
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .5s var(--ir-ease-out), box-shadow .3s ease;
+}
+.ir-tilt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--ir-glare-x, 50%) var(--ir-glare-y, 0%), rgba(255, 255, 255, .16), transparent 58%);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.ir-tilt.is-tilting {
+  transform: perspective(var(--ir-perspective)) rotateX(var(--ir-tilt-x, 0deg)) rotateY(var(--ir-tilt-y, 0deg)) translateZ(var(--ir-tilt-lift, 0px));
+  transition-duration: .12s, .3s;
+}
+.ir-tilt.is-tilting::after { opacity: 1; }
+.ir-tilt.is-tilting .ico,
+.ir-tilt.is-tilting > i { transform: translateZ(22px); }
+.ir-tilt.is-tilting .end { transform: translateZ(14px); }
+.ir-tilt .ico,
+.ir-tilt > i,
+.ir-tilt .end { transition: transform .3s var(--ir-ease-out); }
+
+/* ---------- 13. Motion: page entrance + scroll reveal (time axis) ---------- */
+.ir-main > :not(.ir-cta) {
+  animation: ir-enter .75s var(--ir-ease-out) backwards;
+  transform-origin: 50% 100%;
+}
+.ir-main > :nth-child(2) { animation-delay: .07s; }
+.ir-main > :nth-child(3) { animation-delay: .14s; }
+.ir-main > :nth-child(4) { animation-delay: .21s; }
+.ir-main > :nth-child(n + 5) { animation-delay: .28s; }
+
+/* Off-screen content only (set by js/immersive/reveal.js) → never flashes */
+.ir-reveal {
+  opacity: 0;
+  transform: perspective(var(--ir-perspective)) translate3d(0, 28px, -80px) rotateX(16deg);
+  transform-origin: 50% 100%;
+}
+.ir-reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+  transition: opacity .55s ease var(--ir-reveal-delay, 0ms), transform .8s var(--ir-ease-out) var(--ir-reveal-delay, 0ms);
+}
+
+/* ---------- 14. Keyframes ---------- */
+@keyframes ir-enter {
+  from { opacity: 0; transform: perspective(var(--ir-perspective)) translate3d(0, 22px, -60px) rotateX(12deg); }
+}
+@keyframes ir-lane-flow { to { stroke-dashoffset: -17; } }   /* one dash + gap (8 + 9) */
+@keyframes ir-marker-pulse { 50% { transform: translateY(-2px) scale(1.25); } }
+@keyframes ir-sheen {
+  0%, 55% { background-position: 130% 0, 0 0; }
+  100% { background-position: -30% 0, 0 0; }
+}
+@keyframes ir-ken-burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.06); }
+}
+@keyframes ir-float {
+  0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
+  50% { transform: translateY(-6px) rotateX(6deg) rotateY(-8deg); }
+}
+
+/* ---------- 15. Accessibility & output media ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .ir-main > :not(.ir-cta),
+  .ir-cta,
+  .ir-auth-hero img,
+  .ir-road .road-dash,
+  .ir-road .mk-high,
+  .ir-road .mk-medium,
+  .ir-road .mk-low,
+  .ir-backdrop-layer.is-active,
+  .ir-backdrop-layer.is-leaving { animation: none; }
+  .ir-backdrop-layer { transition: none; }
+  .ir-reveal { opacity: 1; transform: none; }
+  .ir-brand:hover .ir-brand-tile,
+  .ir-icon-btn:hover,
+  .ir-chip-btn:hover,
+  .ir-bottomnav .fab:hover { transform: none; }
+}
+
+@media print {
+  .ir-backdrop { display: none; }
+  .ir-card, .ir-item, .ir-menu, .ir-notif { box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}

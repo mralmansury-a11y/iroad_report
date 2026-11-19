@@ -16,9 +16,13 @@ const KEEP = [STATIC_CACHE, PAGES_CACHE, DATA_CACHE];
 const SHELL = [
   "/offline",
   "/static/css/app.css",
+  "/static/css/immersive.css",
   "/static/js/app.js",
   "/static/js/home.js",
   "/static/js/report-form.js",
+  "/static/js/immersive/scene.js",
+  "/static/js/immersive/tilt.js",
+  "/static/js/immersive/reveal.js",
   "/static/vendor/bootstrap/bootstrap.rtl.min.css",
   "/static/vendor/bootstrap/bootstrap.min.css",
   "/static/vendor/bootstrap/bootstrap.bundle.min.js",

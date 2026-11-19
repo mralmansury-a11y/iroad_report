@@ -150,7 +150,11 @@
 
   function enableMotion() {
     if (reducedMotion.matches) return;
-    if (finePointer.matches) window.addEventListener("pointermove", onPointerMove, { passive: true });
+    // Mouse / trackpad only. On phones the scroll-linked drift moved the photo on every scrolled frame
+    // (on top of the browser bar resizing the viewport), which read as the background "refreshing".
+    // Touch devices keep a still photo plus the slow Ken Burns drift and cross-fade.
+    if (!finePointer.matches) return;
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
     window.addEventListener("scroll", requestDepthFrame, { passive: true });
   }
 

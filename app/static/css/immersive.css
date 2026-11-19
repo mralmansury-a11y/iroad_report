@@ -64,11 +64,19 @@ body { background: transparent; }
 
 .ir-backdrop {
   position: fixed;
-  inset: 0;
+  top: 0;
+  inset-inline: 0;
+  /* Mobile fix: sized to the LARGEST viewport (address bar hidden), not `inset: 0`.
+     With `inset: 0` the box resized every time the browser bar slid in/out while scrolling,
+     so the photo was re-cropped and re-scaled on each scroll — it looked like a refresh. */
+  height: 100vh;
+  height: 100lvh;
   z-index: -1;
   overflow: hidden;
   pointer-events: none;
   background: var(--ir-bg);
+  transform: translateZ(0);         /* own compositor layer: page scrolling never repaints the photo */
+  backface-visibility: hidden;
 }
 .ir-backdrop::after {               /* veil: keeps text readable on any photo, in both themes */
   content: "";
@@ -143,6 +151,17 @@ body { background: transparent; }
   backdrop-filter: var(--ir-glass-blur);
   border-color: var(--ir-glass-edge);
   box-shadow: inset 0 1px 0 var(--ir-glass-highlight), var(--ir-elev-2);
+}
+/* Touch devices: a live blur on every card is re-rendered for each scrolled frame, which made the
+   photo behind flicker on phones. Cards use the near-opaque surface instead; only the header and the
+   bottom dock keep the blur. */
+@media (hover: none), (pointer: coarse) {
+  .ir-card,
+  .ir-menu {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: var(--ir-glass-strong);
+  }
 }
 
 .ir-item,

@@ -4,6 +4,11 @@
 {% block content %}
 <div class="ir-narrow">
 {{ page_title(report.title, report.reference, url_for('reports.index')) }}
+<div class="ir-ref-actions justify-content-start mt-0 mb-3">
+  <button type="button" class="ir-pill-btn" data-copy="{{ report.reference }}"><i class="bi bi-copy" aria-hidden="true"></i><span>{{ _("Copy number") }}</span></button>
+  <button type="button" class="ir-pill-btn d-none" data-share="{{ report.reference }}"
+          data-share-url="{{ url_for('reports.detail', reference=report.reference, _external=True) }}"><i class="bi bi-share" aria-hidden="true"></i><span>{{ _("Share") }}</span></button>
+</div>
 
 <div class="ir-card ir-card-pad mb-3">
   <div class="d-flex justify-content-between align-items-start gap-2">
@@ -33,7 +38,8 @@
 <h2 class="fs-6 fw-bold mt-4">{{ _("Progress") }}</h2>
 <ol class="ir-timeline ir-card ir-card-pad">
   {% for h in report.history %}
-    <li><strong>{{ status_label(h.to_status) }}</strong> <span class="small ir-muted">· {{ h.created_at|dt('short') }}</span>
+    {#- The latest entry is the report's current state: emphasised visually and for screen readers -#}
+    <li{% if loop.last %} class="is-current" aria-current="step"{% endif %}><strong>{{ status_label(h.to_status) }}</strong> <span class="small ir-muted">· {{ h.created_at|dt('short') }}</span>
       {% if full and h.public_note %}<div class="small">{{ h.public_note }}</div>{% endif %}</li>
   {% endfor %}
 </ol>

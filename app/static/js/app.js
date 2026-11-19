@@ -97,6 +97,36 @@
   });
   document.querySelectorAll('[data-action="reload"]').forEach((b) => b.addEventListener("click", () => location.reload()));
 
+  /* ---------- copy / share a report reference ---------- */
+  async function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      try { await navigator.clipboard.writeText(text); return true; } catch (e) { /* fall through */ }
+    }
+    // Fallback for plain-HTTP pages and older WebViews
+    const ta = document.createElement("textarea");
+    ta.value = text; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0";
+    document.body.appendChild(ta); ta.select();
+    let ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    ta.remove();
+    return ok;
+  }
+  document.querySelectorAll("button[data-copy]").forEach((b) => b.addEventListener("click", async () => {
+    const ok = await copyText(b.dataset.copy);
+    IR.toast(ok ? t("copied") : t("copyFailed"), null, null, 2500);
+    const ico = ok && b.querySelector("i");
+    if (ico) { ico.className = "bi bi-check2"; setTimeout(() => { ico.className = "bi bi-copy"; }, 2000); }
+  }));
+  if (navigator.share) {
+    document.querySelectorAll("button[data-share]").forEach((b) => {
+      b.classList.remove("d-none");
+      b.addEventListener("click", () => {
+        navigator.share({ title: document.title, text: t("shareText") + " " + b.dataset.share, url: b.dataset.shareUrl })
+          .catch(() => { /* dismissed by the user */ });
+      });
+    });
+  }
+
   /* ---------- service worker + controlled updates ---------- */
   if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost" || location.hostname === "127.0.0.1")) {
     const hadController = !!navigator.serviceWorker.controller;

@@ -346,6 +346,23 @@ bdi, .ltr { unicode-bidi: isolate; }
 .ir-timeline li::before { content: ""; position: absolute; inset-inline-start: 6px; top: 6px; bottom: -6px; width: 2px; background: var(--ir-border); }
 .ir-timeline li:last-child::before { display: none; }
 .ir-timeline li::after { content: ""; position: absolute; inset-inline-start: 1px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--ir-primary); }
+/* Past steps recede; the current step (last entry) is the one to read */
+.ir-timeline li:not(.is-current) { color: var(--ir-text-muted); }
+.ir-timeline li:not(.is-current)::after { background: var(--ir-border); }
+.ir-timeline li.is-current::after { box-shadow: 0 0 0 4px rgba(14, 110, 118, .3); }
+
+/* ---------- UI/UX pass: shared small components ---------- */
+/* Labelled pill button (tracking, copy, share) — 40px min target for thumbs */
+.ir-pill-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 14px; border-radius: 999px;
+  border: 1px solid var(--ir-border); background: var(--ir-surface); color: var(--ir-text); font-weight: 700; font-size: 13px;
+  text-decoration: none; cursor: pointer; transition: border-color .15s ease, background .15s ease; }
+.ir-pill-btn:hover { border-color: var(--ir-primary); color: var(--ir-text); }
+.ir-pill-btn i { font-size: 15px; }
+.ir-ref-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 12px; }
+.ir-success-mark { width: 84px; height: 84px; font-size: 38px; }
+.ir-req { color: var(--ir-red); margin-inline-start: 4px; font-weight: 800; }
+.ir-error-ico { font-size: 44px; color: var(--ir-text-muted); display: block; margin-bottom: 4px; }
+.ir-bottomnav .fab.active { outline: 3px solid rgba(47, 163, 173, .5); outline-offset: 3px; }
 
 /* Static content pages */
 .ir-prose h2 { font-size: 17px; margin-top: 18px; }

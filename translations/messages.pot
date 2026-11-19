@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-09 12:56+0200\n"
+"POT-Creation-Date: 2026-11-19 11:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,6 +31,10 @@ msgstr ""
 
 #, python-format
 msgid "%(n)s reference points saved."
+msgstr ""
+
+#, python-format
+msgid "%(n)s unread"
 msgstr ""
 
 msgid "A new version is available."
@@ -276,6 +280,12 @@ msgstr ""
 msgid ""
 "Coordinates saved. The kilometre will be calculated when the report is "
 "sent."
+msgstr ""
+
+msgid "Copy number"
+msgstr ""
+
+msgid "Could not copy. Select the number and copy it manually."
 msgstr ""
 
 msgid "Create account"
@@ -886,6 +896,11 @@ msgstr ""
 msgid "On iPhone: tap Share, then “Add to Home Screen”."
 msgstr ""
 
+msgid ""
+"Only the problem type and the location are required. Everything else "
+"helps the team."
+msgstr ""
+
 msgid "Open assignments"
 msgstr ""
 
@@ -1055,6 +1070,9 @@ msgstr ""
 msgid "Reference number"
 msgstr ""
 
+msgid "Reference number copied."
+msgstr ""
+
 msgid "Reference points (km,latitude,longitude — one per line)"
 msgstr ""
 
@@ -1111,6 +1129,9 @@ msgid "Report %(ref)s \"%(title)s\" was assigned to you."
 msgstr ""
 
 msgid "Report a road problem"
+msgstr ""
+
+msgid "Report another problem"
 msgstr ""
 
 msgid "Report assigned."
@@ -1205,6 +1226,9 @@ msgstr ""
 msgid "Road open"
 msgstr ""
 
+msgid "Road problem report number:"
+msgstr ""
+
 msgid "Road section"
 msgstr ""
 
@@ -1274,6 +1298,9 @@ msgid "Settings"
 msgstr ""
 
 msgid "Severity"
+msgstr ""
+
+msgid "Share"
 msgstr ""
 
 msgid "Sharing information"
@@ -1477,6 +1504,11 @@ msgid "Title (English)"
 msgstr ""
 
 msgid "To date"
+msgstr ""
+
+msgid ""
+"To follow up later, open “Track a report” and enter this number with the "
+"phone number you used."
 msgstr ""
 
 msgid "To km"
@@ -1738,6 +1770,9 @@ msgid "log in"
 msgstr ""
 
 msgid "privacy policy"
+msgstr ""
+
+msgid "required"
 msgstr ""
 
 msgid "send a report without an account"

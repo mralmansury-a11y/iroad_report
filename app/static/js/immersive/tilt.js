@@ -6,7 +6,9 @@
 
   const TARGETS = [
     { selector: ".ir-item, .ir-notif", maxDeg: 5, liftPx: 14 },
-    { selector: ".ir-cta, .ir-stat, .ir-choice label, .ir-loc-btn", maxDeg: 9, liftPx: 10 },
+    // Form controls (choice tiles, location buttons) are deliberately NOT tilted: a target that moves
+    // under the pointer while someone is choosing makes the choice harder, not more delightful.
+    { selector: ".ir-cta, .ir-stat", maxDeg: 9, liftPx: 10 },
   ];
 
   const canTilt = window.matchMedia("(hover: hover) and (pointer: fine)").matches

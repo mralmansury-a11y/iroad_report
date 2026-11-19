@@ -27,6 +27,14 @@
   const scenes = parseScenes(root);
   if (!scenes.length) return;
 
+  // Road users are often on weak mobile coverage: the photos (~1 MB) are decoration, the report form is not.
+  // Data-saver or a 2G/3G-class link → keep the plain themed background and download nothing.
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn && (conn.saveData || /2g|3g/.test(conn.effectiveType || ""))) {
+    root.classList.add("is-lite");
+    return;
+  }
+
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)");
   const store = (window.IR && window.IR.store) || { get: () => null, set: () => false };

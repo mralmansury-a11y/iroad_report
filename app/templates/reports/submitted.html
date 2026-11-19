@@ -2,17 +2,27 @@
 {% block title %}{{ _("Report sent") }} · {{ super() }}{% endblock %}
 {% block content %}
 <div class="ir-narrow text-center py-4">
-  <div class="ir-avatar mb-3" style="width:84px;height:84px;font-size:38px" aria-hidden="true"><i class="bi bi-check-lg"></i></div>
+  <div class="ir-avatar ir-success-mark mb-3" aria-hidden="true"><i class="bi bi-check-lg"></i></div>
   <h1 class="fs-3">{{ _("Your report was received") }}</h1>
   <p class="ir-muted">{{ _("Thank you for helping keep the road safe. The road team will review it.") }}</p>
   <div class="ir-card ir-card-pad my-3">
     <div class="ir-muted small">{{ _("Reference number") }}</div>
-    <div class="fs-2 fw-bold num ltr" data-copy>{{ report.reference }}</div>
+    <div class="fs-2 fw-bold num ltr">{{ report.reference }}</div>
     <div class="small ir-muted">{{ _("Keep this number to follow up your report.") }}</div>
+    {#- Copy / share: the reference is the only key a guest has to follow the report (behaviour in app.js) -#}
+    <div class="ir-ref-actions">
+      <button type="button" class="ir-pill-btn" data-copy="{{ report.reference }}"><i class="bi bi-copy" aria-hidden="true"></i><span>{{ _("Copy number") }}</span></button>
+      <button type="button" class="ir-pill-btn d-none" data-share="{{ report.reference }}"
+              data-share-url="{{ url_for('reports.detail', reference=report.reference, _external=True) }}"><i class="bi bi-share" aria-hidden="true"></i><span>{{ _("Share") }}</span></button>
+    </div>
   </div>
+  {% if not current_user.is_authenticated %}
+  <p class="small ir-muted">{{ _("To follow up later, open “Track a report” and enter this number with the phone number you used.") }}</p>
+  {% endif %}
   <div class="d-grid gap-2">
     <a class="btn btn-primary" href="{{ url_for('reports.detail', reference=report.reference) }}">{{ _("Follow the report") }}</a>
-    <a class="btn btn-outline-light" href="{{ url_for('main.home') }}">{{ _("Back to home") }}</a>
+    <a class="btn btn-outline-light" href="{{ url_for('reports.new') }}"><i class="bi bi-plus-lg" aria-hidden="true"></i> {{ _("Report another problem") }}</a>
+    <a class="btn btn-link" href="{{ url_for('main.home') }}">{{ _("Back to home") }}</a>
   </div>
 </div>
 {% endblock %}

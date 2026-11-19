@@ -137,6 +137,9 @@ def js_strings() -> dict:
         "confirm": _("Are you sure?"),
         "removeImage": _("Remove image"),
         "noData": _("Not enough data yet"),
+        "copied": _("Reference number copied."),
+        "copyFailed": _("Could not copy. Select the number and copy it manually."),
+        "shareText": _("Road problem report number:"),
         "reports": _("Reports"),
         "resolved": _("Resolved"),
     }

@@ -59,12 +59,16 @@
       <span class="ir-brand-text"><strong>{{ _("Road Services Management") }}</strong><small>{{ _("National Development Agency") }}</small></span>
     </a>
     <nav class="ir-topnav" aria-label="{{ _('Main navigation') }}">
-      <a href="{{ url_for('main.home') }}" class="{{ 'active' if ep == 'main.home' }}" {{ 'aria-current=page' if ep == 'main.home' }}>{{ _("Home") }}</a>
-      <a href="{{ url_for('reports.index') }}" class="{{ 'active' if ep in ('reports.index', 'reports.detail', 'reports.track') }}">{{ _("Reports") }}</a>
-      <a href="{{ url_for('reports.new') }}" class="{{ 'active' if ep == 'reports.new' }}">{{ _("Add report") }}</a>
-      <a href="{{ url_for('main.road_map') }}" class="{{ 'active' if ep == 'main.road_map' }}">{{ _("Map") }}</a>
-      <a href="{{ url_for('main.alerts') }}" class="{{ 'active' if ep == 'main.alerts' }}">{{ _("Road alerts") }}</a>
-      <a href="{{ url_for('main.support') }}" class="{{ 'active' if ep == 'main.support' }}">{{ _("Support") }}</a>
+      {#- `aria-current` on every active item so screen readers announce the current page, not only Home -#}
+      {% macro navlink(href, active, label) -%}
+        <a href="{{ href }}"{% if active %} class="active" aria-current="page"{% endif %}>{{ label }}</a>
+      {%- endmacro %}
+      {{ navlink(url_for('main.home'), ep == 'main.home', _("Home")) }}
+      {{ navlink(url_for('reports.index'), ep in ('reports.index', 'reports.detail', 'reports.track', 'reports.submitted'), _("Reports")) }}
+      {{ navlink(url_for('reports.new'), ep == 'reports.new', _("Add report")) }}
+      {{ navlink(url_for('main.road_map'), ep == 'main.road_map', _("Map")) }}
+      {{ navlink(url_for('main.alerts'), ep == 'main.alerts', _("Road alerts")) }}
+      {{ navlink(url_for('main.support'), ep == 'main.support', _("Support")) }}
       {% if current_user.is_authenticated and current_user.is_staff %}<a href="{{ url_for('admin.dashboard') }}">{{ _("Dashboard") }}</a>{% endif %}
     </nav>
     <div class="ir-header-tools">
@@ -94,12 +98,22 @@
 
   <nav class="ir-bottomnav" aria-label="{{ _('Main navigation') }}">
     <ul>
-      <li><a href="{{ url_for('main.home') }}" class="{{ 'active' if ep == 'main.home' }}" {{ 'aria-current=page' if ep == 'main.home' }}><i class="bi bi-house-door-fill"></i><span>{{ _("Home") }}</span></a></li>
-      <li><a href="{{ url_for('reports.index', tab='mine') if current_user.is_authenticated else url_for('reports.index') }}" class="{{ 'active' if ep.startswith('reports.') and ep != 'reports.new' }}"><i class="bi bi-clipboard2-fill"></i><span>{{ _("My reports") }}</span></a></li>
-      <li><a href="{{ url_for('reports.new') }}" class="fab" aria-label="{{ _('Add report') }}"><i class="bi bi-plus-lg"></i></a></li>
-      <li><a href="{{ url_for('notifications.index') if current_user.is_authenticated else url_for('main.alerts') }}" class="{{ 'active' if ep.startswith('notifications.') or ep == 'main.alerts' }}">
-        <i class="bi bi-bell-fill"></i><span>{{ _("Notifications") }}</span>{% if unread_count %}<span class="ir-dot num">{{ unread_count }}</span>{% endif %}</a></li>
-      <li><a href="{{ url_for('main.profile') if current_user.is_authenticated else url_for('auth.login') }}" class="{{ 'active' if ep.startswith('main.profile') or ep.startswith('auth.') or ep in ('main.language','main.notification_settings','main.privacy','main.about','main.support') }}"><i class="bi bi-person-fill"></i><span>{{ _("Profile") }}</span></a></li>
+      {% macro tab(href, active, icon, label) -%}
+        <a href="{{ href }}"{% if active %} class="active" aria-current="page"{% endif %}><i class="bi {{ icon }}" aria-hidden="true"></i><span>{{ label }}</span>{{ caller() if caller }}</a>
+      {%- endmacro %}
+      {% set authed = current_user.is_authenticated %}
+      <li>{{ tab(url_for('main.home'), ep == 'main.home', 'bi-house-door-fill', _("Home")) }}</li>
+      {#- Guests have no personal list: label the tab «Reports», not «My reports» -#}
+      <li>{{ tab(url_for('reports.index', tab='mine') if authed else url_for('reports.index'),
+                 ep.startswith('reports.') and ep != 'reports.new', 'bi-clipboard2-fill', _("My reports") if authed else _("Reports")) }}</li>
+      <li><a href="{{ url_for('reports.new') }}" class="fab{{ ' active' if ep == 'reports.new' }}" aria-label="{{ _('Add report') }}"{% if ep == 'reports.new' %} aria-current="page"{% endif %}><i class="bi bi-plus-lg" aria-hidden="true"></i></a></li>
+      <li>{% call tab(url_for('notifications.index') if authed else url_for('main.alerts'),
+                      ep.startswith('notifications.') or ep == 'main.alerts', 'bi-bell-fill', _("Notifications") if authed else _("Road alerts")) -%}
+        {% if unread_count %}<span class="ir-dot num" aria-label="{{ _('%(n)s unread', n=unread_count) }}">{{ unread_count }}</span>{% endif %}
+      {%- endcall %}</li>
+      <li>{{ tab(url_for('main.profile') if authed else url_for('auth.login'),
+                 ep.startswith('main.profile') or ep.startswith('auth.') or ep in ('main.language','main.notification_settings','main.privacy','main.about','main.support'),
+                 'bi-person-fill', _("Profile") if authed else _("Log in")) }}</li>
     </ul>
   </nav>
 </div>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-09 12:56+0200\n"
+"POT-Creation-Date: 2026-11-19 11:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: ar\n"
@@ -33,6 +33,10 @@ msgstr "%(n)s د"
 #, python-format
 msgid "%(n)s reference points saved."
 msgstr "تم حفظ %(n)s نقطة مرجعية."
+
+#, python-format
+msgid "%(n)s unread"
+msgstr "%(n)s غير مقروءة"
 
 msgid "A new version is available."
 msgstr "يتوفر إصدار جديد."
@@ -271,6 +275,12 @@ msgstr "تحكّم بما يصلك من تنبيهات"
 
 msgid "Coordinates saved. The kilometre will be calculated when the report is sent."
 msgstr "تم حفظ الإحداثيات، وسيُحتسب الكيلومتر عند إرسال البلاغ."
+
+msgid "Copy number"
+msgstr "نسخ الرقم"
+
+msgid "Could not copy. Select the number and copy it manually."
+msgstr "تعذّر النسخ. حدّد الرقم وانسخه يدوياً."
 
 msgid "Create account"
 msgstr "إنشاء الحساب"
@@ -861,6 +871,9 @@ msgstr "الأقدم أولاً"
 msgid "On iPhone: tap Share, then “Add to Home Screen”."
 msgstr "على آيفون: اضغط «مشاركة» ثم «إضافة إلى الشاشة الرئيسية»."
 
+msgid "Only the problem type and the location are required. Everything else helps the team."
+msgstr "نوع المشكلة والموقع فقط إلزاميان، وبقية البيانات تساعد فريق الصيانة."
+
 msgid "Open assignments"
 msgstr "الإسنادات المفتوحة"
 
@@ -1023,6 +1036,9 @@ msgstr "الرقم المرجعي"
 msgid "Reference number"
 msgstr "الرقم المرجعي"
 
+msgid "Reference number copied."
+msgstr "تم نسخ الرقم المرجعي."
+
 msgid "Reference points (km,latitude,longitude — one per line)"
 msgstr "النقاط المرجعية (كم،خط العرض،خط الطول — نقطة في كل سطر)"
 
@@ -1078,6 +1094,9 @@ msgstr "تم إسناد البلاغ %(ref)s «%(title)s» إليك."
 
 msgid "Report a road problem"
 msgstr "بلّغ عن عطل في الطريق"
+
+msgid "Report another problem"
+msgstr "الإبلاغ عن مشكلة أخرى"
 
 msgid "Report assigned."
 msgstr "تم إسناد البلاغ."
@@ -1169,6 +1188,9 @@ msgstr "خريطة الطريق"
 msgid "Road open"
 msgstr "الطريق مفتوح"
 
+msgid "Road problem report number:"
+msgstr "رقم بلاغ عطل على الطريق:"
+
 msgid "Road section"
 msgstr "القاطع"
 
@@ -1234,6 +1256,9 @@ msgstr "الإعدادات"
 
 msgid "Severity"
 msgstr "درجة الخطورة"
+
+msgid "Share"
+msgstr "مشاركة"
 
 msgid "Sharing information"
 msgstr "مشاركة المعلومات"
@@ -1425,6 +1450,9 @@ msgstr "العنوان (إنجليزي)"
 
 msgid "To date"
 msgstr "إلى تاريخ"
+
+msgid "To follow up later, open “Track a report” and enter this number with the phone number you used."
+msgstr "للمتابعة لاحقاً، افتح «متابعة بلاغ» وأدخل هذا الرقم مع رقم الهاتف الذي استخدمته."
 
 msgid "To km"
 msgstr "إلى الكيلومتر"
@@ -1666,6 +1694,9 @@ msgstr "سجّل الدخول"
 
 msgid "privacy policy"
 msgstr "سياسة الخصوصية"
+
+msgid "required"
+msgstr "إلزامي"
 
 msgid "send a report without an account"
 msgstr "إرسال بلاغ دون حساب"

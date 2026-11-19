@@ -10,9 +10,12 @@
       data-draft-key="report-draft-{{ current_user.id if current_user.is_authenticated else 'guest' }}">
   {{ form.csrf_token }}
   <div class="alert alert-danger ir-alert d-none" data-form-error role="alert"></div>
+  {#- Only two things are required (type + location); say so up front so people don't fill everything -#}
+  {% set req %}<span class="ir-req" aria-hidden="true">*</span><span class="visually-hidden">({{ _("required") }})</span>{% endset %}
+  <p class="small ir-muted mb-3">{{ _("Only the problem type and the location are required. Everything else helps the team.") }}</p>
 
   <fieldset class="mb-3">
-    <legend class="form-label fs-6">{{ form.category_id.label.text }}</legend>
+    <legend class="form-label fs-6">{{ form.category_id.label.text }}{{ req }}</legend>
     <div class="ir-choice-grid">
       {% for c in categories %}
       <div class="ir-choice">
@@ -31,7 +34,7 @@
   </div>
 
   <fieldset class="mb-3">
-    <legend class="form-label fs-6">{{ _("Location") }}</legend>
+    <legend class="form-label fs-6">{{ _("Location") }}{{ req }}</legend>
     {% set has_loc = form.latitude.data is not none %}
     <div class="ir-card ir-card-pad ir-loc-picker" data-loc-picker data-state="{{ 'ok' if has_loc else ('error' if form.latitude.errors else 'empty') }}"
          data-tiles="{{ config.MAP_TILE_URL }}">

@@ -2,6 +2,7 @@
 {% block title %}{{ code }} · {{ super() }}{% endblock %}
 {% block content %}
 <div class="ir-narrow text-center py-5">
+  <i class="bi {{ 'bi-signpost-split' if code == 404 else ('bi-shield-lock' if code == 403 else ('bi-hourglass-split' if code == 429 else 'bi-exclamation-triangle')) }} ir-error-ico" aria-hidden="true"></i>
   <div class="display-4 fw-bold num">{{ code }}</div>
   <h1 class="fs-4 mt-2">
     {% if code == 404 %}{{ _("Page not found") }}
@@ -12,6 +13,11 @@
     {% elif code == 400 %}{{ _("Invalid request") }}
     {% else %}{{ _("An unexpected error occurred. Please try again later.") }}{% endif %}
   </h1>
-  <a class="btn btn-primary mt-3" href="{{ url_for('main.home') }}">{{ _("Back to home") }}</a>
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-3">
+    {#- Recovery first: a form that expired or a rate limit is fixed by retrying, not by leaving -#}
+    {% if csrf or code in (429, 500) %}<button type="button" class="btn btn-primary" data-action="reload"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> {{ _("Try again") }}</button>{% endif %}
+    <a class="btn {{ 'btn-outline-light' if csrf or code in (429, 500) else 'btn-primary' }}" href="{{ url_for('main.home') }}">{{ _("Back to home") }}</a>
+    {% if code == 404 %}<a class="btn btn-outline-light" href="{{ url_for('reports.track') }}">{{ _("Track a report") }}</a>{% endif %}
+  </div>
 </div>
 {% endblock %}

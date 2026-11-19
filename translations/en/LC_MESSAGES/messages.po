@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-09 12:56+0200\n"
+"POT-Creation-Date: 2026-11-19 11:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: en\n"
@@ -33,6 +33,10 @@ msgstr "%(n)s min"
 #, python-format
 msgid "%(n)s reference points saved."
 msgstr "%(n)s reference points saved."
+
+#, python-format
+msgid "%(n)s unread"
+msgstr "%(n)s unread"
 
 msgid "A new version is available."
 msgstr "A new version is available."
@@ -271,6 +275,12 @@ msgstr "Control which alerts you receive"
 
 msgid "Coordinates saved. The kilometre will be calculated when the report is sent."
 msgstr "Coordinates saved. The kilometre will be calculated when the report is sent."
+
+msgid "Copy number"
+msgstr "Copy number"
+
+msgid "Could not copy. Select the number and copy it manually."
+msgstr "Could not copy. Select the number and copy it manually."
 
 msgid "Create account"
 msgstr "Create account"
@@ -861,6 +871,9 @@ msgstr "Oldest first"
 msgid "On iPhone: tap Share, then “Add to Home Screen”."
 msgstr "On iPhone: tap Share, then “Add to Home Screen”."
 
+msgid "Only the problem type and the location are required. Everything else helps the team."
+msgstr "Only the problem type and the location are required. Everything else helps the team."
+
 msgid "Open assignments"
 msgstr "Open assignments"
 
@@ -1023,6 +1036,9 @@ msgstr "Reference"
 msgid "Reference number"
 msgstr "Reference number"
 
+msgid "Reference number copied."
+msgstr "Reference number copied."
+
 msgid "Reference points (km,latitude,longitude — one per line)"
 msgstr "Reference points (km,latitude,longitude — one per line)"
 
@@ -1078,6 +1094,9 @@ msgstr "Report %(ref)s \"%(title)s\" was assigned to you."
 
 msgid "Report a road problem"
 msgstr "Report a road problem"
+
+msgid "Report another problem"
+msgstr "Report another problem"
 
 msgid "Report assigned."
 msgstr "Report assigned."
@@ -1169,6 +1188,9 @@ msgstr "Road map"
 msgid "Road open"
 msgstr "Road open"
 
+msgid "Road problem report number:"
+msgstr "Road problem report number:"
+
 msgid "Road section"
 msgstr "Road section"
 
@@ -1234,6 +1256,9 @@ msgstr "Settings"
 
 msgid "Severity"
 msgstr "Severity"
+
+msgid "Share"
+msgstr "Share"
 
 msgid "Sharing information"
 msgstr "Sharing information"
@@ -1425,6 +1450,9 @@ msgstr "Title (English)"
 
 msgid "To date"
 msgstr "To date"
+
+msgid "To follow up later, open “Track a report” and enter this number with the phone number you used."
+msgstr "To follow up later, open “Track a report” and enter this number with the phone number you used."
 
 msgid "To km"
 msgstr "To km"
@@ -1666,6 +1694,9 @@ msgstr "log in"
 
 msgid "privacy policy"
 msgstr "privacy policy"
+
+msgid "required"
+msgstr "required"
 
 msgid "send a report without an account"
 msgstr "send a report without an account"

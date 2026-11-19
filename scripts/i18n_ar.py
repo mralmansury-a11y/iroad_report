@@ -6,6 +6,17 @@ Used by scripts/build_translations.py to fill the catalogue. After the first bui
 as a reviewed reference.
 """
 AR = {
+    # --- UI/UX pass (public interface) ---
+    "%(n)s unread": "%(n)s غير مقروءة",
+    "Copy number": "نسخ الرقم",
+    "Share": "مشاركة",
+    "Report another problem": "الإبلاغ عن مشكلة أخرى",
+    "To follow up later, open “Track a report” and enter this number with the phone number you used.": "للمتابعة لاحقاً، افتح «متابعة بلاغ» وأدخل هذا الرقم مع رقم الهاتف الذي استخدمته.",
+    "required": "إلزامي",
+    "Only the problem type and the location are required. Everything else helps the team.": "نوع المشكلة والموقع فقط إلزاميان، وبقية البيانات تساعد فريق الصيانة.",
+    "Reference number copied.": "تم نسخ الرقم المرجعي.",
+    "Could not copy. Select the number and copy it manually.": "تعذّر النسخ. حدّد الرقم وانسخه يدوياً.",
+    "Road problem report number:": "رقم بلاغ عطل على الطريق:",
     "New status": "الحالة الجديدة",
     "Note to the reporter (visible)": "ملاحظة للمُبلِّغ (ظاهرة له)",
     "Internal note (staff only)": "ملاحظة داخلية (للموظفين فقط)",

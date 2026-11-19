@@ -7,13 +7,15 @@
     <h1>{{ _("Reports") }}</h1>
     <p class="sub">{{ _("All reports on the coastal road") }}</p>
   </div>
-  <a class="ir-icon-btn" href="{{ url_for('reports.track') }}" aria-label="{{ _('Track a report') }}"><i class="bi bi-search"></i></a>
+  {#- Labelled button: a bare magnifier reads as «search», but it opens tracking by reference number -#}
+  <a class="ir-pill-btn" href="{{ url_for('reports.track') }}"><i class="bi bi-upc-scan" aria-hidden="true"></i><span>{{ _("Track a report") }}</span></a>
 </div>
 <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
-  <div class="ir-seg" role="tablist">
-    <a href="{{ url_for('reports.index', tab='all') }}" class="{{ 'active' if tab != 'mine' }}" role="tab" aria-selected="{{ 'true' if tab != 'mine' else 'false' }}">{{ _("All") }}</a>
-    <a href="{{ url_for('reports.index', tab='mine') }}" class="{{ 'active' if tab == 'mine' }}" role="tab" aria-selected="{{ 'true' if tab == 'mine' else 'false' }}">{{ _("My reports") }}</a>
-  </div>
+  {#- Plain links that reload the page → a nav with aria-current, not an ARIA tablist (which promises arrow-key tabs) -#}
+  <nav class="ir-seg" aria-label="{{ _('Reports') }}">
+    <a href="{{ url_for('reports.index', tab='all') }}"{% if tab != 'mine' %} class="active" aria-current="page"{% endif %}>{{ _("All") }}</a>
+    <a href="{{ url_for('reports.index', tab='mine') }}"{% if tab == 'mine' %} class="active" aria-current="page"{% endif %}>{{ _("My reports") }}</a>
+  </nav>
   <form method="get" class="ms-auto">
     <input type="hidden" name="tab" value="{{ tab }}">
     <label class="visually-hidden" for="stf">{{ _("Status") }}</label>

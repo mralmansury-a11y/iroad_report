@@ -7,7 +7,7 @@
 <div class="ir-list">
   {% for a in announcements %}
   <article class="ir-notif k-{{ a.notification_kind }}">
-    <span class="ico"><i class="bi {{ 'bi-cloud-fog2' if a.kind == 'weather' else ('bi-cone-striped' if a.kind in ('traffic','closure') else ('bi-exclamation-octagon' if a.kind == 'emergency' else 'bi-megaphone')) }}"></i></span>
+    <span class="ico" aria-hidden="true"><i class="bi {{ 'bi-cloud-fog2' if a.kind == 'weather' else ('bi-cone-striped' if a.kind in ('traffic','closure') else ('bi-exclamation-octagon' if a.kind == 'emergency' else 'bi-megaphone')) }}"></i></span>
     <div>
       <div class="small ir-muted">{{ ann_kind_label(a.kind) }}{% if a.km_from %} · <span class="num">{{ a.km_from|km }}{% if a.km_to %} – {{ a.km_to|km }}{% endif %}</span>{% endif %}</div>
       <h2 class="t fs-6 mb-1">{{ a.title }}</h2>
@@ -22,7 +22,7 @@
 {% if not current_user.is_authenticated %}
 <div class="ir-card ir-card-pad mt-3">
   <p class="small mb-2">{{ _("Get road alerts on this device.") }}</p>
-  <button type="button" class="btn btn-sm btn-outline-light" data-action="push-enable"><i class="bi bi-bell"></i> {{ _("Enable on this device") }}</button>
+  <button type="button" class="btn btn-sm btn-outline-light" data-action="push-enable"><i class="bi bi-bell" aria-hidden="true"></i> {{ _("Enable on this device") }}</button>
   <a class="btn btn-sm btn-primary" href="{{ url_for('auth.login') }}">{{ _("Log in") }}</a>
 </div>
 {% endif %}

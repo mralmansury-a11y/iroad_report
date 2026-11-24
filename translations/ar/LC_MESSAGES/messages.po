@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-09 12:56+0200\n"
+"POT-Creation-Date: 2026-11-24 02:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: ar\n"
@@ -33,6 +33,10 @@ msgstr "%(n)s د"
 #, python-format
 msgid "%(n)s reference points saved."
 msgstr "تم حفظ %(n)s نقطة مرجعية."
+
+#, python-format
+msgid "%(n)s verified hazards are known within %(r)s km of you."
+msgstr "يوجد %(n)s عائق متحقق منه ضمن %(r)s كم من موقعك."
 
 msgid "A new version is available."
 msgstr "يتوفر إصدار جديد."
@@ -197,6 +201,10 @@ msgstr "التصنيفات"
 msgid "Category"
 msgstr "التصنيف"
 
+#, python-format
+msgid "Caution: %(category)s ahead in %(distance)s. Severity: %(severity)s."
+msgstr "تنبيه: %(category)s أمامك على بعد %(distance)s. الخطورة: %(severity)s."
+
 msgid "Change language"
 msgstr "تغيير اللغة"
 
@@ -271,6 +279,9 @@ msgstr "تحكّم بما يصلك من تنبيهات"
 
 msgid "Coordinates saved. The kilometre will be calculated when the report is sent."
 msgstr "تم حفظ الإحداثيات، وسيُحتسب الكيلومتر عند إرسال البلاغ."
+
+msgid "Could not update the reports. The last list is shown."
+msgstr "تعذّر تحديث البلاغات. تُعرض آخر قائمة محفوظة."
 
 msgid "Create account"
 msgstr "إنشاء الحساب"
@@ -350,6 +361,12 @@ msgstr "تم حفظ المسودة على هذا الجهاز."
 msgid "Drag to adjust the location"
 msgstr "اسحب لتعديل الموقع"
 
+msgid "Driving mode"
+msgstr "وضع القيادة"
+
+msgid "Driving mode is not available."
+msgstr "وضع القيادة غير متاح."
+
 msgid "E-mail"
 msgstr "البريد الإلكتروني"
 
@@ -374,8 +391,14 @@ msgstr "عبء العمل على الموظفين"
 msgid "Employees"
 msgstr "الموظفون"
 
+msgid "Enable driving mode (proximity alerts)"
+msgstr "تفعيل وضع القيادة (التنبيه بالعوائق القريبة)"
+
 msgid "Enable on this device"
 msgstr "التفعيل على هذا الجهاز"
+
+msgid "End driving"
+msgstr "إنهاء القيادة"
 
 msgid "End km must be greater than start km."
 msgstr "يجب أن يكون كيلومتر النهاية أكبر من كيلومتر البداية."
@@ -407,6 +430,9 @@ msgstr "ازدحام متوقع"
 msgid "Filter"
 msgstr "تصفية"
 
+msgid "First alert distance (m)"
+msgstr "مسافة التنبيه الأول (م)"
+
 msgid "First response"
 msgstr "أول استجابة"
 
@@ -425,6 +451,9 @@ msgstr "للموظفين: الفرق التي يعملون ضمنها."
 msgid "Forgot password?"
 msgstr "نسيت كلمة المرور؟"
 
+msgid "Forward cone half-angle (degrees)"
+msgstr "نصف زاوية المخروط الأمامي (درجة)"
+
 msgid "Frequently asked questions"
 msgstr "الأسئلة الشائعة"
 
@@ -439,6 +468,10 @@ msgstr "الاسم الكامل"
 
 msgid "GPS coordinates"
 msgstr "إحداثيات GPS"
+
+#, python-format
+msgid "GPS ±%(n)s m"
+msgstr "GPS ±%(n)s م"
 
 msgid "Get road alerts on this device."
 msgstr "استقبل تنبيهات الطريق على هذا الجهاز."
@@ -554,6 +587,9 @@ msgstr "أسطر غير صالحة: %(lines)s"
 msgid "Invalid request"
 msgstr "طلب غير صالح"
 
+msgid "Invalid search radius."
+msgstr "نطاق البحث غير صالح."
+
 #, python-format
 msgid "Invalid value for %(key)s"
 msgstr "قيمة غير صالحة للحقل %(key)s"
@@ -570,6 +606,9 @@ msgstr "المسمى الوظيفي"
 
 msgid "Keep this number to follow up your report."
 msgstr "احتفظ بهذا الرقم لمتابعة بلاغك."
+
+msgid "Keep this screen open during the trip: in this version alerts work only while the page is visible."
+msgstr "أبقِ هذه الشاشة مفتوحة طوال الرحلة: في هذه النسخة تعمل التنبيهات فقط والصفحة ظاهرة."
 
 msgid "Kilometre marker"
 msgstr "الكيلومتر"
@@ -598,6 +637,9 @@ msgstr "اتركه فارغاً للإبقاء على كلمة المرور ال
 
 msgid "Licences and compliance"
 msgstr "التراخيص والامتثال"
+
+msgid "Live map"
+msgstr "الخريطة الحية"
 
 msgid "Load the official survey data: the denser and more accurate the points, the better the conversion."
 msgstr "حمّل بيانات المسح الرسمية: كلما زادت كثافة النقاط ودقتها تحسّنت دقة التحويل."
@@ -764,11 +806,17 @@ msgstr "أخبار افتتاح القواطع وأعمال الصيانة"
 msgid "Next"
 msgstr "التالي"
 
+msgid "Next hazards ahead"
+msgstr "العوائق التالية في اتجاه سيرك"
+
 msgid "No active alerts. Drive safely."
 msgstr "لا توجد تنبيهات حالياً. قُد بأمان."
 
 msgid "No announcements yet."
 msgstr "لا توجد إعلانات بعد."
+
+msgid "No eligible reports near the start point: simulating a straight drive."
+msgstr "لا توجد بلاغات مؤهلة قرب نقطة البداية: تتم محاكاة سير في خط مستقيم."
 
 msgid "No employees yet."
 msgstr "لا يوجد موظفون بعد."
@@ -785,6 +833,9 @@ msgstr "لا توجد تنبيهات بعد."
 msgid "No report matches this reference number and phone."
 msgstr "لا يوجد بلاغ يطابق هذا الرقم المرجعي ورقم الهاتف."
 
+msgid "No reported hazards ahead"
+msgstr "لا توجد عوائق مُبلّغ عنها أمامك"
+
 msgid "No reports match the filters."
 msgstr "لا توجد بلاغات مطابقة للتصفية."
 
@@ -799,6 +850,10 @@ msgstr "لم تُعرَّف قواطع بعد."
 
 msgid "No users found."
 msgstr "لا يوجد مستخدمون."
+
+#, python-format
+msgid "No verified hazards are known within %(r)s km of you."
+msgstr "لا توجد عوائق متحقق منها ضمن %(r)s كم من موقعك."
 
 msgid "Not enough data yet"
 msgstr "لا تتوفر بيانات كافية بعد"
@@ -860,6 +915,9 @@ msgstr "الأقدم أولاً"
 
 msgid "On iPhone: tap Share, then “Add to Home Screen”."
 msgstr "على آيفون: اضغط «مشاركة» ثم «إضافة إلى الشاشة الرئيسية»."
+
+msgid "Online"
+msgstr "متصل"
 
 msgid "Open assignments"
 msgstr "الإسنادات المفتوحة"
@@ -1011,6 +1069,12 @@ msgstr "الإشعارات الفورية على أجهزتي"
 msgid "Radius for “nearby reports” (km)"
 msgstr "نطاق «البلاغات القريبة» (كم)"
 
+msgid "Radius of reports fetched around the driver (km, max 50)"
+msgstr "نطاق جلب البلاغات حول السائق (كم، بحد أقصى 50)"
+
+msgid "Re-centre"
+msgstr "إعادة التوسيط"
+
 msgid "Receive notifications on this device even when the app is closed"
 msgstr "استقبال الإشعارات على هذا الجهاز حتى عند إغلاق التطبيق"
 
@@ -1106,6 +1170,9 @@ msgstr "تم إرسال البلاغ"
 msgid "Report status updated"
 msgstr "تم تحديث حالة البلاغ"
 
+msgid "Report statuses that trigger driving alerts (verified by the administration)"
+msgstr "حالات البلاغ المؤهلة لتنبيه السائقين (المتحقق منها من الإدارة)"
+
 msgid "Report submission is temporarily closed."
 msgstr "استقبال البلاغات متوقف مؤقتاً."
 
@@ -1124,11 +1191,24 @@ msgstr "البلاغات حسب القاطع"
 msgid "Reports by status"
 msgstr "البلاغات حسب الحالة"
 
+msgid "Reports not loaded yet"
+msgstr "لم تُحمَّل البلاغات بعد"
+
 msgid "Reports over time (12 months)"
 msgstr "البلاغات عبر الزمن (12 شهراً)"
 
+msgid "Reports refresh interval while driving (seconds)"
+msgstr "فترة تحديث البلاغات أثناء القيادة (ثانية)"
+
 msgid "Reports sent"
 msgstr "بلاغات مُرسلة"
+
+#, python-format
+msgid "Reports updated %(n)s min ago"
+msgstr "حُدّثت البلاغات قبل %(n)s د"
+
+msgid "Reports updated just now"
+msgstr "حُدّثت البلاغات الآن"
 
 msgid "Required when rejecting. Shown to the reporter."
 msgstr "مطلوبة عند الرفض، وتظهر للمُبلِّغ."
@@ -1199,6 +1279,9 @@ msgstr "بحث"
 msgid "Search and filter"
 msgstr "البحث والتصفية"
 
+msgid "Second alert distance (m)"
+msgstr "مسافة التنبيه الثاني (م)"
+
 msgid "Secrets (database password, secret key, VAPID private key, SMTP password) are configured only in the server environment file and are never shown here."
 msgstr "الأسرار (كلمة مرور قاعدة البيانات، المفتاح السري، مفتاح VAPID الخاص، كلمة مرور SMTP) تُضبط فقط في ملف بيئة الخادم ولا تُعرض هنا إطلاقاً."
 
@@ -1244,6 +1327,9 @@ msgstr "عنوان مختصر (اختياري)"
 msgid "Show report"
 msgstr "عرض البلاغ"
 
+msgid "Simulation (development)"
+msgstr "محاكاة (تطوير)"
+
 msgid "Skip to content"
 msgstr "انتقل إلى المحتوى"
 
@@ -1258,6 +1344,12 @@ msgstr "حدّد الموقع: الكيلومتر أو القاطع أو إحد�
 
 msgid "Staff accounts, their teams and current workload."
 msgstr "حسابات الموظفين وفرقهم وعبء العمل الحالي."
+
+msgid "Start driving"
+msgstr "ابدأ القيادة"
+
+msgid "Start moving to determine the driving direction."
+msgstr "ابدأ الحركة لتحديد اتجاه السير."
 
 msgid "Starts"
 msgstr "يبدأ في"
@@ -1343,6 +1435,12 @@ msgstr "الملف ليس صورة صالحة."
 msgid "The form expired. Please reload the page and try again."
 msgstr "انتهت صلاحية النموذج. يرجى إعادة تحميل الصفحة والمحاولة مجدداً."
 
+msgid "The location is outside Libya."
+msgstr "الموقع خارج ليبيا."
+
+msgid "The location must be inside Libya."
+msgstr "يجب أن يكون الموقع داخل ليبيا."
+
 msgid "The location was saved. It is outside the surveyed road points, so the kilometre will be set by the road team."
 msgstr "تم حفظ الموقع. يقع خارج النقاط المرجعية المسجّلة للطريق، لذلك سيحدد فريق الطريق رقم الكيلومتر."
 
@@ -1380,6 +1478,9 @@ msgstr "تُستخدم هذه النقاط المساحية لتحويل موق�
 
 msgid "This account is deactivated. Contact technical support."
 msgstr "هذا الحساب موقوف. تواصل مع الدعم الفني."
+
+msgid "This browser cannot keep the screen on. Turn off auto-lock manually."
+msgstr "هذا المتصفح لا يستطيع إبقاء الشاشة مضاءة. أوقف القفل التلقائي يدوياً."
 
 msgid "This browser does not support location services."
 msgstr "هذا المتصفح لا يدعم خدمات الموقع."
@@ -1444,6 +1545,9 @@ msgstr "إجمالي البلاغات"
 msgid "Track a report"
 msgstr "متابعة بلاغ"
 
+msgid "Trip ended."
+msgstr "انتهت الرحلة."
+
 msgid "Try again"
 msgstr "إعادة المحاولة"
 
@@ -1504,6 +1608,13 @@ msgstr "معدل الوضوح (%)"
 msgid "Visible to reporter"
 msgstr "ظاهرة للمُبلِّغ"
 
+msgid "Waiting for GPS…"
+msgstr "بانتظار إشارة GPS…"
+
+#, python-format
+msgid "Warning! %(category)s in %(distance)s."
+msgstr "انتبه! %(category)s على بعد %(distance)s."
+
 msgid "We are here to help"
 msgstr "نحن هنا للمساعدة"
 
@@ -1516,6 +1627,10 @@ msgstr "نتبع إجراءات حماية تقنية وتنظيمية معقو�
 #, python-format
 msgid "We received a request to reset the password of your account. Click the button below to choose a new password. The link is valid for %(n)s minutes."
 msgstr "تلقّينا طلباً لإعادة تعيين كلمة مرور حسابك. اضغط الزر أدناه لاختيار كلمة مرور جديدة. الرابط صالح لمدة %(n)s دقيقة."
+
+#, python-format
+msgid "Weak GPS signal (±%(n)s m). Alerts are paused."
+msgstr "إشارة GPS ضعيفة (±%(n)s م). التنبيهات معلّقة."
 
 msgid "Weather alert"
 msgstr "تنبيه طقس"
@@ -1574,6 +1689,9 @@ msgstr "أنت غير متصل بالإنترنت. بعض الميزات غير 
 msgid "You are offline. The report was NOT sent; it is saved as a draft. Send it when you are back online."
 msgstr "أنت غير متصل. لم يُرسَل البلاغ، وقد حُفظ كمسودة. أرسله عند عودة الاتصال."
 
+msgid "You are outside Libya. Alerts are paused."
+msgstr "أنت خارج ليبيا. التنبيهات معلّقة."
+
 msgid "You are sending as a guest. Keep the reference number to follow up your report, or"
 msgstr "أنت ترسل كزائر. احتفظ بالرقم المرجعي لمتابعة بلاغك، أو"
 
@@ -1603,6 +1721,10 @@ msgstr "حصلت على %(n)s نقطة لمساهمتك في بلاغ «%(title)
 msgid "You have been logged out."
 msgstr "تم تسجيل الخروج."
 
+#, python-format
+msgid "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
+msgstr "ستُنبَّه صوتياً بالعوائق المتحقق منها من الإدارة أمامك، عند %(far)s ثم عند %(near)s."
+
 msgid "Your account was created. Welcome!"
 msgstr "تم إنشاء حسابك. مرحباً بك!"
 
@@ -1614,6 +1736,9 @@ msgstr "تم تحديد موقعك الحالي"
 
 msgid "Your location could not be determined. Choose it manually."
 msgstr "تعذّر تحديد موقعك. اختره يدوياً."
+
+msgid "Your location is processed on this device only and is never stored on the server."
+msgstr "يُعالَج موقعك على هذا الجهاز فقط ولا يُخزَّن على الخادم إطلاقاً."
 
 msgid "Your message was sent. The support team will contact you."
 msgstr "تم إرسال رسالتك. سيتواصل معك فريق الدعم."
@@ -1658,11 +1783,20 @@ msgstr "آيفون / آيباد (Safari)"
 msgid "just now"
 msgstr "الآن"
 
+msgid "kilometres"
+msgstr "كيلومتر"
+
 msgid "km"
 msgstr "كم"
 
 msgid "log in"
 msgstr "سجّل الدخول"
+
+msgid "m"
+msgstr "م"
+
+msgid "metres"
+msgstr "متر"
 
 msgid "privacy policy"
 msgstr "سياسة الخصوصية"

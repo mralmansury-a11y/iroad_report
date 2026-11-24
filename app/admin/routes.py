@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta, timezone
 from decimal import Decimal, InvalidOperation
 
@@ -14,6 +15,7 @@ from ..models import (
 )
 from ..services import stats
 from ..services.audit import audit
+from ..services.drive import ALERTABLE_STATUS_CHOICES, validate_drive_settings
 from ..services.mail import send_template
 from ..services.notify import broadcast_push, notify
 from ..services.rbac import can_grant_role, permission_required
@@ -680,9 +682,23 @@ def settings():
     if request.method == "POST":
         # CSRF is enforced globally by CSRFProtect for every POST
         changed = {}
+        drive_values = {k: (request.form.getlist(k) if DEFAULT_SETTINGS[k][1] == "json"
+                            else to_latin_digits((request.form.get(k) or "").strip()))
+                        for k in DEFAULT_SETTINGS if k.startswith("drive_") and DEFAULT_SETTINGS[k][1] != "bool"}
+        invalid = set(validate_drive_settings(drive_values))
+        for key in sorted(invalid):
+            flash(_("Invalid value for %(key)s", key=key), "danger")
         for key, (default, typ, _pub, _desc) in DEFAULT_SETTINGS.items():
+            if key in invalid:
+                continue
             if typ == "bool":
                 val = "true" if request.form.get(key) == "on" else "false"
+            elif typ == "json":
+                val = json.dumps(request.form.getlist(key))
+                if json.dumps(get_setting(key)) != val:
+                    changed[key] = val
+                    set_setting(key, val, current_user.id)
+                continue
             else:
                 val = (request.form.get(key) or "").strip()[:500]
                 if typ == "int":
@@ -699,7 +715,9 @@ def settings():
         flash(_("Changes saved."), "success")
         return redirect(url_for("admin.settings"))
     values = {k: get_setting(k, d[0]) for k, d in DEFAULT_SETTINGS.items()}
-    return render_template("admin/settings.html", defs=DEFAULT_SETTINGS, values=values)
+    statuses = {s.code: s for s in db.session.execute(db.select(ReportStatus)).scalars()}
+    status_choices = [(c, statuses[c].tr("name") if c in statuses else c) for c in ALERTABLE_STATUS_CHOICES]
+    return render_template("admin/settings.html", defs=DEFAULT_SETTINGS, values=values, status_choices=status_choices)
 
 
 # ============================================================ audit

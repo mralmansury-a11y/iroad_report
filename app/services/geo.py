@@ -7,12 +7,15 @@ user is farther than `MAX_OFFSET_KM` from the road, no km is returned (we never
 fabricate a location).
 """
 import math
+from dataclasses import dataclass
+from typing import Protocol, Sequence
 
 from ..extensions import db
 from ..models import RoadPoint, RoadSection
 
 MAX_OFFSET_KM = 5.0
 EARTH_R = 6371.0
+KM_PER_DEG_LAT = math.pi * EARTH_R / 180.0  # ≈ 111.195 km
 
 
 def haversine_km(lat1, lng1, lat2, lng2) -> float:
@@ -20,6 +23,82 @@ def haversine_km(lat1, lng1, lat2, lng2) -> float:
     dp, dl = p2 - p1, math.radians(lng2 - lng1)
     a = math.sin(dp / 2) ** 2 + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2
     return 2 * EARTH_R * math.asin(math.sqrt(a))
+
+
+def valid_coordinates(lat, lng) -> bool:
+    """True for finite WGS-84 coordinates within the legal ranges."""
+    try:
+        lat, lng = float(lat), float(lng)
+    except (TypeError, ValueError):
+        return False
+    return math.isfinite(lat) and math.isfinite(lng) and -90 <= lat <= 90 and -180 <= lng <= 180
+
+
+def bounding_box(lat: float, lng: float, radius_km: float):
+    """(min_lat, max_lat, min_lng, max_lng) enclosing a circle — a cheap, index-friendly pre-filter.
+
+    Always a superset of the circle (exact filtering is done afterwards with Haversine).
+    """
+    pad = 1e-6  # ≈ 0.1 m: absorbs floating-point rounding for points exactly on the circle
+    d_lat = radius_km / KM_PER_DEG_LAT + pad
+    cos_lat = math.cos(math.radians(min(89.0, abs(lat) + d_lat)))
+    d_lng = 180.0 if cos_lat <= 0 else min(180.0, radius_km / (KM_PER_DEG_LAT * cos_lat) + pad)
+    return lat - d_lat, lat + d_lat, lng - d_lng, lng + d_lng
+
+
+# ------------------------------------------------------------ national boundary
+class Boundary(Protocol):
+    def contains(self, lat: float, lng: float) -> bool: ...
+
+
+@dataclass(frozen=True)
+class BBoxBoundary:
+    min_lat: float
+    max_lat: float
+    min_lng: float
+    max_lng: float
+
+    def contains(self, lat: float, lng: float) -> bool:
+        return self.min_lat <= lat <= self.max_lat and self.min_lng <= lng <= self.max_lng
+
+    def as_dict(self) -> dict:
+        return {"min_lat": self.min_lat, "max_lat": self.max_lat, "min_lng": self.min_lng, "max_lng": self.max_lng}
+
+
+@dataclass(frozen=True)
+class PolygonBoundary:
+    """Simple polygon (ring of (lat, lng) vertices) tested with the even–odd ray-casting rule.
+
+    Ready for the official national boundary once it is supplied; no boundary data is bundled.
+    """
+    ring: Sequence[tuple[float, float]]
+
+    def contains(self, lat: float, lng: float) -> bool:
+        inside = False
+        pts = list(self.ring)
+        j = len(pts) - 1
+        for i, (lat_i, lng_i) in enumerate(pts):
+            lat_j, lng_j = pts[j]
+            if (lat_i > lat) != (lat_j > lat):
+                cross = lng_i + (lat - lat_i) * (lng_j - lng_i) / (lat_j - lat_i)
+                if lng < cross:
+                    inside = not inside
+            j = i
+        return inside
+
+
+# APPROXIMATE rectangle around Libya (≈ 19.5–33.5 N, 9.3–25.2 E). It deliberately errs on the
+# inclusive side and therefore also covers border strips of neighbouring countries.
+# Replace with PolygonBoundary(<official boundary>) when the surveyed boundary is available.
+LIBYA_BBOX = BBoxBoundary(min_lat=19.5, max_lat=33.5, min_lng=9.3, max_lng=25.2)
+LIBYA_BOUNDARY: Boundary = LIBYA_BBOX
+
+
+def is_in_libya(lat, lng, boundary: Boundary | None = None) -> bool:
+    """True when the point lies inside Libya (currently the approximate bounding box)."""
+    if not valid_coordinates(lat, lng):
+        return False
+    return (boundary or LIBYA_BOUNDARY).contains(float(lat), float(lng))
 
 
 def _project(lat, lng, a, b):

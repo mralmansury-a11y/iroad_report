@@ -4,6 +4,7 @@ from flask_wtf.file import MultipleFileField
 from wtforms import DecimalField, HiddenField, RadioField, StringField, TextAreaField
 from wtforms.validators import DataRequired, Length, NumberRange, Optional
 
+from ..services.geo import is_in_libya
 from ..utils.validators import Phone
 
 SEVERITY_CHOICES = [("low", _l("Minor")), ("medium", _l("Moderate")), ("high", _l("Serious"))]
@@ -28,6 +29,10 @@ class ReportForm(FlaskForm):
         if self.latitude.data is None or self.longitude.data is None:
             self.latitude.errors = list(self.latitude.errors) + [
                 _l("Set the location with “Use my location” or “Pick on map”.")]
+            ok = False
+        elif not self.latitude.errors and not self.longitude.errors \
+                and not is_in_libya(self.latitude.data, self.longitude.data):
+            self.latitude.errors = list(self.latitude.errors) + [_l("The location must be inside Libya.")]
             ok = False
         if self.location_source.data not in ("gps", "map"):
             self.location_source.data = "map"

@@ -4,6 +4,8 @@
  *   - Public pages (navigations) ...................... network-first → cached copy → /offline
  *   - Public JSON (road / meta / home stats) .......... network-first → cached copy
  *   - Admin, auth, notifications, attachments, /me ... network-only, NEVER cached
+ *   - /api/v1/reports/nearby (driving mode) ........... network-only: its URL carries the driver's (rounded)
+ *     position, so it is never written to a cache; the page keeps the last list in memory instead.
  *   - Responses marked "no-store"/"private" ........... never cached (personalised pages)
  * The version string below is injected by the server from a hash of /static.
  */
@@ -19,6 +21,11 @@ const SHELL = [
   "/static/js/app.js",
   "/static/js/home.js",
   "/static/js/report-form.js",
+  "/static/js/geo.js",
+  "/static/js/drive-engine.js",
+  "/static/js/drive.js",
+  "/static/vendor/leaflet/leaflet.js",
+  "/static/vendor/leaflet/leaflet.css",
   "/static/vendor/bootstrap/bootstrap.rtl.min.css",
   "/static/vendor/bootstrap/bootstrap.min.css",
   "/static/vendor/bootstrap/bootstrap.bundle.min.js",
@@ -34,10 +41,10 @@ const SHELL = [
   "/static/icons/icon-192.png",
 ];
 
-const PUBLIC_PAGES = [/^\/$/, /^\/reports\/?$/, /^\/map$/, /^\/alerts$/, /^\/privacy$/, /^\/about$/, /^\/support$/, /^\/install$/, /^\/settings\/language$/, /^\/reports\/new$/];
+const PUBLIC_PAGES = [/^\/$/, /^\/reports\/?$/, /^\/map$/, /^\/alerts$/, /^\/privacy$/, /^\/about$/, /^\/support$/, /^\/install$/, /^\/settings\/language$/, /^\/reports\/new$/, /^\/drive$/];
 const PUBLIC_DATA = [/^\/api\/v1\/road$/, /^\/api\/v1\/meta$/, /^\/api\/v1\/home$/, /^\/api\/v1\/reports\/map$/];
 const NEVER = [/^\/admin/, /^\/auth/, /^\/notifications/, /^\/profile/, /^\/settings\/notifications/, /^\/reports\/attachment/,
-               /^\/api\/v1\/(notifications|me|auth|push)/, /^\/lang\//, /^\/sw\.js$/];
+               /^\/api\/v1\/(notifications|me|auth|push)/, /^\/api\/v1\/reports\/nearby/, /^\/lang\//, /^\/sw\.js$/];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(

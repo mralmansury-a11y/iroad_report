@@ -85,6 +85,8 @@ class BaseConfig:
     ADMIN_PER_PAGE = 25
     API_TOKEN_TTL_DAYS = 30
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
+    # Driving-mode GPS simulator (/drive?simulate=1). Development ONLY: never enable in production.
+    DRIVE_SIMULATOR = False
     MAP_TILE_URL = os.environ.get("MAP_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")
     MAP_ATTRIBUTION = os.environ.get(
         "MAP_ATTRIBUTION", '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -97,6 +99,7 @@ class DevelopmentConfig(BaseConfig):
     REMEMBER_COOKIE_SECURE = False
     PREFERRED_URL_SCHEME = "http"
     SECRET_KEY = os.environ.get("SECRET_KEY") or "dev-only-insecure-key-change-me"
+    DRIVE_SIMULATOR = True
 
 
 class TestingConfig(BaseConfig):

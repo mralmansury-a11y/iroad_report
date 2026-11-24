@@ -12,9 +12,12 @@ from flask_login import current_user, login_required
 from ..extensions import csrf, db, limiter
 from ..models import Announcement, ContactMessage, Report, RoadSection, User, utcnow
 from ..services.audit import audit
+from ..services.drive import drive_config
 from ..services.notify import get_prefs
+from ..services.settings import get_setting
 from ..services.stats import user_contribution
 from ..utils import safe_referrer
+from ..utils.i18n import drive_js_strings
 from ..utils.validators import looks_like_email, normalize_phone
 from . import bp
 from .forms import ContactForm, NotificationPrefsForm, PasswordForm, ProfileForm
@@ -161,6 +164,30 @@ def support():
 @bp.route("/map")
 def road_map():
     return render_template("public/map.html", sections=active_sections())
+
+
+@bp.route("/drive")
+def drive():
+    cfg = drive_config()
+    if not cfg.enabled:
+        abort(404)
+    simulate = bool(current_app.config.get("DRIVE_SIMULATOR")) and request.args.get("simulate") == "1"
+    client_cfg = cfg.client_dict()
+    client_cfg.update({
+        "endpoint": url_for("api.reports_nearby"),
+        "tiles": current_app.config["MAP_TILE_URL"],
+        "attribution": current_app.config["MAP_ATTRIBUTION"],
+        "simulate": simulate,
+        "i18n": drive_js_strings(),
+    })
+    if simulate:
+        client_cfg["sim"] = {
+            "lat": request.args.get("lat", type=float) or float(get_setting("default_map_lat", "31.2089")),
+            "lng": request.args.get("lng", type=float) or float(get_setting("default_map_lng", "16.5887")),
+            "speed_mps": request.args.get("speed", 30.0, type=float),
+            "accuracy_m": request.args.get("acc", 8.0, type=float),
+        }
+    return render_template("public/drive.html", drive_cfg=client_cfg, simulate=simulate)
 
 
 @bp.route("/alerts")

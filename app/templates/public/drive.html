@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Driving mode") }} · {{ super() }}{% endblock %}
+{% block head_extra %}<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}">{% endblock %}
+{% block body_class %}dv-body{% endblock %}
+{% block shell %}
+<script type="application/json" id="drive-config">{{ drive_cfg | tojson }}</script>
+<main id="main" class="dv" data-stage="none" data-state="idle" tabindex="-1">
+  <header class="dv-top">
+    <a class="dv-icon-btn" href="{{ url_for('main.home') }}" aria-label="{{ _('Home') }}" data-hide-when-driving><i class="bi bi-arrow-left ir-flip" aria-hidden="true"></i></a>
+    <h1 class="dv-title">{{ _("Driving mode") }}{% if simulate %} <span class="dv-sim-badge">{{ _("Simulation (development)") }}</span>{% endif %}</h1>
+    <ul class="dv-status" aria-label="{{ _('Status') }}">
+      <li data-status="gps"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span class="num">—</span></li>
+      <li data-status="data"><i class="bi bi-arrow-repeat" aria-hidden="true"></i><span>—</span></li>
+      <li data-status="net"><i class="bi bi-wifi" aria-hidden="true"></i><span>—</span></li>
+    </ul>
+  </header>
+
+  <section class="dv-banner" aria-live="assertive" aria-atomic="true" data-banner>
+    <span class="dv-banner-ico"><i class="bi bi-shield-check" aria-hidden="true" data-banner-icon></i></span>
+    <span class="dv-banner-body">
+      <span class="dv-banner-title" data-banner-title>{{ _("No reported hazards ahead") }}</span>
+      <span class="dv-banner-meta" data-banner-meta></span>
+    </span>
+    <span class="dv-banner-dist num" data-banner-dist></span>
+  </section>
+
+  <div class="dv-message" role="status" aria-live="polite" data-message hidden></div>
+
+  <div class="dv-map-wrap">
+    <div id="driveMap" class="dv-map" role="region" aria-label="{{ _('Live map') }}"></div>
+    <button type="button" class="dv-recenter" data-action="recenter" hidden><i class="bi bi-crosshair" aria-hidden="true"></i> {{ _("Re-centre") }}</button>
+  </div>
+
+  <section class="dv-next" aria-labelledby="dvNextTitle">
+    <h2 id="dvNextTitle">{{ _("Next hazards ahead") }}</h2>
+    <ol class="dv-list" data-list></ol>
+  </section>
+
+  <div class="dv-actions">
+    <button type="button" class="dv-btn dv-btn-start" data-action="start"><i class="bi bi-play-fill" aria-hidden="true"></i>{{ _("Start driving") }}</button>
+    <button type="button" class="dv-btn dv-btn-stop" data-action="stop" hidden><i class="bi bi-stop-fill" aria-hidden="true"></i>{{ _("End driving") }}</button>
+  </div>
+
+  <aside class="dv-intro" data-intro>
+    <p><i class="bi bi-info-circle-fill" aria-hidden="true"></i> {{ _("Keep this screen open during the trip: in this version alerts work only while the page is visible.") }}</p>
+    <p>{{ _("You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s.", far=(drive_cfg.far_m / 1000) | num(1) ~ " " ~ _("km"), near=drive_cfg.near_m | num ~ " " ~ _("m")) }}</p>
+    <p class="dv-muted">{{ _("Your location is processed on this device only and is never stored on the server.") }}</p>
+  </aside>
+</main>
+
+<template id="dvItemTpl">
+  <li class="dv-item">
+    <span class="dv-item-ico"><i class="bi" aria-hidden="true"></i></span>
+    <span class="dv-item-body"><span class="dv-item-title"></span><span class="dv-item-meta"></span></span>
+    <span class="dv-item-dist num"></span>
+  </li>
+</template>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/geo.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/drive-engine.js') }}" defer></script>
+{% if simulate %}<script src="{{ url_for('static', filename='js/drive-sim.js') }}" defer></script>{% endif %}
+<script src="{{ url_for('static', filename='js/drive.js') }}" defer></script>
+{% endblock %}

@@ -13,7 +13,7 @@
 | الملفات الثابتة وغلاف التطبيق | Cache-first؛ اسم الذاكرة يحمل بصمة تلقائية لمحتوى `/static` (تتغيّر مع كل نشر) |
 | الصفحات العامة (الرئيسية، البلاغات، نموذج الإبلاغ، الخريطة…) | Network-first ← النسخة المحفوظة ← `/offline` |
 | بيانات عامة (`/api/v1/road|meta|home|reports/map`) | Network-first ← النسخة المحفوظة |
-| `/admin` `/auth` `/notifications` `/profile` المرفقات `/api/v1/me|notifications|push|auth` | **شبكة فقط — لا تخزين إطلاقاً** |
+| `/admin` `/auth` `/notifications` `/profile` المرفقات `/api/v1/me|notifications|push|auth` و`/api/v1/reports/nearby` (رابطه يحمل موقع السائق) | **شبكة فقط — لا تخزين إطلاقاً** |
 | أي استجابة `no-store/private` (كل صفحات المستخدم المسجّل) | لا تُخزَّن |
 | طلبات غير GET | لا يعترضها الـ SW |
 

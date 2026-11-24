@@ -68,6 +68,7 @@ class Report(TimestampMixin, db.Model):
         db.CheckConstraint("longitude IS NULL OR (longitude BETWEEN -180 AND 180)", name="lng_range"),
         db.Index("ix_reports_status_created", "status_id", "created_at"),
         db.Index("ix_reports_section_km", "road_section_id", "km_marker"),
+        db.Index("ix_reports_lat_lng", "latitude", "longitude"),  # driving mode: bounding-box search
     )
 
     SEVERITIES = ("low", "medium", "high")

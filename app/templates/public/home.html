@@ -57,6 +57,9 @@
     </div>
 
     <a class="ir-cta" href="{{ url_for('reports.new') }}"><i class="bi bi-exclamation-triangle-fill" aria-hidden="true"></i>{{ _("Report a road problem") }}</a>
+    {% if get_setting("drive_mode_enabled", True) %}
+    <a class="ir-cta ir-cta-drive" href="{{ url_for('main.drive') }}" data-testid="start-driving"><i class="bi bi-car-front-fill" aria-hidden="true"></i>{{ _("Start driving") }}</a>
+    {% endif %}
   </section>
 
   <section aria-labelledby="latestTitle">

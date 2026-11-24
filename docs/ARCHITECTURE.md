@@ -100,6 +100,7 @@ roadsite/
 | GET | `/api/v1/home?km|lat,lng` | مؤشرات الرئيسية | عام |
 | GET | `/api/v1/road` | مسار الطريق والقواطع وإعدادات الخريطة | عام |
 | GET | `/api/v1/reports` · `/reports/map` · `/reports/<ref>` | القوائم والتفاصيل (الحقول الخاصة لمن يملك الصلاحية فقط) | عام/مالك |
+| GET | `/api/v1/reports/nearby?lat&lng[&radius_km]` | وضع القيادة: البلاغات **المؤهلة للتنبيه فقط** (`drive_alert_statuses`) ضمن نطاق (افتراضي 30، حد أقصى 50 كم)، مرتبة بالمسافة. 422 للإحداثيات غير الصالحة/خارج ليبيا/النطاق غير الصالح؛ 404 عند إيقاف الوضع. لا يُخزَّن الموقع ولا يُسجَّل | عام (60/دقيقة) |
 | POST | `/api/v1/reports` | إنشاء بلاغ (multipart) | جلسة أو Bearer أو زائر |
 | GET/POST | `/api/v1/notifications` · `/notifications/read` | التنبيهات | مستخدم |
 | GET/POST | `/api/v1/push/key` · `/push/subscribe` · `/push/unsubscribe` | Web Push | جلسة/زائر |
@@ -107,3 +108,18 @@ roadsite/
 | GET | `/api/v1/me` · `/api/v1/csrf` | المستخدم الحالي / رمز CSRF جديد | — |
 
 طلبات الجلسة غير الآمنة تتطلب ترويسة `X-CSRFToken`؛ طلب يحمل Bearer يُصادَق بالرمز فقط ولا يستخدم أي جلسة.
+
+## 7. وضع القيادة (Driving Mode)
+| الطبقة | الملف | المسؤولية |
+|---|---|---|
+| حدود ليبيا | `app/services/geo.py` (`is_in_libya`, `BBoxBoundary`, `PolygonBoundary`, `bounding_box`) | مربع إحاطة **تقريبي** (19.5–33.5 ش، 9.3–25.2 ق)؛ الواجهة تقبل مضلّع الحدود الرسمي لاحقاً دون تغيير |
+| الإعدادات والاستعلام | `app/services/drive.py` | `drive_config()` (قيم مقيّدة دفاعياً)، `validate_drive_settings()`، `nearby_alertable_reports()` (مربع إحاطة مفهرس ← Haversine) |
+| الواجهة | `GET /api/v1/reports/nearby` · صفحة `/drive` | الإعدادات تُمرَّر للصفحة في كتلة JSON (`#drive-config`) — لا ثوابت مكررة في JS |
+| الرياضيات (نقية) | `app/static/js/geo.js` | Haversine، الاتجاه، فرق الزاوية، النقطة الوجهة، «أمام السائق» |
+| محرّك القرار (نقي) | `app/static/js/drive-engine.js` | اتجاه السير، المراحل (5 كم/500 م)، منع التكرار، العوائق المتجاوَزة، ضعف GPS، خارج ليبيا، سياسة التحديث |
+| واجهة الصفحة | `app/static/js/drive.js` | `watchPosition`، Leaflet (Follow)، الصوت/النطق/الاهتزاز/الإشعار المحلي، Wake Lock |
+| محاكي التطوير | `app/static/js/drive-sim.js` | يُحمَّل فقط عند `DRIVE_SIMULATOR=True` و`?simulate=1` |
+
+**الخصوصية:** القرار كله على الجهاز؛ يُرسل للخادم موقع مقرّب إلى منزلتين عشريتين (≈1.1 كم) عند الجلب فقط، ولا يُخزَّن ولا يُسجَّل؛
+واستجابة `/reports/nearby` لا تُخزَّن في ذاكرة الـ SW (`NEVER`) ويحتفظ التطبيق بآخر قائمة في الذاكرة مع عرض عمرها.
+**الفهرس:** `ix_reports_lat_lng (latitude, longitude)` — ترحيل `a3d9c2e41f07`.

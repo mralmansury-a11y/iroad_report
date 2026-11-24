@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-09 12:56+0200\n"
+"POT-Creation-Date: 2026-11-24 02:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,6 +31,10 @@ msgstr ""
 
 #, python-format
 msgid "%(n)s reference points saved."
+msgstr ""
+
+#, python-format
+msgid "%(n)s verified hazards are known within %(r)s km of you."
 msgstr ""
 
 msgid "A new version is available."
@@ -199,6 +203,10 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
+#, python-format
+msgid "Caution: %(category)s ahead in %(distance)s. Severity: %(severity)s."
+msgstr ""
+
 msgid "Change language"
 msgstr ""
 
@@ -276,6 +284,9 @@ msgstr ""
 msgid ""
 "Coordinates saved. The kilometre will be calculated when the report is "
 "sent."
+msgstr ""
+
+msgid "Could not update the reports. The last list is shown."
 msgstr ""
 
 msgid "Create account"
@@ -358,6 +369,12 @@ msgstr ""
 msgid "Drag to adjust the location"
 msgstr ""
 
+msgid "Driving mode"
+msgstr ""
+
+msgid "Driving mode is not available."
+msgstr ""
+
 msgid "E-mail"
 msgstr ""
 
@@ -382,7 +399,13 @@ msgstr ""
 msgid "Employees"
 msgstr ""
 
+msgid "Enable driving mode (proximity alerts)"
+msgstr ""
+
 msgid "Enable on this device"
+msgstr ""
+
+msgid "End driving"
 msgstr ""
 
 msgid "End km must be greater than start km."
@@ -417,6 +440,9 @@ msgstr ""
 msgid "Filter"
 msgstr ""
 
+msgid "First alert distance (m)"
+msgstr ""
+
 msgid "First response"
 msgstr ""
 
@@ -435,6 +461,9 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
+msgid "Forward cone half-angle (degrees)"
+msgstr ""
+
 msgid "Frequently asked questions"
 msgstr ""
 
@@ -448,6 +477,10 @@ msgid "Full name"
 msgstr ""
 
 msgid "GPS coordinates"
+msgstr ""
+
+#, python-format
+msgid "GPS ±%(n)s m"
 msgstr ""
 
 msgid "Get road alerts on this device."
@@ -568,6 +601,9 @@ msgstr ""
 msgid "Invalid request"
 msgstr ""
 
+msgid "Invalid search radius."
+msgstr ""
+
 #, python-format
 msgid "Invalid value for %(key)s"
 msgstr ""
@@ -583,6 +619,11 @@ msgid "Job title"
 msgstr ""
 
 msgid "Keep this number to follow up your report."
+msgstr ""
+
+msgid ""
+"Keep this screen open during the trip: in this version alerts work only "
+"while the page is visible."
 msgstr ""
 
 msgid "Kilometre marker"
@@ -611,6 +652,9 @@ msgid "Leave empty to keep the current password."
 msgstr ""
 
 msgid "Licences and compliance"
+msgstr ""
+
+msgid "Live map"
 msgstr ""
 
 msgid ""
@@ -787,10 +831,16 @@ msgstr ""
 msgid "Next"
 msgstr ""
 
+msgid "Next hazards ahead"
+msgstr ""
+
 msgid "No active alerts. Drive safely."
 msgstr ""
 
 msgid "No announcements yet."
+msgstr ""
+
+msgid "No eligible reports near the start point: simulating a straight drive."
 msgstr ""
 
 msgid "No employees yet."
@@ -808,6 +858,9 @@ msgstr ""
 msgid "No report matches this reference number and phone."
 msgstr ""
 
+msgid "No reported hazards ahead"
+msgstr ""
+
 msgid "No reports match the filters."
 msgstr ""
 
@@ -821,6 +874,10 @@ msgid "No road sections defined yet."
 msgstr ""
 
 msgid "No users found."
+msgstr ""
+
+#, python-format
+msgid "No verified hazards are known within %(r)s km of you."
 msgstr ""
 
 msgid "Not enough data yet"
@@ -884,6 +941,9 @@ msgid "Oldest first"
 msgstr ""
 
 msgid "On iPhone: tap Share, then “Add to Home Screen”."
+msgstr ""
+
+msgid "Online"
 msgstr ""
 
 msgid "Open assignments"
@@ -1043,6 +1103,12 @@ msgstr ""
 msgid "Radius for “nearby reports” (km)"
 msgstr ""
 
+msgid "Radius of reports fetched around the driver (km, max 50)"
+msgstr ""
+
+msgid "Re-centre"
+msgstr ""
+
 msgid "Receive notifications on this device even when the app is closed"
 msgstr ""
 
@@ -1142,6 +1208,11 @@ msgstr ""
 msgid "Report status updated"
 msgstr ""
 
+msgid ""
+"Report statuses that trigger driving alerts (verified by the "
+"administration)"
+msgstr ""
+
 msgid "Report submission is temporarily closed."
 msgstr ""
 
@@ -1160,10 +1231,23 @@ msgstr ""
 msgid "Reports by status"
 msgstr ""
 
+msgid "Reports not loaded yet"
+msgstr ""
+
 msgid "Reports over time (12 months)"
 msgstr ""
 
+msgid "Reports refresh interval while driving (seconds)"
+msgstr ""
+
 msgid "Reports sent"
+msgstr ""
+
+#, python-format
+msgid "Reports updated %(n)s min ago"
+msgstr ""
+
+msgid "Reports updated just now"
 msgstr ""
 
 msgid "Required when rejecting. Shown to the reporter."
@@ -1235,6 +1319,9 @@ msgstr ""
 msgid "Search and filter"
 msgstr ""
 
+msgid "Second alert distance (m)"
+msgstr ""
+
 msgid ""
 "Secrets (database password, secret key, VAPID private key, SMTP password)"
 " are configured only in the server environment file and are never shown "
@@ -1285,6 +1372,9 @@ msgstr ""
 msgid "Show report"
 msgstr ""
 
+msgid "Simulation (development)"
+msgstr ""
+
 msgid "Skip to content"
 msgstr ""
 
@@ -1298,6 +1388,12 @@ msgid "Specify the location: kilometre, section or GPS."
 msgstr ""
 
 msgid "Staff accounts, their teams and current workload."
+msgstr ""
+
+msgid "Start driving"
+msgstr ""
+
+msgid "Start moving to determine the driving direction."
 msgstr ""
 
 msgid "Starts"
@@ -1386,6 +1482,12 @@ msgstr ""
 msgid "The form expired. Please reload the page and try again."
 msgstr ""
 
+msgid "The location is outside Libya."
+msgstr ""
+
+msgid "The location must be inside Libya."
+msgstr ""
+
 msgid ""
 "The location was saved. It is outside the surveyed road points, so the "
 "kilometre will be set by the road team."
@@ -1426,6 +1528,9 @@ msgid ""
 msgstr ""
 
 msgid "This account is deactivated. Contact technical support."
+msgstr ""
+
+msgid "This browser cannot keep the screen on. Turn off auto-lock manually."
 msgstr ""
 
 msgid "This browser does not support location services."
@@ -1497,6 +1602,9 @@ msgstr ""
 msgid "Track a report"
 msgstr ""
 
+msgid "Trip ended."
+msgstr ""
+
 msgid "Try again"
 msgstr ""
 
@@ -1557,6 +1665,13 @@ msgstr ""
 msgid "Visible to reporter"
 msgstr ""
 
+msgid "Waiting for GPS…"
+msgstr ""
+
+#, python-format
+msgid "Warning! %(category)s in %(distance)s."
+msgstr ""
+
 msgid "We are here to help"
 msgstr ""
 
@@ -1576,6 +1691,10 @@ msgid ""
 "We received a request to reset the password of your account. Click the "
 "button below to choose a new password. The link is valid for %(n)s "
 "minutes."
+msgstr ""
+
+#, python-format
+msgid "Weak GPS signal (±%(n)s m). Alerts are paused."
 msgstr ""
 
 msgid "Weather alert"
@@ -1641,6 +1760,9 @@ msgid ""
 " when you are back online."
 msgstr ""
 
+msgid "You are outside Libya. Alerts are paused."
+msgstr ""
+
 msgid ""
 "You are sending as a guest. Keep the reference number to follow up your "
 "report, or"
@@ -1674,6 +1796,12 @@ msgstr ""
 msgid "You have been logged out."
 msgstr ""
 
+#, python-format
+msgid ""
+"You will be alerted by voice about hazards verified by the administration"
+" ahead of you, at %(far)s and again at %(near)s."
+msgstr ""
+
 msgid "Your account was created. Welcome!"
 msgstr ""
 
@@ -1684,6 +1812,11 @@ msgid "Your current location was set"
 msgstr ""
 
 msgid "Your location could not be determined. Choose it manually."
+msgstr ""
+
+msgid ""
+"Your location is processed on this device only and is never stored on the"
+" server."
 msgstr ""
 
 msgid "Your message was sent. The support team will contact you."
@@ -1731,10 +1864,19 @@ msgstr ""
 msgid "just now"
 msgstr ""
 
+msgid "kilometres"
+msgstr ""
+
 msgid "km"
 msgstr ""
 
 msgid "log in"
+msgstr ""
+
+msgid "m"
+msgstr ""
+
+msgid "metres"
 msgstr ""
 
 msgid "privacy policy"

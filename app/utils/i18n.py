@@ -97,6 +97,37 @@ def role_label(role) -> str:
     return role.label(_lang()) if role else ""
 
 
+def drive_js_strings() -> dict:
+    """Strings for the driving-mode page only. Placeholders use {name} and are filled in JavaScript."""
+    return {
+        "unitM": _("m"),
+        "unitKm": _("km"),
+        "spokenM": _("metres"),
+        "spokenKm": _("kilometres"),
+        "tripSummary": _("%(n)s verified hazards are known within %(r)s km of you.", n="{n}", r="{radius}"),
+        "tripSummaryNone": _("No verified hazards are known within %(r)s km of you.", r="{radius}"),
+        "alertFar": _("Caution: %(category)s ahead in %(distance)s. Severity: %(severity)s.",
+                      category="{category}", distance="{distance}", severity="{severity}"),
+        "alertNear": _("Warning! %(category)s in %(distance)s.", category="{category}", distance="{distance}"),
+        "noHazardAhead": _("No reported hazards ahead"),
+        "gpsWaiting": _("Waiting for GPS…"),
+        "gpsAccuracy": _("GPS ±%(n)s m", n="{n}"),
+        "gpsWeak": _("Weak GPS signal (±%(n)s m). Alerts are paused.", n="{n}"),
+        "outsideLibya": _("You are outside Libya. Alerts are paused."),
+        "headingUnknown": _("Start moving to determine the driving direction."),
+        "updatedJustNow": _("Reports updated just now"),
+        "updatedMinutes": _("Reports updated %(n)s min ago", n="{n}"),
+        "updateFailed": _("Could not update the reports. The last list is shown."),
+        "notUpdated": _("Reports not loaded yet"),
+        "online": _("Online"),
+        "offline": _("Offline"),
+        "wakeLockUnsupported": _("This browser cannot keep the screen on. Turn off auto-lock manually."),
+        "notificationTitle": _("Driving mode"),
+        "tripEnded": _("Trip ended."),
+        "simNoReports": _("No eligible reports near the start point: simulating a straight drive."),
+    }
+
+
 def js_strings() -> dict:
     """Strings needed by client-side JavaScript, translated server-side."""
     return {

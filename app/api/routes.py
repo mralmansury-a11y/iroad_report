@@ -9,7 +9,8 @@ from ..extensions import db, limiter
 from ..models import (
     ApiToken, Notification, PushSubscription, Report, ReportCategory, ReportStatus, RoadSection, utcnow,
 )
-from ..services.geo import km_from_coordinates, road_polyline, section_for_km
+from ..services.drive import MAX_FETCH_RADIUS_KM, drive_config, nearby_alertable_reports
+from ..services.geo import is_in_libya, km_from_coordinates, road_polyline, section_for_km, valid_coordinates
 from ..services.reports import ReportInput, WorkflowError, can_view_report, create_report
 from ..services.settings import get_setting
 from ..services.stats import home_metrics, nearby_markers
@@ -166,6 +167,42 @@ def reports_map():
     return ok({"items": items})
 
 
+@bp.get("/reports/nearby")
+@limiter.limit("60 per minute")
+def reports_nearby():
+    """Verified hazards around a point, for driving mode.
+
+    The coordinates are used only to answer this request: never stored, never logged.
+    """
+    cfg = drive_config()
+    if not cfg.enabled:
+        return err("drive_disabled", _("Driving mode is not available."), 404)
+    lat, lng = _float("lat"), _float("lng")
+    if lat is None or lng is None or not valid_coordinates(lat, lng):
+        return err("invalid_coordinates", _("Invalid coordinates."), 422)
+    if not is_in_libya(lat, lng):
+        return err("outside_libya", _("The location is outside Libya."), 422)
+    radius = _float("radius_km")
+    if radius is None and request.args.get("radius_km") in (None, ""):
+        radius = float(cfg.fetch_radius_km)
+    if radius is None or not (0 < radius < float("inf")):
+        return err("invalid_radius", _("Invalid search radius."), 422)
+    radius = min(radius, float(MAX_FETCH_RADIUS_KM))
+    items = [{
+        "reference": r.reference,
+        "lat": float(r.latitude),
+        "lng": float(r.longitude),
+        "title": r.title,
+        "severity": {"code": r.severity, "name": severity_label(r.severity)},
+        "category": {"code": r.category.code, "name": r.category.tr("name"), "icon": r.category.icon},
+        "status": {"code": r.status_code, "name": r.status.tr("name")},
+        "km_label": fmt_km(r.km_float()) if r.km_marker is not None else None,
+        "distance_m": round(d * 1000),
+        "updated_at": r.updated_at.isoformat() + "Z",
+    } for r, d in nearby_alertable_reports(lat, lng, radius, cfg.alert_statuses)]
+    return ok({"radius_km": radius, "count": len(items), "generated_at": utcnow().isoformat() + "Z", "items": items})
+
+
 @bp.get("/reports/<reference>")
 def get_report(reference):
     r = db.session.execute(db.select(Report).filter_by(reference=reference)).scalar_one_or_none()
@@ -216,6 +253,10 @@ def create():
     sid = f.get("road_section_id", type=int) or None
     if km is None and lat is None and not sid:
         fields["km_marker"] = [_("Specify the location: kilometre, section or GPS.")]
+    if (lat is None) != (lng is None):
+        fields["latitude"] = [_("Invalid value.")]
+    elif lat is not None and "latitude" not in fields and "longitude" not in fields and not is_in_libya(lat, lng):
+        fields["latitude"] = [_("The location must be inside Libya.")]
     guest_phone = None
     if user is None:
         guest_phone = normalize_phone(f.get("guest_phone"))

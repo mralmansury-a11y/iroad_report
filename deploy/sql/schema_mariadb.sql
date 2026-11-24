@@ -335,6 +335,8 @@ CREATE INDEX ix_reports_created_at ON reports (created_at);
 
 CREATE INDEX ix_reports_km_marker ON reports (km_marker);
 
+CREATE INDEX ix_reports_lat_lng ON reports (latitude, longitude);
+
 CREATE INDEX ix_reports_reporter_id ON reports (reporter_id);
 
 CREATE INDEX ix_reports_road_section_id ON reports (road_section_id);
@@ -515,5 +517,5 @@ CREATE INDEX ix_report_status_history_created_at ON report_status_history (creat
 
 CREATE INDEX ix_report_status_history_report_id ON report_status_history (report_id);
 
-INSERT INTO alembic_version (version_num) VALUES ('6818f5288d1c');
+INSERT INTO alembic_version (version_num) VALUES ('a3d9c2e41f07');
 

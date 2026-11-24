@@ -7,13 +7,26 @@
   'points_per_resolved': _('Points when a report is resolved'), 'points_per_accepted': _('Points when a report is accepted for review'),
   'support_phone': _('Support phone'), 'support_whatsapp': _('WhatsApp number (international, digits only)'), 'support_email': _('Support e-mail'),
   'app_version': _('Displayed app version'), 'privacy_updated': _('Privacy policy last update (YYYY-MM)'),
-  'default_map_lat': _('Default map latitude'), 'default_map_lng': _('Default map longitude'), 'default_map_zoom': _('Default map zoom') } %}
+  'default_map_lat': _('Default map latitude'), 'default_map_lng': _('Default map longitude'), 'default_map_zoom': _('Default map zoom'),
+  'drive_mode_enabled': _('Enable driving mode (proximity alerts)'),
+  'drive_alert_statuses': _('Report statuses that trigger driving alerts (verified by the administration)'),
+  'drive_alert_far_m': _('First alert distance (m)'), 'drive_alert_near_m': _('Second alert distance (m)'),
+  'drive_fetch_radius_km': _('Radius of reports fetched around the driver (km, max 50)'),
+  'drive_cone_deg': _('Forward cone half-angle (degrees)'), 'drive_refresh_s': _('Reports refresh interval while driving (seconds)') } %}
 <form method="post" class="ir-form ir-card ir-card-pad" style="max-width:760px">
   <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
   {% for key, d in defs.items() %}
+    {% if key == 'drive_mode_enabled' %}<h2 class="fs-6 fw-bold mt-4 mb-3">{{ _("Driving mode") }}</h2>{% endif %}
     {% if d[1] == 'bool' %}
       <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" role="switch" id="s_{{ key }}" name="{{ key }}" {{ 'checked' if values[key] }}>
         <label class="form-check-label" for="s_{{ key }}">{{ labels.get(key, key) }}</label></div>
+    {% elif d[1] == 'json' %}
+      <fieldset class="mb-3"><legend class="form-label fs-6">{{ labels.get(key, key) }}</legend>
+        {% for code, name in status_choices %}
+        <div class="form-check form-check-inline"><input class="form-check-input" type="checkbox" id="s_{{ key }}_{{ code }}" name="{{ key }}" value="{{ code }}" {{ 'checked' if values[key] and code in values[key] }}>
+          <label class="form-check-label" for="s_{{ key }}_{{ code }}">{{ name }}</label></div>
+        {% endfor %}
+      </fieldset>
     {% else %}
       <div class="mb-3"><label class="form-label" for="s_{{ key }}">{{ labels.get(key, key) }}</label>
         <input class="form-control {{ 'num' if d[1] == 'int' }}" id="s_{{ key }}" name="{{ key }}" value="{{ values[key] if values[key] is not none else '' }}" dir="{{ 'ltr' if d[1] == 'int' or key.startswith(('support','default','app','privacy')) else 'auto' }}"></div>

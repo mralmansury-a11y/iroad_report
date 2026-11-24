@@ -66,6 +66,8 @@ def create_app(config_name: str | None = None) -> Flask:
         raise RuntimeError("DATABASE_URL is not set. Configure the MariaDB connection in the environment (.env).")
     if config_name == "production" and app.config["SQLALCHEMY_DATABASE_URI"].startswith("sqlite"):
         raise RuntimeError("SQLite is not allowed in production. Use MariaDB (mysql+pymysql://...).")
+    if config_name == "production":
+        app.config["DRIVE_SIMULATOR"] = False  # development tool: hard-disabled in production
 
     Path(app.instance_path).mkdir(parents=True, exist_ok=True)
 

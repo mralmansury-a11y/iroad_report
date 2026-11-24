@@ -24,6 +24,15 @@ DEFAULT_SETTINGS = {
     "default_map_lat": ("31.2089", "str", True, "Default map centre latitude"),
     "default_map_lng": ("16.5887", "str", True, "Default map centre longitude"),
     "default_map_zoom": ("8", "int", True, "Default map zoom"),
+    # Driving mode (validated and clamped in services/drive.py)
+    "drive_mode_enabled": ("true", "bool", True, "Enable driving mode (proximity alerts)"),
+    "drive_alert_statuses": ('["assigned", "in_progress"]', "json", True,
+                             "Report statuses that trigger driving alerts (verified by the administration)"),
+    "drive_alert_far_m": ("5000", "int", True, "First (far) alert distance in metres"),
+    "drive_alert_near_m": ("500", "int", True, "Second (near) alert distance in metres"),
+    "drive_fetch_radius_km": ("30", "int", True, "Radius (km) of reports fetched around the driver"),
+    "drive_cone_deg": ("40", "int", True, "Half-angle (°) of the forward cone considered 'ahead'"),
+    "drive_refresh_s": ("120", "int", True, "Seconds between report refreshes while driving"),
 }
 
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-24 02:22+0200\n"
+"POT-Creation-Date: 2026-11-24 02:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: en\n"
@@ -149,6 +149,14 @@ msgstr "Announcements & alerts"
 
 msgid "Answered"
 msgstr "Answered"
+
+#, python-format
+msgid "Approx. ±%(n)s m"
+msgstr "Approx. ±%(n)s m"
+
+#, python-format
+msgid "Approximate location (±%(n)s m). Alerts start once an accurate GPS fix is received."
+msgstr "Approximate location (±%(n)s m). Alerts start once an accurate GPS fix is received."
 
 msgid "Are you sure?"
 msgstr "Are you sure?"
@@ -659,6 +667,9 @@ msgstr "Location"
 msgid "Location access is blocked for this site. Allow it from the browser settings (lock icon next to the address) and try again."
 msgstr "Location access is blocked for this site. Allow it from the browser settings (lock icon next to the address) and try again."
 
+msgid "Location is unavailable. Turn on location services (GPS) on this device. Still trying…"
+msgstr "Location is unavailable. Turn on location services (GPS) on this device. Still trying…"
+
 msgid "Location not set yet"
 msgstr "Location not set yet"
 
@@ -673,6 +684,9 @@ msgstr "Login required."
 
 msgid "Main navigation"
 msgstr "Main navigation"
+
+msgid "Make sure location (GPS) is on and you are outdoors with a clear view of the sky. Most computers have no GPS: use a phone."
+msgstr "Make sure location (GPS) is on and you are outdoors with a clear view of the sky. Most computers have no GPS: use a phone."
 
 msgid "Manual"
 msgstr "Manual"
@@ -1610,6 +1624,10 @@ msgstr "Visible to reporter"
 
 msgid "Waiting for GPS…"
 msgstr "Waiting for GPS…"
+
+#, python-format
+msgid "Waiting for an accurate GPS fix… %(n)s s"
+msgstr "Waiting for an accurate GPS fix… %(n)s s"
 
 #, python-format
 msgid "Warning! %(category)s in %(distance)s."

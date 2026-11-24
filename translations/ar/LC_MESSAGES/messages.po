@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-24 02:22+0200\n"
+"POT-Creation-Date: 2026-11-24 02:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: ar\n"
@@ -149,6 +149,14 @@ msgstr "الإعلانات والتنبيهات"
 
 msgid "Answered"
 msgstr "تم الرد"
+
+#, python-format
+msgid "Approx. ±%(n)s m"
+msgstr "تقريبي ±%(n)s م"
+
+#, python-format
+msgid "Approximate location (±%(n)s m). Alerts start once an accurate GPS fix is received."
+msgstr "موقع تقريبي (±%(n)s م). تبدأ التنبيهات فور التقاط إشارة GPS دقيقة."
 
 msgid "Are you sure?"
 msgstr "هل أنت متأكد؟"
@@ -659,6 +667,9 @@ msgstr "الموقع"
 msgid "Location access is blocked for this site. Allow it from the browser settings (lock icon next to the address) and try again."
 msgstr "الوصول إلى الموقع محظور لهذا الموقع. اسمح به من إعدادات المتصفح (أيقونة القفل بجانب العنوان) ثم أعد المحاولة."
 
+msgid "Location is unavailable. Turn on location services (GPS) on this device. Still trying…"
+msgstr "الموقع غير متاح. شغّل خدمة الموقع (GPS) في هذا الجهاز. جارٍ إعادة المحاولة…"
+
 msgid "Location not set yet"
 msgstr "لم يُحدَّد الموقع بعد"
 
@@ -673,6 +684,9 @@ msgstr "يجب تسجيل الدخول."
 
 msgid "Main navigation"
 msgstr "التنقل الرئيسي"
+
+msgid "Make sure location (GPS) is on and you are outdoors with a clear view of the sky. Most computers have no GPS: use a phone."
+msgstr "تأكد من تشغيل خدمة الموقع (GPS) ومن وجودك في مكان مكشوف للسماء. معظم الحواسيب لا تحتوي على GPS: استخدم الهاتف."
 
 msgid "Manual"
 msgstr "يدوي"
@@ -1610,6 +1624,10 @@ msgstr "ظاهرة للمُبلِّغ"
 
 msgid "Waiting for GPS…"
 msgstr "بانتظار إشارة GPS…"
+
+#, python-format
+msgid "Waiting for an accurate GPS fix… %(n)s s"
+msgstr "بانتظار إشارة GPS دقيقة… %(n)s ث"
 
 #, python-format
 msgid "Warning! %(category)s in %(distance)s."

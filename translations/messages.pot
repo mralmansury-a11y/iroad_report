@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-24 02:22+0200\n"
+"POT-Creation-Date: 2026-11-24 02:47+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,6 +150,16 @@ msgid "Announcements & alerts"
 msgstr ""
 
 msgid "Answered"
+msgstr ""
+
+#, python-format
+msgid "Approx. ±%(n)s m"
+msgstr ""
+
+#, python-format
+msgid ""
+"Approximate location (±%(n)s m). Alerts start once an accurate GPS fix is"
+" received."
 msgstr ""
 
 msgid "Are you sure?"
@@ -681,6 +691,11 @@ msgid ""
 "settings (lock icon next to the address) and try again."
 msgstr ""
 
+msgid ""
+"Location is unavailable. Turn on location services (GPS) on this device. "
+"Still trying…"
+msgstr ""
+
 msgid "Location not set yet"
 msgstr ""
 
@@ -694,6 +709,11 @@ msgid "Login required."
 msgstr ""
 
 msgid "Main navigation"
+msgstr ""
+
+msgid ""
+"Make sure location (GPS) is on and you are outdoors with a clear view of "
+"the sky. Most computers have no GPS: use a phone."
 msgstr ""
 
 msgid "Manual"
@@ -1666,6 +1686,10 @@ msgid "Visible to reporter"
 msgstr ""
 
 msgid "Waiting for GPS…"
+msgstr ""
+
+#, python-format
+msgid "Waiting for an accurate GPS fix… %(n)s s"
 msgstr ""
 
 #, python-format

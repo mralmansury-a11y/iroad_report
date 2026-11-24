@@ -111,6 +111,12 @@ def drive_js_strings() -> dict:
         "alertNear": _("Warning! %(category)s in %(distance)s.", category="{category}", distance="{distance}"),
         "noHazardAhead": _("No reported hazards ahead"),
         "gpsWaiting": _("Waiting for GPS…"),
+        "gpsWaitingFor": _("Waiting for an accurate GPS fix… %(n)s s", n="{n}"),
+        "gpsSlowHint": _("Make sure location (GPS) is on and you are outdoors with a clear view of the sky. "
+                         "Most computers have no GPS: use a phone."),
+        "gpsApprox": _("Approximate location (±%(n)s m). Alerts start once an accurate GPS fix is received.", n="{n}"),
+        "gpsApproxShort": _("Approx. ±%(n)s m", n="{n}"),
+        "gpsUnavailable": _("Location is unavailable. Turn on location services (GPS) on this device. Still trying…"),
         "gpsAccuracy": _("GPS ±%(n)s m", n="{n}"),
         "gpsWeak": _("Weak GPS signal (±%(n)s m). Alerts are paused.", n="{n}"),
         "outsideLibya": _("You are outside Libya. Alerts are paused."),

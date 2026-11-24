@@ -16,6 +16,8 @@
   const RETRY_MS = 30000;              // retry delay after a failed refresh
   const TICK_MS = 15000;               // status bar / periodic refresh check
   const COORD_DECIMALS = 2;            // ≈1.1 km: the server never receives the exact position
+  const APPROX_MAX_AGE_MS = 300000;    // a quick position up to 5 min old is fine for placing the map
+  const SLOW_FIX_HINT_S = 20;          // after this many seconds without a fix, explain the likely cause
   const SEV_COLORS = { high: "#c0392b", medium: "#e2a73e", low: "#6fb5a8" };
   const ICON_RE = /^bi-[a-z0-9-]+$/;
   const numFmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
@@ -253,27 +255,76 @@
     const c = p.coords;
     return { lat: c.latitude, lng: c.longitude, accuracy: c.accuracy, heading: c.heading, speed: c.speed, timestamp: p.timestamp };
   }
+  /**
+   * Accurate fixes come from a high-accuracy watch (they drive the alerts). A first GPS fix can take
+   * from seconds to minutes (cold start, indoors, computers without GPS), so a quick low-accuracy /
+   * recently cached position is also requested: it only places the map and loads the hazards early.
+   */
   function gpsSource() {
     let id = null;
     return {
-      start(onFix, onError) {
+      start(onFix, onError, onApprox) {
         if (!window.isSecureContext) { onError({ code: "insecure" }); return; }
         if (!("geolocation" in navigator)) { onError({ code: "unsupported" }); return; }
         id = navigator.geolocation.watchPosition((p) => onFix(toFix(p)), onError,
           { enableHighAccuracy: true, maximumAge: 0, timeout: 20000 });
+        navigator.geolocation.getCurrentPosition((p) => onApprox(toFix(p)), () => {},
+          { enableHighAccuracy: false, maximumAge: APPROX_MAX_AGE_MS, timeout: 15000 });
       },
       stop() { if (id != null) navigator.geolocation.clearWatch(id); id = null; },
     };
   }
+
+  /* While no accurate fix has arrived: elapsed time, then the most likely reason. */
+  function renderWaiting() {
+    if (!trip.active || trip.gotFix) return;
+    const secs = Math.round((Date.now() - trip.waitStart) / 1000);
+    let text;
+    if (trip.gpsUnavailable) text = t("gpsUnavailable");
+    else if (trip.approx) text = t("gpsApprox", { n: Math.round(trip.approx.accuracy) }); // permission already given
+    else if (trip.permission === "prompt") text = IR.t("locatingHint");
+    else text = t("gpsWaitingFor", { n: secs });
+    if (secs >= SLOW_FIX_HINT_S && !trip.gpsUnavailable) text += " " + t("gpsSlowHint");
+    showMessage(text, trip.gpsUnavailable ? "bad" : "warn", "gps");
+  }
+  function startWaiting() {
+    Object.assign(trip, { gotFix: false, approx: null, gpsUnavailable: false, permission: null, waitStart: Date.now() });
+    clearInterval(trip.waitTimer);
+    trip.waitTimer = setInterval(renderWaiting, 1000);
+    renderWaiting();
+    if (navigator.permissions && navigator.permissions.query) {
+      navigator.permissions.query({ name: "geolocation" }).then((p) => {
+        trip.permission = p.state;
+        p.onchange = () => { trip.permission = p.state; renderWaiting(); };
+        renderWaiting();
+      }).catch(() => {});
+    }
+  }
+  function stopWaiting() { clearInterval(trip.waitTimer); trip.waitTimer = null; }
+
+  function onApprox(fix) {
+    if (!trip.active || trip.gotFix || !G.validPoint(fix)) return;
+    trip.approx = fix;
+    const pos = { lat: fix.lat, lng: fix.lng };
+    ui.gps.textContent = t("gpsApproxShort", { n: Math.round(fix.accuracy) });
+    drawDriver(pos);
+    if (G.inBox(pos, CFG.libya_bbox)) { trip.lastPos = pos; maybeRefresh(pos); }
+    renderWaiting();
+  }
+
   function onGpsError(err) {
     const code = err && err.code;
     const fatal = { 1: "locationDenied", insecure: "locationInsecure", unsupported: "locationUnsupported" }[code];
     if (fatal) { stop(); showMessage(IR.t(fatal), "bad", "fatal"); return; }
-    showMessage(t("gpsWaiting"), "warn", "gps"); // timeout / temporarily unavailable: keep watching
+    // 2 = position unavailable (location services off / no source), 3 = timeout: keep watching
+    if (code === 2) trip.gpsUnavailable = true;
+    if (!trip.gotFix) renderWaiting();
+    else showMessage(t("gpsWaiting"), "warn", "gps");
   }
 
   function onFix(fix) {
     if (!trip.active) return;
+    if (!trip.gotFix) { trip.gotFix = true; trip.gpsUnavailable = false; stopWaiting(); clearMessage(new Set(["gps"])); }
     const s = engine.update(fix);
     renderGps(Number.isFinite(fix.accuracy) ? fix.accuracy : null);
     if (s.status === "invalid") return;
@@ -318,8 +369,8 @@
     Object.assign(trip, { active: true, lastFetch: null, fetchedAt: null, summaryDone: false, lastPos: null,
                           follow: true, fetchError: false });
     setState(true);
-    showMessage(t("gpsWaiting"), "info", "gps");
     renderGps(null); renderDataAge(); renderNet();
+    startWaiting();
     try { // audio must be unlocked inside the user gesture
       const AC = window.AudioContext || window.webkitAudioContext;
       if (AC && !trip.audio) trip.audio = new AC();
@@ -329,7 +380,7 @@
     if ("Notification" in window && Notification.permission === "default") Notification.requestPermission().catch(() => {});
     acquireWakeLock();
     trip.source = CFG.simulate && window.IRDriveSim ? window.IRDriveSim.create(CFG, { geo: G, notice: (m) => showMessage(m, "info") }) : gpsSource();
-    trip.source.start(onFix, onGpsError);
+    trip.source.start(onFix, onGpsError, onApprox);
     trip.timer = setInterval(() => { renderDataAge(); if (trip.lastPos) maybeRefresh(trip.lastPos); }, TICK_MS);
   }
   function stop() {
@@ -338,6 +389,7 @@
     if (trip.source) trip.source.stop();
     trip.source = null;
     clearInterval(trip.timer);
+    stopWaiting();
     releaseWakeLock();
     if ("speechSynthesis" in window) window.speechSynthesis.cancel();
     engine.reset();

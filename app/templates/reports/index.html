@@ -17,7 +17,7 @@
   <form method="get" class="ms-auto">
     <input type="hidden" name="tab" value="{{ tab }}">
     <label class="visually-hidden" for="stf">{{ _("Status") }}</label>
-    <select id="stf" name="status" class="form-select form-select-sm" data-autosubmit style="min-height:36px">
+    <select id="stf" name="status" class="form-select form-select-sm" data-autosubmit>
       <option value="">{{ _("All statuses") }}</option>
       {% for code, label in [('new', _('New')), ('under_review', _('Under review')), ('assigned', _('Assigned')), ('in_progress', _('In progress')), ('resolved', _('Resolved'))] + ([('rejected', _('Rejected'))] if tab == 'mine' else []) %}
       <option value="{{ code }}" {{ 'selected' if status == code }}>{{ label }}</option>

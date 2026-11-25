@@ -7,10 +7,10 @@
 <ul class="ir-menu">
   <li><a href="{{ url_for('main.set_language', code='ar') }}" lang="ar" {{ 'aria-current=true' if lang == 'ar' }}>
     <span class="mi">ع</span><span><span class="fw-bold d-block">العربية</span><span class="small ir-muted">Arabic</span></span>
-    {% if lang == 'ar' %}<i class="bi bi-check-circle-fill ms-auto" style="color:#2fa3ad"></i>{% endif %}</a></li>
+    {% if lang == 'ar' %}<i class="bi bi-check-circle-fill ms-auto ir-accent" aria-hidden="true"></i>{% endif %}</a></li>
   <li><a href="{{ url_for('main.set_language', code='en') }}" lang="en" {{ 'aria-current=true' if lang == 'en' }}>
     <span class="mi">En</span><span><span class="fw-bold d-block">English</span><span class="small ir-muted">الإنجليزية</span></span>
-    {% if lang == 'en' %}<i class="bi bi-check-circle-fill ms-auto" style="color:#2fa3ad"></i>{% endif %}</a></li>
+    {% if lang == 'en' %}<i class="bi bi-check-circle-fill ms-auto ir-accent" aria-hidden="true"></i>{% endif %}</a></li>
 </ul>
 </div>
 {% endblock %}

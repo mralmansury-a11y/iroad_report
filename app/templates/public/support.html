@@ -20,7 +20,7 @@
     (_("When are contribution points counted?"), _("Points are added when the road team confirms and fixes the problem you reported.")),
     (_("Can I send a report without logging in?"), _("Yes. Enter your phone number so you can follow up the report with its reference number. Registering lets you receive notifications and points.")),
   ] %}
-  <div class="accordion-item ir-card mb-2" style="border-radius:14px;overflow:hidden">
+  <div class="accordion-item ir-card mb-2 overflow-hidden" style="border-radius:var(--ir-radius)">
     <h3 class="accordion-header"><button class="accordion-button collapsed bg-transparent text-reset fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq{{ loop.index }}" aria-expanded="false">{{ q }}</button></h3>
     <div id="faq{{ loop.index }}" class="accordion-collapse collapse" data-bs-parent="#faq"><div class="accordion-body ir-muted">{{ a }}</div></div>
   </div>

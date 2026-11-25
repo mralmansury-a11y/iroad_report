@@ -13,7 +13,7 @@
       <div class="small ir-muted">{{ report.created_at|dt }} · {{ report.created_at|reltime }}</div>
     </div>
     <div class="text-end">{{ status_badge(report.status) }}
-      <div class="small mt-1"><i class="bi bi-circle-fill sev-{{ report.severity }}" style="font-size:8px"></i> {{ severity_label(report.severity) }}</div></div>
+      <div class="small mt-1"><i class="bi bi-circle-fill ir-sev-dot sev-{{ report.severity }}" aria-hidden="true"></i> {{ severity_label(report.severity) }}</div></div>
   </div>
   {% if full and report.description %}
     <hr><p class="mb-0" dir="auto" lang="{{ report.language }}">{{ report.description }}</p>

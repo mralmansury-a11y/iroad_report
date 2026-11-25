@@ -10,7 +10,7 @@
   <h2 class="fs-5 mt-2 mb-0">{{ current_user.full_name }}</h2>
   {% if current_user.phone %}<div class="ir-muted num ltr d-inline-block">{{ current_user.phone }}</div>{% endif %}
   {% if current_user.email %}<div class="ir-muted small ltr">{{ current_user.email }}</div>{% endif %}
-  <div class="small mt-1" style="color:#59b9c0">{{ _("Active contributor") }}{% if current_user.home_section %} — {{ current_user.home_section.tr('name') }}{% endif %}</div>
+  <div class="small mt-1 ir-accent">{{ _("Active contributor") }}{% if current_user.home_section %} — {{ current_user.home_section.tr('name') }}{% endif %}</div>
   <div class="ir-stats mt-3">
     <div class="ir-stat"><span class="v num">{{ contrib.sent }}</span><span class="l">{{ _("Reports sent") }}</span></div>
     <div class="ir-stat"><span class="v num">{{ contrib.points }}</span><span class="l">{{ _("Contribution points") }}</span></div>

@@ -12,12 +12,12 @@
   <div class="alert alert-danger ir-alert d-none" data-form-error role="alert"></div>
 
   <fieldset class="mb-3">
-    <legend class="form-label fs-6">{{ form.category_id.label.text }}</legend>
+    <legend class="form-label">{{ form.category_id.label.text }}</legend>
     <div class="ir-choice-grid">
       {% for c in categories %}
       <div class="ir-choice">
         <input type="radio" name="{{ form.category_id.name }}" id="cat{{ c.id }}" value="{{ c.id }}" data-name="{{ c.tr('name') }}" {{ 'checked' if form.category_id.data == c.id }} required>
-        <label for="cat{{ c.id }}"><i class="bi {{ c.icon }}" aria-hidden="true"></i>{{ c.tr('name') }}</label>
+        <label for="cat{{ c.id }}"><i class="bi {{ c.icon }}" aria-hidden="true"></i><span class="txt">{{ c.tr('name') }}</span></label>
       </div>
       {% endfor %}
     </div>
@@ -31,7 +31,7 @@
   </div>
 
   <fieldset class="mb-3">
-    <legend class="form-label fs-6">{{ _("Location") }}</legend>
+    <legend class="form-label">{{ _("Location") }}</legend>
     {% set has_loc = form.latitude.data is not none %}
     <div class="ir-card ir-card-pad ir-loc-picker" data-loc-picker data-state="{{ 'ok' if has_loc else ('error' if form.latitude.errors else 'empty') }}"
          data-tiles="{{ config.MAP_TILE_URL }}">
@@ -59,12 +59,12 @@
   </fieldset>
 
   <fieldset class="mb-3">
-    <legend class="form-label fs-6">{{ form.severity.label.text }}</legend>
+    <legend class="form-label">{{ form.severity.label.text }}</legend>
     <div class="ir-sev">
       {% for val, label in form.severity.choices %}
       <div class="ir-choice">
         <input type="radio" name="{{ form.severity.name }}" id="sev-{{ val }}" value="{{ val }}" {{ 'checked' if form.severity.data == val }}>
-        <label for="sev-{{ val }}"><i class="bi bi-circle-fill sev-{{ val }}" style="font-size:10px" aria-hidden="true"></i>{{ label }}</label>
+        <label for="sev-{{ val }}"><i class="bi bi-circle-fill ir-sev-dot sev-{{ val }}" aria-hidden="true"></i>{{ label }}</label>
       </div>
       {% endfor %}
     </div>

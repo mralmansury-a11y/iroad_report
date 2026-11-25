@@ -30,8 +30,8 @@ def _csrf_for_session_requests():
         return
     if request.headers.get("Authorization", "").lower().startswith("bearer "):
         return  # token requests are not vulnerable to CSRF (no ambient credentials)
-    if request.endpoint == "api.issue_token":
-        return
+    if request.endpoint in ("api.issue_token", "api.reports_nearby"):
+        return  # reports_nearby is a read-only POST (body instead of URL keeps the position out of logs)
     csrf.protect()
 
 

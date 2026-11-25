@@ -685,7 +685,7 @@ def settings():
         drive_values = {k: (request.form.getlist(k) if DEFAULT_SETTINGS[k][1] == "json"
                             else to_latin_digits((request.form.get(k) or "").strip()))
                         for k in DEFAULT_SETTINGS if k.startswith("drive_") and DEFAULT_SETTINGS[k][1] != "bool"}
-        invalid = set(validate_drive_settings(drive_values))
+        invalid = set(validate_drive_settings(drive_values, {k: get_setting(k) for k in drive_values}))
         for key in sorted(invalid):
             flash(_("Invalid value for %(key)s", key=key), "danger")
         for key, (default, typ, _pub, _desc) in DEFAULT_SETTINGS.items():
@@ -712,7 +712,10 @@ def settings():
                 set_setting(key, val, current_user.id)
         audit("settings.update", "system_settings", None, changed=list(changed))
         db.session.commit()
-        flash(_("Changes saved."), "success")
+        if invalid:  # never report full success when some values were rejected
+            flash(_("The other changes were saved."), "warning")
+        else:
+            flash(_("Changes saved."), "success")
         return redirect(url_for("admin.settings"))
     values = {k: get_setting(k, d[0]) for k, d in DEFAULT_SETTINGS.items()}
     statuses = {s.code: s for s in db.session.execute(db.select(ReportStatus)).scalars()}

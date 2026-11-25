@@ -20,14 +20,15 @@
     farM: 5000,              // first alert
     nearM: 500,              // second alert
     coneDeg: 40,             // ± half-angle of the forward cone
-    alwaysAheadM: 150,       // closer than this a hazard counts as ahead whatever the angle
+    alwaysAheadM: 150,       // closer than this a hazard ALREADY SEEN AHEAD stays ahead whatever the angle
     maxAccuracyM: 100,       // worse GPS accuracy pauses alerts
     minMoveM: 30,            // minimum movement before a heading is computed from two fixes (jitter filter)
     minGpsHeadingSpeed: 2,   // m/s: below this the device heading is unreliable
     passedAngleDeg: 90,      // a hazard more than this off the heading is behind the driver
     listSize: 5,
     bbox: null,              // {min_lat, max_lat, min_lng, max_lng}: alerts only inside (Libya)
-    keyOf: (h) => (h.reference != null ? String(h.reference) : String(h.id)),
+    // reference when present, else the id, else the position (never one shared "undefined" key)
+    keyOf: (h) => (h.reference != null ? String(h.reference) : h.id != null ? String(h.id) : "@" + h.lat + "," + h.lng),
   });
 
   /** Alert stage for a distance: "near" ≤ nearM < "far" ≤ farM, otherwise null. */
@@ -142,7 +143,8 @@
             rows.push({ hazard, id, distanceM, bearing, stage: stageFor(distanceM, o.farM, o.nearM), ahead: null });
             continue;
           }
-          const ahead = G.isAhead(hd, bearing, distanceM, o.coneDeg, o.alwaysAheadM);
+          // the short-range override only keeps a hazard ahead; it never turns one behind into "ahead"
+          const ahead = G.isAhead(hd, bearing, distanceM, o.coneDeg, seenAhead.has(id) ? o.alwaysAheadM : 0);
           if (ahead) {
             seenAhead.add(id);
             rows.push({ hazard, id, distanceM, bearing, stage: stageFor(distanceM, o.farM, o.nearM), ahead: true });

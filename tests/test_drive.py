@@ -9,7 +9,7 @@ import pytest
 
 from app.extensions import db
 from app.models import Report, ReportCategory, ReportStatus
-from app.services.drive import drive_config, validate_drive_settings
+from app.services.drive import DriveConfig, drive_config, validate_drive_settings
 from app.services.geo import (
     LIBYA_BBOX, BBoxBoundary, PolygonBoundary, bounding_box, haversine_km, is_in_libya, valid_coordinates,
 )
@@ -41,8 +41,7 @@ def make_report(lat, lng, status="assigned", severity="high", category="pothole"
 
 
 def nearby(client, **params):
-    q = "&".join(f"{k}={v}" for k, v in params.items())
-    return client.get(f"/api/v1/reports/nearby?{q}")
+    return client.post("/api/v1/reports/nearby", json=params)
 
 
 def refs(resp):
@@ -143,8 +142,40 @@ class TestDriveSettings:
         assert validate_drive_settings({"drive_alert_statuses": []}) == ["drive_alert_statuses"]
         assert validate_drive_settings({"drive_alert_statuses": ["resolved"]}) == ["drive_alert_statuses"]
 
+    def test_validation_uses_stored_value_of_a_rejected_partner(self):
+        stored = {"drive_alert_far_m": "1000", "drive_alert_near_m": "500", "drive_fetch_radius_km": "30"}
+        # far is out of range → rejected; near=4000 must then be compared with the stored far (1000)
+        assert set(validate_drive_settings({"drive_alert_far_m": "30000", "drive_alert_near_m": "4000"}, stored)) ==             {"drive_alert_far_m", "drive_alert_near_m"}
+        # near alone is checked against the stored far as well
+        assert validate_drive_settings({"drive_alert_near_m": "1500"}, stored) == ["drive_alert_near_m"]
+        assert validate_drive_settings({"drive_alert_near_m": "900"}, stored) == []
 
-# ------------------------------------------------------------------ GET /api/v1/reports/nearby
+    def test_validation_fetch_radius_must_cover_far_distance(self):
+        stored = {"drive_alert_far_m": "5000", "drive_alert_near_m": "500", "drive_fetch_radius_km": "30"}
+        assert validate_drive_settings({"drive_fetch_radius_km": "5"}, stored) == ["drive_fetch_radius_km"]
+        assert validate_drive_settings({"drive_fetch_radius_km": "6"}, stored) == []
+        assert validate_drive_settings({"drive_alert_far_m": "20000"}, {**stored, "drive_fetch_radius_km": "10"}) ==             ["drive_alert_far_m"]
+
+    def test_refresh_distance_keeps_far_alert_inside_fetched_circle(self):
+        def cfg(radius, far):
+            return DriveConfig(True, (), far, 100, radius, 40, 120)
+        assert cfg(30, 5000).refresh_dist_m == 10000          # capped
+        assert cfg(8, 5000).refresh_dist_m == 3000            # radius - far
+        assert cfg(6, 5000).refresh_dist_m == 1000            # minimum
+        for radius, far in [(30, 5000), (8, 5000), (6, 5000), (21, 20000)]:
+            c = cfg(radius, far)
+            assert c.fetch_radius_km * 1000 >= c.far_m + c.refresh_dist_m
+        assert cfg(8, 5000).client_dict()["refresh_dist_m"] == 3000
+
+    def test_stored_radius_too_small_for_far_is_raised(self, app):
+        set_setting("drive_alert_far_m", "5000")
+        set_setting("drive_fetch_radius_km", "2")
+        db.session.commit()
+        c = drive_config()
+        assert c.fetch_radius_km == 6 and c.fetch_radius_km * 1000 >= c.far_m + c.refresh_dist_m
+
+
+# ------------------------------------------------------------------ POST /api/v1/reports/nearby
 class TestNearbyApi:
     def test_only_verified_statuses(self, client):
         for st in ReportStatus.ALL:
@@ -189,10 +220,10 @@ class TestNearbyApi:
 
     def test_default_radius_comes_from_settings(self, client):
         make_report(*north_of(SABHA, 10))
-        set_setting("drive_fetch_radius_km", "5")
+        set_setting("drive_fetch_radius_km", "8")
         db.session.commit()
         body = nearby(client, lat=SABHA[0], lng=SABHA[1]).get_json()["data"]
-        assert body["radius_km"] == 5 and body["items"] == []
+        assert body["radius_km"] == 8 and body["items"] == []
 
     def test_configured_statuses(self, client):
         new = make_report(*north_of(SABHA, 2), status="new")
@@ -201,11 +232,29 @@ class TestNearbyApi:
         db.session.commit()
         assert refs(nearby(client, lat=SABHA[0], lng=SABHA[1])) == [new.reference]
 
-    @pytest.mark.parametrize("query", ["", "lat=27", "lng=14", "lat=abc&lng=14", "lat=91&lng=14", "lat=27&lng=181",
-                                       "lat=nan&lng=14", "lat=27&lng=inf"])
-    def test_invalid_coordinates(self, client, query):
-        r = client.get(f"/api/v1/reports/nearby?{query}")
+    @pytest.mark.parametrize("body", [{}, {"lat": 27}, {"lng": 14}, {"lat": "abc", "lng": 14}, {"lat": 91, "lng": 14},
+                                      {"lat": 27, "lng": 181}, {"lat": "nan", "lng": 14}, {"lat": 27, "lng": "inf"},
+                                      {"lat": True, "lng": 14}, {"lat": [27], "lng": 14}])
+    def test_invalid_coordinates(self, client, body):
+        r = client.post("/api/v1/reports/nearby", json=body)
         assert r.status_code == 422 and r.get_json()["error"]["code"] == "invalid_coordinates"
+
+    def test_non_json_body_is_rejected(self, client):
+        r = client.post("/api/v1/reports/nearby", data="lat=27&lng=14", content_type="text/plain")
+        assert r.status_code == 422 and r.get_json()["error"]["code"] == "invalid_coordinates"
+
+    def test_position_never_in_the_url(self, client):
+        """GET with the position in the query string is refused: URLs end up in the access logs."""
+        r = client.get(f"/api/v1/reports/nearby?lat={SABHA[0]}&lng={SABHA[1]}")
+        assert r.status_code in (404, 405)  # GET /reports/<reference> treats "nearby" as an unknown reference
+
+    def test_no_csrf_needed_for_this_read_only_post(self, app, client):
+        app.config["WTF_CSRF_ENABLED"] = True
+        try:
+            r = nearby(client, lat=SABHA[0], lng=SABHA[1])
+        finally:
+            app.config["WTF_CSRF_ENABLED"] = False
+        assert r.status_code == 200
 
     @pytest.mark.parametrize("lat,lng", [(36.8065, 10.1815), (30.0444, 31.2357), (0, 0)])
     def test_outside_libya(self, client, lat, lng):
@@ -219,7 +268,7 @@ class TestNearbyApi:
 
     def test_arabic_digits_accepted(self, client):
         make_report(*north_of(SABHA, 1))
-        r = client.get("/api/v1/reports/nearby?lat=٢٧٫٠٣٧٧&lng=14.4283".replace("٫", "."))
+        r = client.post("/api/v1/reports/nearby", json={"lat": "٢٧.٠٣٧٧", "lng": "14.4283"})
         assert r.status_code == 200 and r.get_json()["data"]["count"] == 1
 
     def test_disabled_returns_404(self, client):
@@ -406,6 +455,16 @@ class TestAdminDriveSettings:
         # a valid value submitted together with invalid ones is still saved
         client.post("/admin/settings", data=self._form(drive_cone_deg="25", drive_fetch_radius_km="80"))
         assert drive_config().cone_deg == 25 and drive_config().fetch_radius_km == 30
+
+    def test_partial_save_is_not_reported_as_success(self, client, users):
+        login(client, "admin@example.ly")
+        # far is out of range (rejected); near=5000 is in range but not below the stored far (5000)
+        r = client.post("/admin/settings", data=self._form(drive_alert_far_m="30000", drive_alert_near_m="5000"),
+                        follow_redirects=True)
+        html = r.get_data(as_text=True)
+        assert "تم حفظ التغييرات." not in html and "تم حفظ بقية التغييرات." in html
+        c = drive_config()
+        assert (c.far_m, c.near_m) == (5000, 500)
 
     def test_toggle_off(self, client, users):
         login(client, "admin@example.ly")

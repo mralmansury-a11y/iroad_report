@@ -230,6 +230,31 @@ test("reset starts a new trip (alerts may fire again)", () => {
   assert.equal(allAlerts(drive(engine, ORIGIN, 0, 100, 50)).length, 1);
 });
 
+test("a hazard just behind the driver at trip start is not announced as ahead", () => {
+  const engine = E.createEngine({ bbox: LIBYA });
+  engine.setHazards([hazard("JUST-PASSED", ORIGIN, 180, 100)]);
+  const states = drive(engine, ORIGIN, 0, 1000, 20);
+  assert.equal(allAlerts(states).length, 0);
+  assert.ok(states.every((s) => s.upcoming.length === 0));
+});
+
+test("a hazard seen ahead stays ahead at very short range (angle is meaningless there)", () => {
+  const engine = E.createEngine({ bbox: LIBYA });
+  engine.setHazards([hazard("SIDE", ORIGIN, 0, 1000)]);
+  drive(engine, ORIGIN, 0, 900, 50);
+  // 100 m before it the driver drifts so the bearing is well outside the cone
+  const s = engine.update(Object.assign(G.destination(ORIGIN, 0, 950), { accuracy: 5, heading: 90, speed: 25 }));
+  assert.equal(s.upcoming.length, 1);
+});
+
+test("hazards without reference or id get distinct keys (each one is announced)", () => {
+  const engine = E.createEngine({ bbox: LIBYA });
+  const a = hazard(null, ORIGIN, 0, 300), b = hazard(null, ORIGIN, 5, 400);
+  const s = engine.update((engine.setHazards([a, b]), { lat: ORIGIN.lat, lng: ORIGIN.lng, accuracy: 5, heading: 0, speed: 20 }));
+  assert.equal(s.alerts.length, 2);
+  assert.notEqual(s.alerts[0].id, s.alerts[1].id);
+});
+
 test("uses the id when there is no reference", () => {
   const engine = E.createEngine({ bbox: LIBYA });
   const h = hazard(undefined, ORIGIN, 0, 1000);

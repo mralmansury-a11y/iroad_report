@@ -16,7 +16,7 @@
     async function plan() {
       const origin = { lat: sim.lat, lng: sim.lng };
       try {
-        const r = await window.IR.api(cfg.endpoint + "?lat=" + origin.lat + "&lng=" + origin.lng + "&radius_km=50");
+        const r = await window.IR.api(cfg.endpoint, { method: "POST", json: { lat: origin.lat, lng: origin.lng, radius_km: 50 } });
         const items = (r.ok && r.data && r.data.data && r.data.data.items) || [];
         if (items.length) {
           const target = items[0];

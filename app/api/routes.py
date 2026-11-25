@@ -167,23 +167,38 @@ def reports_map():
     return ok({"items": items})
 
 
-@bp.get("/reports/nearby")
+def _body_float(body: dict, name: str):
+    v = body.get(name)
+    if v is None or v == "" or isinstance(v, bool):
+        return None
+    try:
+        return float(to_latin_digits(v) if isinstance(v, str) else v)
+    except (TypeError, ValueError):
+        return None
+
+
+@bp.post("/reports/nearby")
 @limiter.limit("60 per minute")
 def reports_nearby():
     """Verified hazards around a point, for driving mode.
 
-    The coordinates are used only to answer this request: never stored, never logged.
+    Body (JSON): {"lat": .., "lng": .., "radius_km": ..(optional)}. The position is sent in the body,
+    never in the URL, so it does not reach the nginx/gunicorn access logs; it is used only to answer
+    this request and is never stored. Read-only, hence exempt from CSRF (see api/__init__.py).
     """
     cfg = drive_config()
     if not cfg.enabled:
         return err("drive_disabled", _("Driving mode is not available."), 404)
-    lat, lng = _float("lat"), _float("lng")
+    body = request.get_json(silent=True)
+    if not isinstance(body, dict):
+        body = {}
+    lat, lng = _body_float(body, "lat"), _body_float(body, "lng")
     if lat is None or lng is None or not valid_coordinates(lat, lng):
         return err("invalid_coordinates", _("Invalid coordinates."), 422)
     if not is_in_libya(lat, lng):
         return err("outside_libya", _("The location is outside Libya."), 422)
-    radius = _float("radius_km")
-    if radius is None and request.args.get("radius_km") in (None, ""):
+    radius = _body_float(body, "radius_km")
+    if radius is None and body.get("radius_km") in (None, ""):
         radius = float(cfg.fetch_radius_km)
     if radius is None or not (0 < radius < float("inf")):
         return err("invalid_radius", _("Invalid search radius."), 422)

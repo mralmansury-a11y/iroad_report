@@ -76,6 +76,7 @@ AR = {
     "A password is required for new accounts.": "كلمة المرور مطلوبة للحسابات الجديدة.",
     "User created.": "تم إنشاء المستخدم.",
     "Changes saved.": "تم حفظ التغييرات.",
+    "The other changes were saved.": "تم حفظ بقية التغييرات.",
     "Account activated.": "تم تفعيل الحساب.",
     "Account deactivated.": "تم إيقاف الحساب.",
     "This code is already used.": "هذا الرمز مستخدم مسبقاً.",

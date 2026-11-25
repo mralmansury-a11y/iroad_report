@@ -1,8 +1,10 @@
-"""Driving mode: settings and the geographic query behind GET /api/v1/reports/nearby.
+"""Driving mode: settings and the geographic query behind POST /api/v1/reports/nearby.
 
-Privacy: the driver's position is used only to answer the request. It is never stored or logged.
+Privacy: the driver's position is used only to answer the request. It travels in the request body
+(never in the URL), so it is neither stored nor written to the nginx/gunicorn access logs.
 All distance/heading/alert decisions are taken on the driver's device (static/js/drive-engine.js).
 """
+import math
 from dataclasses import asdict, dataclass
 
 from ..extensions import db
@@ -12,6 +14,10 @@ from .settings import DEFAULT_SETTINGS, get_setting
 
 MAX_FETCH_RADIUS_KM = 50
 MAX_NEARBY_ITEMS = 300
+# The client fetches the list again after driving refresh_dist_m. At that point the fetched circle
+# must still cover the far-alert distance ahead: fetch_radius_m >= far_m + refresh_dist_m.
+MIN_REFETCH_M = 1000
+MAX_REFETCH_M = 10000
 # Statuses that may be configured as "verified by the administration".
 # Final statuses (resolved/rejected) can never trigger an alert.
 ALERTABLE_STATUS_CHOICES = (ReportStatus.NEW, ReportStatus.UNDER_REVIEW, ReportStatus.ASSIGNED, ReportStatus.IN_PROGRESS)
@@ -37,12 +43,23 @@ class DriveConfig:
     cone_deg: int
     refresh_s: int
 
+    @property
+    def refresh_dist_m(self) -> int:
+        """Distance driven before the list is fetched again (keeps far_m ahead inside the fetched circle)."""
+        return max(MIN_REFETCH_M, min(MAX_REFETCH_M, self.fetch_radius_km * 1000 - self.far_m))
+
     def client_dict(self) -> dict:
         """Values the driving page needs (no secrets)."""
         d = asdict(self)
         d.pop("alert_statuses")
+        d["refresh_dist_m"] = self.refresh_dist_m
         d["libya_bbox"] = LIBYA_BBOX.as_dict()
         return d
+
+
+def min_fetch_radius_km(far_m: int) -> int:
+    """Smallest fetch radius that covers far_m ahead plus the minimum refetch distance."""
+    return math.ceil((far_m + MIN_REFETCH_M) / 1000)
 
 
 def _clamp_int(key: str, value) -> int:
@@ -67,19 +84,25 @@ def drive_config() -> DriveConfig:
     near = _clamp_int("drive_alert_near_m", get_setting("drive_alert_near_m"))
     if near >= far:  # the near stage must come after the far stage
         near = max(INT_RANGES["drive_alert_near_m"][0], far // 10)
+    radius = max(_clamp_int("drive_fetch_radius_km", get_setting("drive_fetch_radius_km")), min_fetch_radius_km(far))
     return DriveConfig(
         enabled=bool(get_setting("drive_mode_enabled", True)),
         alert_statuses=parse_statuses(get_setting("drive_alert_statuses")),
         far_m=far,
         near_m=near,
-        fetch_radius_km=_clamp_int("drive_fetch_radius_km", get_setting("drive_fetch_radius_km")),
+        fetch_radius_km=radius,
         cone_deg=_clamp_int("drive_cone_deg", get_setting("drive_cone_deg")),
         refresh_s=_clamp_int("drive_refresh_s", get_setting("drive_refresh_s")),
     )
 
 
-def validate_drive_settings(values: dict) -> list[str]:
-    """Validate submitted driving settings (raw strings / lists). Returns the keys that are invalid."""
+def validate_drive_settings(values: dict, current: dict | None = None) -> list[str]:
+    """Validate submitted driving settings (raw strings / lists). Returns the keys that are invalid.
+
+    Cross-field rules use the values in effect after saving: the submitted value when it is valid,
+    otherwise the stored one from `current` (defaults when not given). When a rule fails, every
+    submitted key of that rule is rejected, so an inconsistent combination is never stored.
+    """
     bad = []
     for key, (lo, hi) in INT_RANGES.items():
         if key not in values:
@@ -91,10 +114,22 @@ def validate_drive_settings(values: dict) -> list[str]:
             continue
         if not lo <= v <= hi:
             bad.append(key)
-    far, near = values.get("drive_alert_far_m"), values.get("drive_alert_near_m")
-    if far is not None and near is not None and "drive_alert_far_m" not in bad and "drive_alert_near_m" not in bad:
-        if int(near) >= int(far):  # reject the pair together: never store an inconsistent combination
-            bad.extend(["drive_alert_far_m", "drive_alert_near_m"])
+    current = current or {}
+
+    def effective(key):
+        raw = values[key] if key in values and key not in bad else current.get(key, DEFAULT_SETTINGS[key][0])
+        try:
+            return int(raw)
+        except (TypeError, ValueError):
+            return int(DEFAULT_SETTINGS[key][0])
+
+    def check(keys, ok):
+        if not ok:
+            bad.extend(k for k in keys if k in values and k not in bad)
+
+    check(("drive_alert_far_m", "drive_alert_near_m"), effective("drive_alert_near_m") < effective("drive_alert_far_m"))
+    check(("drive_fetch_radius_km", "drive_alert_far_m"),
+          effective("drive_fetch_radius_km") >= min_fetch_radius_km(effective("drive_alert_far_m")))
     if "drive_alert_statuses" in values:
         st = values["drive_alert_statuses"]
         if not isinstance(st, (list, tuple)) or not st or any(s not in ALERTABLE_STATUS_CHOICES for s in st):

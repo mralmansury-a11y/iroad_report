@@ -225,6 +225,9 @@ msgstr "Change status"
 msgid "Changes saved."
 msgstr "Changes saved."
 
+msgid "The other changes were saved."
+msgstr "The other changes were saved."
+
 msgid "Chat with support"
 msgstr "Chat with support"
 

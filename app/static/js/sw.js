@@ -4,8 +4,8 @@
  *   - Public pages (navigations) ...................... network-first → cached copy → /offline
  *   - Public JSON (road / meta / home stats) .......... network-first → cached copy
  *   - Admin, auth, notifications, attachments, /me ... network-only, NEVER cached
- *   - /api/v1/reports/nearby (driving mode) ........... network-only: its URL carries the driver's (rounded)
- *     position, so it is never written to a cache; the page keeps the last list in memory instead.
+ *   - /api/v1/reports/nearby (driving mode) ........... network-only: a POST whose body carries the driver's
+ *     (rounded) position; never cached, the page keeps the last list in memory instead.
  *   - Responses marked "no-store"/"private" ........... never cached (personalised pages)
  * The version string below is injected by the server from a hash of /static.
  */

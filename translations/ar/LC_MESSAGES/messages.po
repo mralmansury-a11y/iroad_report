@@ -225,6 +225,9 @@ msgstr "تغيير الحالة"
 msgid "Changes saved."
 msgstr "تم حفظ التغييرات."
 
+msgid "The other changes were saved."
+msgstr "تم حفظ بقية التغييرات."
+
 msgid "Chat with support"
 msgstr "الدردشة مع الدعم"
 

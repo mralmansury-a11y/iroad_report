@@ -1,7 +1,8 @@
 /* Driving mode — page controller (DOM, GPS, map, voice, vibration, Wake Lock, data refresh).
  * All decisions (heading, ahead/behind, stages, de-duplication) live in the pure drive-engine.js.
  * Privacy: the driver's track never leaves the device. Hazard lists are requested with a position
- * rounded to ~1 km; nothing about the trip is stored.
+ * rounded to ~1 km, sent in a POST body (never in the URL, so it is not in server logs); nothing
+ * about the trip is stored.
  * Security: every report text is rendered with textContent (never innerHTML).
  */
 (function () {
@@ -12,7 +13,8 @@
   if (!root || !cfgEl || !G || !E) return;
 
   const CFG = JSON.parse(cfgEl.textContent);
-  const REFRESH_DIST_M = 10000;        // refetch after ~10 km driven
+  // refetch distance from the server: keeps the far-alert distance ahead inside the fetched circle
+  const REFRESH_DIST_M = CFG.refresh_dist_m > 0 ? CFG.refresh_dist_m : 1000;
   const RETRY_MS = 30000;              // retry delay after a failed refresh
   const TICK_MS = 15000;               // status bar / periodic refresh check
   const COORD_DECIMALS = 2;            // ≈1.1 km: the server never receives the exact position
@@ -63,7 +65,7 @@
   const engine = E.createEngine({
     farM: CFG.far_m, nearM: CFG.near_m, coneDeg: CFG.cone_deg, bbox: CFG.libya_bbox,
   });
-  const trip = { active: false, source: null, lastFetch: null, fetching: false, fetchedAt: null, summaryDone: false,
+  const trip = { active: false, id: 0, source: null, lastFetch: null, fetching: false, fetchedAt: null, summaryDone: false,
                  lastPos: null, wakeLock: null, timer: null, audio: null, follow: true, fetchError: false };
 
   /* ---------- map ---------- */
@@ -214,11 +216,13 @@
   async function fetchHazards(pos) {
     if (trip.fetching) return;
     trip.fetching = true;
+    const tripId = trip.id; // a response that arrives after this trip ended is ignored
+    const current = () => trip.active && trip.id === tripId;
     const radius = Math.min(50, CFG.fetch_radius_km + 2); // +2 km compensates the rounded position
-    const url = CFG.endpoint + "?lat=" + round(pos.lat) + "&lng=" + round(pos.lng) + "&radius_km=" + radius;
+    const body = { lat: round(pos.lat), lng: round(pos.lng), radius_km: radius };
     try {
-      const r = await IR.api(url);
-      if (!trip.active) return;
+      const r = await IR.api(CFG.endpoint, { method: "POST", json: body });
+      if (!current()) return;
       if (!r.ok || !r.data || !r.data.ok) throw new Error("http " + r.status);
       const items = r.data.data.items;
       engine.setHazards(items);
@@ -229,14 +233,13 @@
       clearMessage(new Set(["data"]));
       if (!trip.summaryDone) tripSummary(items.length);
     } catch (e) {
-      if (!trip.active) return;
+      if (!current()) return;
       trip.fetchError = true;
       // keep the last list; retry soon instead of waiting for the full refresh interval
       trip.lastFetch = { at: Date.now() - CFG.refresh_s * 1000 + RETRY_MS, pos: (trip.lastFetch && trip.lastFetch.pos) || pos };
       showMessage(t("updateFailed"), "warn", "data");
     } finally {
-      trip.fetching = false;
-      renderDataAge();
+      if (trip.id === tripId) { trip.fetching = false; renderDataAge(); }
     }
   }
   function maybeRefresh(pos) {
@@ -366,8 +369,8 @@
     if (trip.active) return;
     initMap();
     engine.reset();
-    Object.assign(trip, { active: true, lastFetch: null, fetchedAt: null, summaryDone: false, lastPos: null,
-                          follow: true, fetchError: false });
+    Object.assign(trip, { active: true, id: trip.id + 1, fetching: false, lastFetch: null, fetchedAt: null,
+                          summaryDone: false, lastPos: null, follow: true, fetchError: false });
     setState(true);
     renderGps(null); renderDataAge(); renderNet();
     startWaiting();
@@ -386,6 +389,7 @@
   function stop() {
     if (!trip.active) return;
     trip.active = false;
+    trip.fetching = false; // an in-flight request belongs to the ended trip and is ignored on arrival
     if (trip.source) trip.source.stop();
     trip.source = null;
     clearInterval(trip.timer);

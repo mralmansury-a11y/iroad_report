@@ -52,8 +52,6 @@
   --ir-border: #353a32;
   --ir-text: #f6f2e7;
   --ir-text-muted: #a6a99f;
-  --ir-road: #3a3f37;
-  --ir-road-line: #d6d2c4;
   --ir-nav-bg: #1e221f;
   --ir-input-bg: #1d201c;
   --ir-shadow: 0 6px 24px rgba(0, 0, 0, .25);
@@ -67,8 +65,6 @@
   --ir-border: #e3ddcd;
   --ir-text: #181b19;
   --ir-text-muted: #6a6d64;
-  --ir-road: #d9d4c5;
-  --ir-road-line: #ffffff;
   --ir-nav-bg: #ffffff;
   --ir-input-bg: #ffffff;
   --ir-shadow: 0 6px 24px rgba(24, 27, 25, .08);
@@ -133,6 +129,8 @@ bdi, .ltr { unicode-bidi: isolate; }
   transition: background .15s ease, border-color .15s ease; }
 .ir-chip-btn:hover, .ir-chip-btn:focus-visible { background: rgba(255,255,255,.2); color: #fff; border-color: rgba(255,255,255,.5); }
 .ir-chip-btn.icon { padding: 0; width: 36px; }
+.ir-header-bell { display: none; position: relative; }
+.ir-header-bell .ir-dot { top: -5px; inset-inline-end: -5px; }
 .ir-chip-btn .avatar { width: 24px; height: 24px; border-radius: 50%; background: #fff; color: var(--ir-brand); font-size: 11px; display: inline-flex; align-items: center; justify-content: center; }
 .ir-account-chip { display: none !important; }
 [data-theme="light"] .ir-theme-ico-dark, :root:not([data-theme="light"]) .ir-theme-ico-light { display: none; }
@@ -158,27 +156,12 @@ bdi, .ltr { unicode-bidi: isolate; }
 .ir-section-title h2 { font-size: 18px; margin: 0; }
 .ir-section-title a { font-size: 13px; color: var(--ir-text-muted); text-decoration: none; }
 
-/* Location card */
-.ir-loc-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; padding: 16px 16px 0; }
-.ir-loc-label { color: var(--ir-text-muted); font-size: 13px; }
-.ir-loc-value { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-top: 2px; }
-.ir-loc-km { font-size: 27px; font-weight: 800; line-height: 1.1; }
-.ir-loc-km small { font-size: 22px; font-weight: 700; }
-.ir-loc-section { font-size: 22px; font-weight: 700; }
+/* Road status pill */
 .ir-pill { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px; font-size: 12px; font-weight: 700; white-space: nowrap; }
 .ir-pill-open { background: var(--ir-done-bg); color: var(--ir-done-ink); }
 .ir-pill-partial { background: var(--ir-review-bg); color: var(--ir-review-ink); }
 .ir-pill-closed { background: var(--ir-new-bg); color: var(--ir-new-ink); }
 .ir-pill-unknown { background: var(--ir-surface-2); color: var(--ir-text-muted); }
-.ir-road { width: 100%; height: 88px; display: block; margin-top: 4px; }
-.ir-road .road-body { fill: none; stroke: var(--ir-road); stroke-width: 22; stroke-linecap: round; }
-.ir-road .road-dash { fill: none; stroke: var(--ir-road-line); stroke-width: 1.6; stroke-dasharray: 8 9; opacity: .8; }
-.ir-road .you { fill: var(--ir-primary); stroke: #fff; stroke-width: 2.5; }
-.ir-road .you-label { fill: var(--ir-text); font-size: 10px; font-weight: 700; font-family: var(--ir-font); }
-.ir-road .mk-high { fill: var(--ir-red); } .ir-road .mk-medium { fill: var(--ir-amber); } .ir-road .mk-low { fill: #6fb5a8; }
-.ir-loc-actions { padding: 0 16px 10px; display: flex; gap: 8px; flex-wrap: wrap; font-size: 13px; }
-.has-loc [data-loc-actions] select, .has-loc [data-loc-actions] .ir-muted:empty { display: none; }
-.ir-link-btn { background: none; border: 0; padding: 0; color: var(--bs-link-color); font-weight: 700; font-size: 13px; }
 .ir-stats { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--ir-border); }
 .ir-stat { text-align: center; padding: 14px 6px 12px; }
 .ir-stat + .ir-stat { border-inline-start: 1px solid var(--ir-border); }
@@ -395,14 +378,16 @@ bdi, .ltr { unicode-bidi: isolate; }
   .ir-brand-text small { font-size: 12.5px; }
   .ir-header .nda-logo { height: 38px; }
   .ir-account-chip { display: inline-flex !important; }
+  .ir-header-bell { display: inline-flex; }
   .ir-topnav { display: flex; gap: 2px; align-items: center; margin-inline: auto; }
   .ir-topnav a { color: rgba(255,255,255,.86); text-decoration: none; font-weight: 700; padding: 8px 12px; border-radius: 10px; font-size: 14.5px; white-space: nowrap; position: relative; }
   .ir-topnav a:hover { background: rgba(255,255,255,.1); color: #fff; }
   .ir-topnav a.active { background: rgba(255,255,255,.16); color: #fff; }
   .ir-topnav a.active::after { content: ""; position: absolute; inset-inline: 12px; bottom: 3px; height: 2px; border-radius: 2px; background: #fff; opacity: .8; }
   .ir-main { padding: 0 28px; }
-  .ir-home-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; align-items: start; }
-  .ir-home-grid .ir-section-title:first-child { margin-top: 0; }
+  .ir-home-actions { display: flex; flex-wrap: wrap; gap: 0 16px; }
+  .ir-home-actions .ir-ann { flex: 1 0 100%; }
+  .ir-home-actions .ir-cta { flex: 1 1 0; }
   .ir-toast { bottom: 24px; }
   .ir-narrow { max-width: 620px; margin-inline: auto; }
   .ir-choice-grid { grid-template-columns: repeat(4, 1fr); }

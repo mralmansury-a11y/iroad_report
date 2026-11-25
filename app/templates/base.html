@@ -30,7 +30,7 @@
 <script type="application/json" id="ir-config">{{ {
   "lang": lang, "dir": dir, "i18n": js_i18n, "vapid": vapid_public_key,
   "authenticated": current_user.is_authenticated,
-  "endpoints": {"home": url_for('api.home_data'), "locate": url_for('api.locate'), "road": url_for('api.road'),
+  "endpoints": {"locate": url_for('api.locate'), "road": url_for('api.road'),
                 "pushSub": url_for('api.push_subscribe'), "pushUnsub": url_for('api.push_unsubscribe'),
                 "mapReports": url_for('api.reports_map')}
 } | tojson }}</script>
@@ -59,6 +59,8 @@
          title="{{ _('Change language') }}"><i class="bi bi-translate" aria-hidden="true"></i><span>{{ 'EN' if other_lang == 'en' else 'ع' }}</span></a>
       <button type="button" class="ir-chip-btn icon" data-theme-toggle aria-label="{{ _('Toggle dark / light mode') }}" title="{{ _('Toggle dark / light mode') }}">
         <i class="bi bi-sun-fill ir-theme-ico-dark" aria-hidden="true"></i><i class="bi bi-moon-stars-fill ir-theme-ico-light" aria-hidden="true"></i></button>
+      <a class="ir-chip-btn icon ir-header-bell" href="{{ url_for('notifications.index') if current_user.is_authenticated else url_for('main.alerts') }}"
+         aria-label="{{ _('Notifications') }}" title="{{ _('Notifications') }}"><i class="bi bi-bell-fill" aria-hidden="true"></i>{% if unread_count %}<span class="ir-dot num">{{ unread_count }}</span>{% endif %}</a>
       {% if current_user.is_authenticated %}
       <a class="ir-chip-btn ir-account-chip" href="{{ url_for('main.profile') }}" title="{{ _('My account') }}"><span class="avatar">{{ current_user.initials }}</span><span>{{ _("My account") }}</span></a>
       {% else %}
@@ -80,7 +82,7 @@
   <nav class="ir-bottomnav" aria-label="{{ _('Main navigation') }}">
     <ul>
       <li><a href="{{ url_for('main.home') }}" class="{{ 'active' if ep == 'main.home' }}" {{ 'aria-current=page' if ep == 'main.home' }}><i class="bi bi-house-door-fill"></i><span>{{ _("Home") }}</span></a></li>
-      <li><a href="{{ url_for('reports.index', tab='mine') if current_user.is_authenticated else url_for('reports.index') }}" class="{{ 'active' if ep.startswith('reports.') and ep != 'reports.new' }}"><i class="bi bi-clipboard2-fill"></i><span>{{ _("My reports") }}</span></a></li>
+      <li><a href="{{ url_for('reports.index') }}" class="{{ 'active' if ep.startswith('reports.') and ep != 'reports.new' }}"><i class="bi bi-clipboard2-fill"></i><span>{{ _("Reports") }}</span></a></li>
       <li><a href="{{ url_for('reports.new') }}" class="fab" aria-label="{{ _('Add report') }}"><i class="bi bi-plus-lg"></i></a></li>
       <li><a href="{{ url_for('notifications.index') if current_user.is_authenticated else url_for('main.alerts') }}" class="{{ 'active' if ep.startswith('notifications.') or ep == 'main.alerts' }}">
         <i class="bi bi-bell-fill"></i><span>{{ _("Notifications") }}</span>{% if unread_count %}<span class="ir-dot num">{{ unread_count }}</span>{% endif %}</a></li>

@@ -19,7 +19,6 @@ const SHELL = [
   "/offline",
   "/static/css/app.css",
   "/static/js/app.js",
-  "/static/js/home.js",
   "/static/js/report-form.js",
   "/static/js/geo.js",
   "/static/js/drive-engine.js",

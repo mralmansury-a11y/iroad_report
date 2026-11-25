@@ -300,6 +300,58 @@ class TestNearbyApi:
         assert refs(nearby(client, lat=SABHA[0], lng=SABHA[1], radius_km=30)) == []
 
 
+# ------------------------------------------------------------------ GET /api/v1/reports/alertable (offline list)
+class TestAlertableApi:
+    URL = "/api/v1/reports/alertable"
+
+    def test_only_alertable_statuses_no_position_needed(self, client):
+        for st in ReportStatus.ALL:
+            make_report(*north_of(SABHA, 2), status=st)
+        r = client.get(self.URL)
+        assert r.status_code == 200
+        items = r.get_json()["data"]["items"]
+        assert sorted(i["status"]["code"] for i in items if i["reference"].startswith("TST-")) == ["assigned", "in_progress"]
+
+    def test_whole_country_and_public_fields_only(self, client):
+        far_away = make_report(32.8872, 13.1913)        # Tripoli, > 600 km from Sabha
+        make_report(36.8065, 10.1815)                    # Tunis: outside Libya, never listed
+        body = client.get(self.URL).get_json()["data"]
+        refs_ = [i["reference"] for i in body["items"]]
+        assert far_away.reference in refs_ and body["count"] == len(body["items"])
+        assert all(abs(i["lat"] - 36.8065) > 1e-6 for i in body["items"])
+        item = next(i for i in body["items"] if i["reference"] == far_away.reference)
+        assert set(item) == {"reference", "lat", "lng", "title", "severity", "category", "status", "km_label", "updated_at"}
+        assert "reporter" not in json.dumps(body) and "guest_phone" not in json.dumps(body)
+
+    def test_etag_and_not_modified(self, client):
+        make_report(*north_of(SABHA, 2))
+        r1 = client.get(self.URL)
+        etag = r1.headers["ETag"]
+        assert etag.startswith('"') and "no-store" in r1.headers["Cache-Control"]
+        r2 = client.get(self.URL, headers={"If-None-Match": etag})
+        assert r2.status_code == 304 and r2.get_data() == b"" and r2.headers["ETag"] == etag
+        make_report(*north_of(SABHA, 3))                 # list changed → full response with a new ETag
+        r3 = client.get(self.URL, headers={"If-None-Match": etag})
+        assert r3.status_code == 200 and r3.headers["ETag"] != etag
+
+    def test_etag_depends_on_language(self, client):
+        make_report(*north_of(SABHA, 2))
+        ar = client.get(self.URL).headers["ETag"]
+        client.get("/lang/en")
+        assert client.get(self.URL, headers={"If-None-Match": ar}).status_code == 200
+
+    def test_configured_statuses_and_disabled(self, client):
+        new = make_report(*north_of(SABHA, 2), status="new")
+        set_setting("drive_alert_statuses", '["new"]')
+        db.session.commit()
+        items = client.get(self.URL).get_json()["data"]["items"]
+        assert [i["reference"] for i in items if i["reference"].startswith("TST-")] == [new.reference]
+        set_setting("drive_mode_enabled", False)
+        db.session.commit()
+        r = client.get(self.URL)
+        assert r.status_code == 404 and r.get_json()["error"]["code"] == "drive_disabled"
+
+
 # ------------------------------------------------------------------ report creation inside Libya only
 class TestReportsInsideLibya:
     def _cat(self):
@@ -411,9 +463,28 @@ class TestDrivePage:
 
     def test_service_worker_rules(self, client):
         sw = client.get("/sw.js").get_data(as_text=True)
-        assert r"/^\/drive$/" in sw and r"/^\/api\/v1\/reports\/nearby/" in sw
+        assert r"/^\/drive$/" in sw and r"/^\/api\/v1\/reports\/(nearby|alertable)/" in sw
         assert '"/static/js/drive-engine.js"' in sw and '"/static/js/geo.js"' in sw
         assert "drive-sim.js" not in sw
+
+    def test_service_worker_offline_support(self, client):
+        sw = client.get("/sw.js").get_data(as_text=True)
+        assert '"/static/js/offline-store.js"' in sw and '"/static/js/map.js"' in sw
+        # viewed tiles are kept (CORS only, bounded); the drive and map pages open offline
+        assert "TILE_CACHE" in sw and "TILE_MAX_ENTRIES" in sw and 'res.type === "opaque"' in sw
+        assert r"const OFFLINE_APP_PAGES = [/^\/drive$/, /^\/map$/]" in sw
+        assert 'postMessage({ type: "CLEAR_PRIVATE" })' in (ROOT / "app/static/js/app.js").read_text(encoding="utf-8")
+
+    def test_tile_hosts_allowed_for_the_service_worker(self, client):
+        csp = client.get("/drive").headers["Content-Security-Policy"]
+        connect = next(p for p in csp.split(";") if p.strip().startswith("connect-src"))
+        assert "'self'" in connect and "https://tile.openstreetmap.org" in connect
+
+    def test_page_loads_offline_store(self, client):
+        html = client.get("/drive").get_data(as_text=True)
+        assert "js/offline-store.js" in html
+        cfg = json.loads(html.split('id="drive-config">', 1)[1].split("</script>", 1)[0])
+        assert cfg["hazards_endpoint"] == "/api/v1/reports/alertable" and cfg["road_endpoint"] == "/api/v1/road"
 
 
 # ------------------------------------------------------------------ admin settings form

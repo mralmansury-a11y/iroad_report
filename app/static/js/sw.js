@@ -5,7 +5,14 @@
  *   - Public JSON (road / meta / home stats) .......... network-first → cached copy
  *   - Admin, auth, notifications, attachments, /me ... network-only, NEVER cached
  *   - /api/v1/reports/nearby (driving mode) ........... network-only: a POST whose body carries the driver's
- *     (rounded) position; never cached, the page keeps the last list in memory instead.
+ *     (rounded) position; never cached.
+ *   - /api/v1/reports/alertable (driving mode) ........ network-only here: the page itself keeps the list in
+ *     IndexedDB (offline-store.js) and revalidates it with If-None-Match.
+ *   - Map tiles (cross-origin, viewed only) ........... cache-first, refreshed after TILE_MAX_AGE_MS, at most
+ *     TILE_MAX_ENTRIES (oldest dropped). Only tiles the user has actually seen are kept: no bulk prefetching
+ *     (OpenStreetMap tile usage policy).
+ *   - /drive and /map ................................ network-first, offline copy kept EVEN for signed-in
+ *     users so driving mode opens without internet; the copy is dropped on logout (CLEAR_PRIVATE).
  *   - Responses marked "no-store"/"private" ........... never cached (personalised pages)
  * The version string below is injected by the server from a hash of /static.
  */
@@ -13,7 +20,12 @@ const VERSION = "__SW_VERSION__";
 const STATIC_CACHE = "ir-static-" + VERSION;
 const PAGES_CACHE = "ir-pages-v1";
 const DATA_CACHE = "ir-data-v1";
-const KEEP = [STATIC_CACHE, PAGES_CACHE, DATA_CACHE];
+const TILE_CACHE = "ir-tiles-v1";
+const KEEP = [STATIC_CACHE, PAGES_CACHE, DATA_CACHE, TILE_CACHE];
+const TILE_PATH = /^\/\d+\/\d+\/\d+(@2x)?\.(png|jpe?g|webp)$/;
+const TILE_MAX_ENTRIES = 3000;          // ≈ 30–60 MB of OSM tiles
+const TILE_MAX_AGE_MS = 30 * 24 * 3600 * 1000;
+const TILE_STAMP = "x-ir-cached-at";
 
 const SHELL = [
   "/offline",
@@ -23,6 +35,8 @@ const SHELL = [
   "/static/js/geo.js",
   "/static/js/drive-engine.js",
   "/static/js/drive.js",
+  "/static/js/offline-store.js",
+  "/static/js/map.js",
   "/static/vendor/leaflet/leaflet.js",
   "/static/vendor/leaflet/leaflet.css",
   "/static/vendor/bootstrap/bootstrap.rtl.min.css",
@@ -40,10 +54,11 @@ const SHELL = [
   "/static/icons/icon-192.png",
 ];
 
+const OFFLINE_APP_PAGES = [/^\/drive$/, /^\/map$/]; // kept offline even when personalised (cleared on logout)
 const PUBLIC_PAGES = [/^\/$/, /^\/reports\/?$/, /^\/map$/, /^\/alerts$/, /^\/privacy$/, /^\/about$/, /^\/support$/, /^\/install$/, /^\/settings\/language$/, /^\/reports\/new$/, /^\/drive$/];
 const PUBLIC_DATA = [/^\/api\/v1\/road$/, /^\/api\/v1\/meta$/, /^\/api\/v1\/home$/, /^\/api\/v1\/reports\/map$/];
 const NEVER = [/^\/admin/, /^\/auth/, /^\/notifications/, /^\/profile/, /^\/settings\/notifications/, /^\/reports\/attachment/,
-               /^\/api\/v1\/(notifications|me|auth|push)/, /^\/api\/v1\/reports\/nearby/, /^\/lang\//, /^\/sw\.js$/];
+               /^\/api\/v1\/(notifications|me|auth|push)/, /^\/api\/v1\/reports\/(nearby|alertable)/, /^\/lang\//, /^\/sw\.js$/];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -97,18 +112,51 @@ async function cacheFirst(req) {
   return res;
 }
 
+/* Map tiles: cache-first; a stale tile is refreshed in the background; offline → the saved tile (any age). */
+async function tileFirst(req) {
+  const cache = await caches.open(TILE_CACHE);
+  const hit = await cache.match(req);
+  const fresh = hit && Date.now() - Number(hit.headers.get(TILE_STAMP) || 0) < TILE_MAX_AGE_MS;
+  if (fresh) return hit;
+  const update = fetch(req).then(async (res) => {
+    if (!res.ok || res.type === "opaque") return res; // opaque responses would waste quota: never kept
+    const headers = new Headers(res.headers);
+    headers.set(TILE_STAMP, String(Date.now()));
+    await cache.put(req, new Response(await res.clone().blob(), { status: res.status, statusText: res.statusText, headers }));
+    trimTiles(cache);
+    return res;
+  });
+  if (hit) { update.catch(() => null); return hit; }
+  return update.catch(() => new Response("", { status: 504, statusText: "offline" }));
+}
+
+let trimming = false;
+async function trimTiles(cache) {
+  if (trimming) return;
+  trimming = true;
+  try {
+    const keys = await cache.keys(); // insertion order: oldest first
+    for (let i = 0; i < keys.length - TILE_MAX_ENTRIES; i++) await cache.delete(keys[i]);
+  } finally { trimming = false; }
+}
+
 self.addEventListener("fetch", (event) => {
   const req = event.request;
   if (req.method !== "GET") return; // never intercept form posts / API writes
   const url = new URL(req.url);
-  if (url.origin !== self.location.origin) return; // map tiles etc. go straight to network
+  if (url.origin !== self.location.origin) {
+    if (req.destination === "image" && req.mode === "cors" && TILE_PATH.test(url.pathname)) event.respondWith(tileFirst(req));
+    return; // anything else cross-origin goes straight to the network
+  }
   const p = url.pathname;
   if (NEVER.some((r) => r.test(p))) return;
 
   if (p.startsWith("/static/")) { event.respondWith(cacheFirst(req)); return; }
   if (PUBLIC_DATA.some((r) => r.test(p))) { event.respondWith(networkFirst(req, DATA_CACHE, null, true)); return; }
   if (req.mode === "navigate") {
-    if (PUBLIC_PAGES.some((r) => r.test(p))) {
+    if (OFFLINE_APP_PAGES.some((r) => r.test(p))) {
+      event.respondWith(networkFirst(req, PAGES_CACHE, "/offline", true));
+    } else if (PUBLIC_PAGES.some((r) => r.test(p))) {
       event.respondWith(networkFirst(req, PAGES_CACHE, "/offline", false)); // honours no-store
     } else {
       event.respondWith(fetch(req).catch(() => caches.match("/offline")));

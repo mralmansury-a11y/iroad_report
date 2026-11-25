@@ -87,7 +87,7 @@
     const road = r && r.data && r.data.data;
     const m = road ? road.map : { lat: 31.2, lng: 16.6, zoom: 8, tiles: picker.dataset.tiles || "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "&copy; OpenStreetMap" };
     pickMap = L.map(mapEl, { tap: true }).setView([m.lat, m.lng], m.zoom);
-    L.tileLayer(m.tiles, { maxZoom: 19, attribution: m.attribution }).addTo(pickMap);
+    L.tileLayer(m.tiles, { maxZoom: 19, attribution: m.attribution, crossOrigin: true }).addTo(pickMap); // cacheable offline
     if (road && road.polyline.length > 1) L.polyline(road.polyline.map((p) => [p[0], p[1]]), { color: "#0e6e76", weight: 5, opacity: 0.7 }).addTo(pickMap);
     if (latIn.value && lngIn.value) { placeMarker([+latIn.value, +lngIn.value]); pickMap.setView([+latIn.value, +lngIn.value], 15); }
     pickMap.on("click", (e) => { placeMarker(e.latlng); applyCoords(e.latlng.lat, e.latlng.lng, "map"); });

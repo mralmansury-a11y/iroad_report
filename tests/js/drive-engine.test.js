@@ -255,6 +255,39 @@ test("hazards without reference or id get distinct keys (each one is announced)"
   assert.notEqual(s.alerts[0].id, s.alerts[1].id);
 });
 
+test("appendTrack: records the route, ignores jitter and invalid points", () => {
+  const track = [];
+  assert.equal(E.appendTrack(track, ORIGIN, 15, 100), true);
+  assert.equal(E.appendTrack(track, G.destination(ORIGIN, 0, 5), 15, 100), false, "jitter while stopped");
+  assert.equal(E.appendTrack(track, G.destination(ORIGIN, 0, 20), 15, 100), true);
+  assert.equal(E.appendTrack(track, { lat: NaN, lng: 1 }, 15, 100), false);
+  assert.equal(track.length, 2);
+});
+
+test("appendTrack: a long trip stays bounded but keeps its start and its latest point", () => {
+  const track = [];
+  let last = null;
+  for (let d = 0; d <= 100000; d += 20) { last = G.destination(ORIGIN, 0, d); E.appendTrack(track, last, 15, 1000); }
+  assert.ok(track.length <= 1000);
+  assert.ok(G.distanceM(track[0], ORIGIN) < 1, "start of the route kept");
+  assert.ok(G.distanceM(track[track.length - 1], last) < 1, "latest point kept");
+  for (let i = 1; i < track.length; i++) assert.ok(G.distanceM(track[0], track[i]) > G.distanceM(track[0], track[i - 1]), "order kept");
+});
+
+test("listRadiusM: far-away hazards of the national list are not listed", () => {
+  const engine = E.createEngine({ bbox: LIBYA, listRadiusM: 30000 });
+  engine.setHazards([hazard("NEAR", ORIGIN, 0, 2000), hazard("FAR", ORIGIN, 0, 500000)]);
+  const s = engine.update({ lat: ORIGIN.lat, lng: ORIGIN.lng, accuracy: 5, heading: 0, speed: 20 });
+  assert.deepEqual(s.upcoming.map((r) => r.id), ["NEAR"]);
+});
+
+test("countWithin: trip summary from the saved list", () => {
+  const items = [hazard("A", ORIGIN, 0, 1000), hazard("B", ORIGIN, 90, 29000), hazard("C", ORIGIN, 180, 31000), { lat: NaN }];
+  assert.equal(E.countWithin(items, ORIGIN, 30000), 2);
+  assert.equal(E.countWithin(items, null, 30000), 0);
+  assert.equal(E.countWithin(null, ORIGIN, 30000), 0);
+});
+
 test("uses the id when there is no reference", () => {
   const engine = E.createEngine({ bbox: LIBYA });
   const h = hazard(undefined, ORIGIN, 0, 1000);

@@ -1,3 +1,5 @@
+import hashlib
+import json
 from decimal import Decimal, InvalidOperation
 
 from flask import current_app, jsonify, request, session, url_for
@@ -9,7 +11,7 @@ from ..extensions import db, limiter
 from ..models import (
     ApiToken, Notification, PushSubscription, Report, ReportCategory, ReportStatus, RoadSection, utcnow,
 )
-from ..services.drive import MAX_FETCH_RADIUS_KM, drive_config, nearby_alertable_reports
+from ..services.drive import MAX_FETCH_RADIUS_KM, alertable_reports, drive_config, nearby_alertable_reports
 from ..services.geo import is_in_libya, km_from_coordinates, road_polyline, section_for_km, valid_coordinates
 from ..services.reports import ReportInput, WorkflowError, can_view_report, create_report
 from ..services.settings import get_setting
@@ -203,7 +205,14 @@ def reports_nearby():
     if radius is None or not (0 < radius < float("inf")):
         return err("invalid_radius", _("Invalid search radius."), 422)
     radius = min(radius, float(MAX_FETCH_RADIUS_KM))
-    items = [{
+    items = [dict(_hazard_item(r), distance_m=round(d * 1000))
+             for r, d in nearby_alertable_reports(lat, lng, radius, cfg.alert_statuses)]
+    return ok({"radius_km": radius, "count": len(items), "generated_at": utcnow().isoformat() + "Z", "items": items})
+
+
+def _hazard_item(r: Report) -> dict:
+    """Public fields of an alertable report (driving mode). No reporter data."""
+    return {
         "reference": r.reference,
         "lat": float(r.latitude),
         "lng": float(r.longitude),
@@ -212,10 +221,31 @@ def reports_nearby():
         "category": {"code": r.category.code, "name": r.category.tr("name"), "icon": r.category.icon},
         "status": {"code": r.status_code, "name": r.status.tr("name")},
         "km_label": fmt_km(r.km_float()) if r.km_marker is not None else None,
-        "distance_m": round(d * 1000),
         "updated_at": r.updated_at.isoformat() + "Z",
-    } for r, d in nearby_alertable_reports(lat, lng, radius, cfg.alert_statuses)]
-    return ok({"radius_km": radius, "count": len(items), "generated_at": utcnow().isoformat() + "Z", "items": items})
+    }
+
+
+@bp.get("/reports/alertable")
+@limiter.limit("30 per minute")
+def reports_alertable():
+    """Every alertable report in Libya, for the device to keep offline (driving mode and map).
+
+    No position is sent: the device filters the list itself. The response carries an ETag built from
+    its content; a client that sends it back in If-None-Match gets 304 when nothing changed, so a
+    periodic check costs almost no data.
+    """
+    cfg = drive_config()
+    if not cfg.enabled:
+        return err("drive_disabled", _("Driving mode is not available."), 404)
+    items = [_hazard_item(r) for r in alertable_reports(cfg.alert_statuses)]
+    digest = hashlib.sha256(json.dumps([str(get_locale()), items], sort_keys=True).encode()).hexdigest()[:32]
+    etag = f'"{digest}"'
+    if etag in [t.strip() for t in request.headers.get("If-None-Match", "").split(",")]:
+        resp = current_app.response_class(status=304)
+    else:
+        resp, _status = ok({"count": len(items), "generated_at": utcnow().isoformat() + "Z", "items": items})
+    resp.headers["ETag"] = etag
+    return resp
 
 
 @bp.get("/reports/<reference>")

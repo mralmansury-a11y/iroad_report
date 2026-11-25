@@ -201,7 +201,8 @@ def _register_security(app):
             "default-src 'self'; "
             f"img-src 'self' data: blob: {tile_src}; "
             "script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; "
-            "connect-src 'self'; worker-src 'self'; manifest-src 'self'; "
+            # tile hosts in connect-src: the service worker fetches viewed tiles to keep them offline
+            f"connect-src 'self' {tile_src}; worker-src 'self'; manifest-src 'self'; "
             "frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
         )
         if not app.debug and request.is_secure:

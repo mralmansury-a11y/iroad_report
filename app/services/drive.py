@@ -14,6 +14,8 @@ from .settings import DEFAULT_SETTINGS, get_setting
 
 MAX_FETCH_RADIUS_KM = 50
 MAX_NEARBY_ITEMS = 300
+# Upper bound of the full list a device downloads and keeps for offline use (GET /reports/alertable).
+MAX_OFFLINE_ITEMS = 3000
 # The client fetches the list again after driving refresh_dist_m. At that point the fetched circle
 # must still cover the far-alert distance ahead: fetch_radius_m >= far_m + refresh_dist_m.
 MIN_REFETCH_M = 1000
@@ -135,6 +137,23 @@ def validate_drive_settings(values: dict, current: dict | None = None) -> list[s
         if not isinstance(st, (list, tuple)) or not st or any(s not in ALERTABLE_STATUS_CHOICES for s in st):
             bad.append("drive_alert_statuses")
     return bad
+
+
+def alertable_reports(statuses) -> list[Report]:
+    """Every report in the alertable statuses inside Libya (most recently updated first, capped).
+
+    Public data only. The device stores this list and filters it locally, so driving mode keeps
+    working offline and the server never receives the driver's position.
+    """
+    if not statuses:
+        return []
+    q = (db.select(Report).join(ReportStatus)
+         .where(ReportStatus.code.in_(list(statuses)),
+                Report.latitude.between(LIBYA_BBOX.min_lat, LIBYA_BBOX.max_lat),
+                Report.longitude.between(LIBYA_BBOX.min_lng, LIBYA_BBOX.max_lng))
+         .order_by(Report.updated_at.desc(), Report.id.desc())
+         .limit(MAX_OFFLINE_ITEMS))
+    return list(db.session.execute(q).scalars())
 
 
 def nearby_alertable_reports(lat: float, lng: float, radius_km: float, statuses) -> list[tuple[Report, float]]:

@@ -1843,3 +1843,23 @@ msgstr "until"
 #~ msgid "To reset your password open this link (valid for 1 hour):"
 #~ msgstr "To reset your password open this link (valid for 1 hour):"
 
+#, python-format
+msgid "Reports updated %(n)s h ago"
+msgstr "Reports updated %(n)s h ago"
+
+#, python-format
+msgid "Reports updated %(n)s days ago"
+msgstr "Reports updated %(n)s days ago"
+
+#, python-format
+msgid "No internet: using the %(n)s reports saved on this device."
+msgstr "No internet: using the %(n)s reports saved on this device."
+
+msgid "No reports are saved on this device yet. Connect to the internet once to download them."
+msgstr "No reports are saved on this device yet. Connect to the internet once to download them."
+
+msgid "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+msgstr "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+
+msgid "Your location and route are processed on this device only and are never sent to the server."
+msgstr "Your location and route are processed on this device only and are never sent to the server."

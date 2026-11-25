@@ -1,8 +1,11 @@
 /* Driving mode — page controller (DOM, GPS, map, voice, vibration, Wake Lock, data refresh).
  * All decisions (heading, ahead/behind, stages, de-duplication) live in the pure drive-engine.js.
- * Privacy: the driver's track never leaves the device. Hazard lists are requested with a position
- * rounded to ~1 km, sent in a POST body (never in the URL, so it is not in server logs); nothing
- * about the trip is stored.
+ *
+ * Offline: the full list of verified hazards in Libya is downloaded (GET /reports/alertable, no position)
+ * and saved on the device (offline-store.js). Alerts, the driver's position and the route therefore keep
+ * working without internet; when online the list is checked every refresh_s (ETag → 304, almost no data).
+ * Viewed map tiles are kept by the service worker; the road line is drawn as a vector even without tiles.
+ * Privacy: the position and the route never leave the device; the route is kept in memory only.
  * Security: every report text is rendered with textContent (never innerHTML).
  */
 (function () {
@@ -13,11 +16,11 @@
   if (!root || !cfgEl || !G || !E) return;
 
   const CFG = JSON.parse(cfgEl.textContent);
-  // refetch distance from the server: keeps the far-alert distance ahead inside the fetched circle
-  const REFRESH_DIST_M = CFG.refresh_dist_m > 0 ? CFG.refresh_dist_m : 1000;
+  const STORE_KEY = "drive-hazards";  // offline copy of the verified-hazard list
   const RETRY_MS = 30000;              // retry delay after a failed refresh
   const TICK_MS = 15000;               // status bar / periodic refresh check
-  const COORD_DECIMALS = 2;            // ≈1.1 km: the server never receives the exact position
+  const TRACK_STEP_M = 15;             // route: minimum distance between two recorded points
+  const TRACK_MAX_POINTS = 20000;      // route: older points are thinned above this
   const APPROX_MAX_AGE_MS = 300000;    // a quick position up to 5 min old is fine for placing the map
   const SLOW_FIX_HINT_S = 20;          // after this many seconds without a fix, explain the likely cause
   const SEV_COLORS = { high: "#c0392b", medium: "#e2a73e", low: "#6fb5a8" };
@@ -64,20 +67,46 @@
   /* ---------- engine & trip state ---------- */
   const engine = E.createEngine({
     farM: CFG.far_m, nearM: CFG.near_m, coneDeg: CFG.cone_deg, bbox: CFG.libya_bbox,
+    listRadiusM: CFG.fetch_radius_km * 1000, // the saved list covers Libya: show only the configured radius
   });
-  const trip = { active: false, id: 0, source: null, lastFetch: null, fetching: false, fetchedAt: null, summaryDone: false,
-                 lastPos: null, wakeLock: null, timer: null, audio: null, follow: true, fetchError: false };
+  const trip = { active: false, source: null, summaryDone: false, lastPos: null, wakeLock: null, timer: null,
+                 audio: null, follow: true };
+  // verified hazards kept on the device; shared by every trip on this page
+  const data = { items: [], etag: null, fetchedAt: null, loaded: false, syncing: false, lastTry: 0, failed: false };
+  const track = []; // driver's route of the current trip (memory only)
 
   /* ---------- map ---------- */
-  let map = null, driverMarker = null, hazardLayer = null;
+  let map = null, driverMarker = null, hazardLayer = null, trackLine = null;
   function initMap() {
     if (map || !window.L) return;
     const box = CFG.libya_bbox;
-    map = L.map("driveMap", { zoomControl: false, attributionControl: true })
+    // canvas renderer: the whole national hazard list can be drawn without slowing the page
+    map = L.map("driveMap", { zoomControl: false, attributionControl: true, preferCanvas: true })
       .setView([(box.min_lat + box.max_lat) / 2, (box.min_lng + box.max_lng) / 2], 6);
-    L.tileLayer(CFG.tiles, { maxZoom: 18, attribution: CFG.attribution }).addTo(map);
+    // crossOrigin → CORS tiles the service worker can keep for offline use (never opaque responses)
+    L.tileLayer(CFG.tiles, { maxZoom: 18, attribution: CFG.attribution, crossOrigin: true }).addTo(map);
+    drawRoad();
+    trackLine = L.polyline([], { color: "#34668e", weight: 5, opacity: 0.8, interactive: false }).addTo(map);
     hazardLayer = L.layerGroup().addTo(map);
     map.on("dragstart", () => { trip.follow = false; ui.recenter.hidden = !trip.active; });
+  }
+  /* The road as a vector line: visible even where no map tile is saved (served from the SW data cache offline). */
+  async function drawRoad() {
+    if (!CFG.road_endpoint) return;
+    try {
+      const r = await IR.api(CFG.road_endpoint);
+      const pts = (r.ok && r.data && r.data.data && r.data.data.polyline) || [];
+      if (map && pts.length > 1) {
+        L.polyline(pts.map((p) => [p[0], p[1]]), { color: "#0e6e76", weight: 6, opacity: 0.6, interactive: false })
+          .addTo(map).bringToBack();
+      }
+    } catch (e) { /* the road line is optional */ }
+  }
+  function addTrackPoint(pos) {
+    const before = track.length;
+    if (!E.appendTrack(track, pos, TRACK_STEP_M, TRACK_MAX_POINTS) || !trackLine) return;
+    if (track.length === before + 1) trackLine.addLatLng([pos.lat, pos.lng]);
+    else trackLine.setLatLngs(track.map((p) => [p.lat, p.lng])); // older part was thinned
   }
   function popupFor(h) {
     const el = document.createElement("div");
@@ -108,9 +137,12 @@
     ui.netItem.dataset.tone = on ? "ok" : "bad";
   }
   function renderDataAge() {
-    if (!trip.fetchedAt) { ui.data.textContent = t("notUpdated"); return; }
-    const min = Math.floor((Date.now() - trip.fetchedAt) / 60000);
-    ui.data.textContent = min < 1 ? t("updatedJustNow") : t("updatedMinutes", { n: min });
+    if (!data.fetchedAt) { ui.data.textContent = t("notUpdated"); return; }
+    const min = Math.floor((Date.now() - data.fetchedAt) / 60000);
+    if (min < 1) ui.data.textContent = t("updatedJustNow");
+    else if (min < 60) ui.data.textContent = t("updatedMinutes", { n: min });
+    else if (min < 48 * 60) ui.data.textContent = t("updatedHours", { n: Math.floor(min / 60) });
+    else ui.data.textContent = t("updatedDays", { n: Math.floor(min / 1440) });
   }
   function renderGps(accuracy) {
     ui.gps.textContent = accuracy == null ? t("gpsWaiting") : t("gpsAccuracy", { n: Math.round(accuracy) });
@@ -211,39 +243,59 @@
     if (trip.active && document.visibilityState === "visible" && !trip.wakeLock) acquireWakeLock();
   });
 
-  /* ---------- hazards (network) ---------- */
-  function round(v) { const f = 10 ** COORD_DECIMALS; return Math.round(v * f) / f; }
-  async function fetchHazards(pos) {
-    if (trip.fetching) return;
-    trip.fetching = true;
-    const tripId = trip.id; // a response that arrives after this trip ended is ignored
-    const current = () => trip.active && trip.id === tripId;
-    const radius = Math.min(50, CFG.fetch_radius_km + 2); // +2 km compensates the rounded position
-    const body = { lat: round(pos.lat), lng: round(pos.lng), radius_km: radius };
-    try {
-      const r = await IR.api(CFG.endpoint, { method: "POST", json: body });
-      if (!current()) return;
-      if (!r.ok || !r.data || !r.data.ok) throw new Error("http " + r.status);
-      const items = r.data.data.items;
-      engine.setHazards(items);
-      drawHazards(items);
-      trip.lastFetch = { at: Date.now(), pos };
-      trip.fetchedAt = Date.now();
-      trip.fetchError = false;
-      clearMessage(new Set(["data"]));
-      if (!trip.summaryDone) tripSummary(items.length);
-    } catch (e) {
-      if (!current()) return;
-      trip.fetchError = true;
-      // keep the last list; retry soon instead of waiting for the full refresh interval
-      trip.lastFetch = { at: Date.now() - CFG.refresh_s * 1000 + RETRY_MS, pos: (trip.lastFetch && trip.lastFetch.pos) || pos };
-      showMessage(t("updateFailed"), "warn", "data");
-    } finally {
-      if (trip.id === tripId) { trip.fetching = false; renderDataAge(); }
+  /* ---------- hazards: offline copy + background sync ---------- */
+  function applyHazards() {
+    engine.setHazards(data.items);
+    drawHazards(data.items);
+    maybeSummary();
+  }
+  async function loadSaved() {
+    const saved = window.IRStore ? await window.IRStore.get(STORE_KEY) : null;
+    if (saved && Array.isArray(saved.items) && !data.loaded) {
+      Object.assign(data, { items: saved.items, etag: saved.etag || null, fetchedAt: saved.fetchedAt || null, loaded: true });
+      applyHazards();
+      renderDataAge();
     }
   }
-  function maybeRefresh(pos) {
-    if (pos && E.shouldRefresh(trip.lastFetch, Date.now(), pos, CFG.refresh_s * 1000, REFRESH_DIST_M)) fetchHazards(pos);
+  function save() {
+    if (window.IRStore) window.IRStore.set(STORE_KEY, { items: data.items, etag: data.etag, fetchedAt: data.fetchedAt });
+  }
+  /** Download the list when it changed (If-None-Match → 304 costs almost nothing). Never sends a position. */
+  async function syncHazards() {
+    if (data.syncing || !CFG.hazards_endpoint) return;
+    data.syncing = true;
+    data.lastTry = Date.now();
+    try {
+      const headers = { Accept: "application/json", "X-Requested-With": "fetch" };
+      if (data.etag && data.loaded) headers["If-None-Match"] = data.etag;
+      const res = await fetch(CFG.hazards_endpoint, { credentials: "same-origin", headers, cache: "no-store" });
+      if (res.status === 304) {
+        data.fetchedAt = Date.now();
+      } else {
+        const body = res.ok ? await res.json() : null;
+        if (!body || !body.ok) throw new Error("http " + res.status);
+        Object.assign(data, { items: body.data.items, etag: res.headers.get("ETag"), fetchedAt: Date.now(), loaded: true });
+        applyHazards();
+      }
+      data.failed = false;
+      save();
+      clearMessage(new Set(["data"]));
+    } catch (e) {
+      data.failed = true; // keep the saved list; retry soon
+      if (!data.loaded) showMessage(t("noSavedReports"), "warn", "data");
+      else if (trip.active) showMessage(navigator.onLine ? t("updateFailed") : t("usingSaved", { n: data.items.length }), "info", "data");
+    } finally {
+      data.syncing = false;
+      renderDataAge();
+    }
+  }
+  function maybeSync() {
+    if (Date.now() - data.lastTry >= (data.failed ? RETRY_MS : CFG.refresh_s * 1000)) syncHazards();
+  }
+  /* Spoken summary once per trip, computed on the device from the saved list. */
+  function maybeSummary() {
+    if (!trip.active || trip.summaryDone || !data.loaded || !trip.lastPos) return;
+    tripSummary(E.countWithin(data.items, trip.lastPos, CFG.fetch_radius_km * 1000));
   }
   function tripSummary(n) {
     trip.summaryDone = true;
@@ -311,7 +363,7 @@
     const pos = { lat: fix.lat, lng: fix.lng };
     ui.gps.textContent = t("gpsApproxShort", { n: Math.round(fix.accuracy) });
     drawDriver(pos);
-    if (G.inBox(pos, CFG.libya_bbox)) { trip.lastPos = pos; maybeRefresh(pos); }
+    if (G.inBox(pos, CFG.libya_bbox)) { trip.lastPos = pos; maybeSummary(); }
     renderWaiting();
   }
 
@@ -344,7 +396,8 @@
       renderBanner(null); renderList([]);
       return;
     }
-    maybeRefresh(s.position);
+    addTrackPoint(s.position);
+    maybeSummary();
     renderBanner(s.upcoming[0]);
     renderList(s.upcoming);
     if (s.status === "no_heading") {
@@ -369,8 +422,12 @@
     if (trip.active) return;
     initMap();
     engine.reset();
-    Object.assign(trip, { active: true, id: trip.id + 1, fetching: false, lastFetch: null, fetchedAt: null,
-                          summaryDone: false, lastPos: null, follow: true, fetchError: false });
+    Object.assign(trip, { active: true, summaryDone: false, lastPos: null, follow: true });
+    applyHazards(); // engine.reset() emptied its list: give it the saved one again
+    track.length = 0;
+    if (trackLine) trackLine.setLatLngs([]);
+    if (!data.loaded && !navigator.onLine) showMessage(t("noSavedReports"), "warn", "data");
+    data.lastTry = 0; // check for a newer list now
     setState(true);
     renderGps(null); renderDataAge(); renderNet();
     startWaiting();
@@ -384,12 +441,12 @@
     acquireWakeLock();
     trip.source = CFG.simulate && window.IRDriveSim ? window.IRDriveSim.create(CFG, { geo: G, notice: (m) => showMessage(m, "info") }) : gpsSource();
     trip.source.start(onFix, onGpsError, onApprox);
-    trip.timer = setInterval(() => { renderDataAge(); if (trip.lastPos) maybeRefresh(trip.lastPos); }, TICK_MS);
+    maybeSync();
+    trip.timer = setInterval(() => { renderDataAge(); maybeSync(); }, TICK_MS);
   }
   function stop() {
     if (!trip.active) return;
     trip.active = false;
-    trip.fetching = false; // an in-flight request belongs to the ended trip and is ignored on arrival
     if (trip.source) trip.source.stop();
     trip.source = null;
     clearInterval(trip.timer);
@@ -400,7 +457,6 @@
     root.dataset.stage = "none";
     setState(false);
     renderBanner(null); renderList([]);
-    if (hazardLayer) hazardLayer.clearLayers();
     showMessage(t("tripEnded"), "info", "ended");
   }
 
@@ -410,7 +466,7 @@
     trip.follow = true; ui.recenter.hidden = true;
     if (trip.lastPos) drawDriver(trip.lastPos);
   });
-  window.addEventListener("online", renderNet);
+  window.addEventListener("online", () => { renderNet(); data.lastTry = 0; maybeSync(); });
   window.addEventListener("offline", renderNet);
   window.addEventListener("pagehide", stop);
 
@@ -419,4 +475,6 @@
   renderGps(null);
   renderDataAge();
   initMap();
+  // saved list first (works offline), then a check for a newer one so it is ready before the trip
+  loadSaved().then(maybeSync);
 })();

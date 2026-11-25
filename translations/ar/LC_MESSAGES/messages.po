@@ -1843,3 +1843,23 @@ msgstr "حتى"
 #~ msgid "To reset your password open this link (valid for 1 hour):"
 #~ msgstr "لإعادة تعيين كلمة المرور افتح هذا الرابط (صالح لمدة ساعة):"
 
+#, python-format
+msgid "Reports updated %(n)s h ago"
+msgstr "حُدّثت البلاغات قبل %(n)s س"
+
+#, python-format
+msgid "Reports updated %(n)s days ago"
+msgstr "حُدّثت البلاغات قبل %(n)s يوم"
+
+#, python-format
+msgid "No internet: using the %(n)s reports saved on this device."
+msgstr "لا يوجد اتصال بالإنترنت: تُستخدم البلاغات المحفوظة على هذا الجهاز (%(n)s)."
+
+msgid "No reports are saved on this device yet. Connect to the internet once to download them."
+msgstr "لا توجد بلاغات محفوظة على هذا الجهاز بعد. اتصل بالإنترنت مرة واحدة لتنزيلها."
+
+msgid "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+msgstr "تُحفظ البلاغات المؤكدة ومناطق الخريطة التي تتصفحها على هذا الجهاز، فتستمر التنبيهات وعرض موقعك ومسارك دون اتصال بالإنترنت."
+
+msgid "Your location and route are processed on this device only and are never sent to the server."
+msgstr "يُعالَج موقعك ومسارك على هذا الجهاز فقط ولا يُرسَلان إلى الخادم إطلاقاً."

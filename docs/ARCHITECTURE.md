@@ -99,8 +99,9 @@ roadsite/
 | GET | `/api/v1/locate?lat&lng` | تحويل GPS إلى كم وقاطع | عام (محدود المعدل) |
 | GET | `/api/v1/home?km|lat,lng` | مؤشرات الرئيسية | عام |
 | GET | `/api/v1/road` | مسار الطريق والقواطع وإعدادات الخريطة | عام |
+| GET | `/api/v1/reports/alertable` | وضع القيادة دون اتصال: **كل** البلاغات المؤهلة للتنبيه داخل ليبيا (حتى 3000، الأحدث تحديثاً أولاً) دون أي موقع. `ETag` من المحتوى واللغة؛ `If-None-Match` ← 304. 404 عند إيقاف الوضع | عام (30/دقيقة) |
 | GET | `/api/v1/reports` · `/reports/map` · `/reports/<ref>` | القوائم والتفاصيل (الحقول الخاصة لمن يملك الصلاحية فقط) | عام/مالك |
-| POST | `/api/v1/reports/nearby` — جسم JSON: `{lat, lng, radius_km?}` | وضع القيادة: البلاغات **المؤهلة للتنبيه فقط** (`drive_alert_statuses`) ضمن نطاق (افتراضي 30، حد أقصى 50 كم)، مرتبة بالمسافة. 422 للإحداثيات غير الصالحة/خارج ليبيا/النطاق غير الصالح؛ 404 عند إيقاف الوضع. الموقع في جسم الطلب لا في الرابط، فلا يظهر في سجلات nginx/gunicorn ولا يُخزَّن؛ طلب قراءة فقط مستثنى من CSRF | عام (60/دقيقة) |
+| POST | `/api/v1/reports/nearby` — جسم JSON: `{lat, lng, radius_km?}` | للتطبيقات الأصلية والمحاكي (صفحة `/drive` تستخدم `alertable`): البلاغات **المؤهلة للتنبيه فقط** (`drive_alert_statuses`) ضمن نطاق (افتراضي 30، حد أقصى 50 كم)، مرتبة بالمسافة. 422 للإحداثيات غير الصالحة/خارج ليبيا/النطاق غير الصالح؛ 404 عند إيقاف الوضع. الموقع في جسم الطلب لا في الرابط، فلا يظهر في سجلات nginx/gunicorn ولا يُخزَّن؛ طلب قراءة فقط مستثنى من CSRF | عام (60/دقيقة) |
 | POST | `/api/v1/reports` | إنشاء بلاغ (multipart) | جلسة أو Bearer أو زائر |
 | GET/POST | `/api/v1/notifications` · `/notifications/read` | التنبيهات | مستخدم |
 | GET/POST | `/api/v1/push/key` · `/push/subscribe` · `/push/unsubscribe` | Web Push | جلسة/زائر |
@@ -113,13 +114,14 @@ roadsite/
 | الطبقة | الملف | المسؤولية |
 |---|---|---|
 | حدود ليبيا | `app/services/geo.py` (`is_in_libya`, `BBoxBoundary`, `PolygonBoundary`, `bounding_box`) | مربع إحاطة **تقريبي** (19.5–33.5 ش، 9.3–25.2 ق)؛ الواجهة تقبل مضلّع الحدود الرسمي لاحقاً دون تغيير |
-| الإعدادات والاستعلام | `app/services/drive.py` | `drive_config()` (قيم مقيّدة دفاعياً)، `validate_drive_settings()`، `nearby_alertable_reports()` (مربع إحاطة مفهرس ← Haversine) |
-| الواجهة | `GET /api/v1/reports/nearby` · صفحة `/drive` | الإعدادات تُمرَّر للصفحة في كتلة JSON (`#drive-config`) — لا ثوابت مكررة في JS |
+| الإعدادات والاستعلام | `app/services/drive.py` | `drive_config()` (قيم مقيّدة دفاعياً)، `validate_drive_settings()`، `alertable_reports()` (القائمة الكاملة للجهاز)، `nearby_alertable_reports()` (مربع إحاطة مفهرس ← Haversine) |
+| الواجهة | `GET /api/v1/reports/alertable` · `POST /api/v1/reports/nearby` · صفحة `/drive` | الإعدادات تُمرَّر للصفحة في كتلة JSON (`#drive-config`) — لا ثوابت مكررة في JS |
+| التخزين المحلي | `app/static/js/offline-store.js` | مخزن مفتاح/قيمة على IndexedDB (بيانات عامة فقط)، مع بديل في الذاكرة إن تعذّر |
 | الرياضيات (نقية) | `app/static/js/geo.js` | Haversine، الاتجاه، فرق الزاوية، النقطة الوجهة، «أمام السائق» |
 | محرّك القرار (نقي) | `app/static/js/drive-engine.js` | اتجاه السير، المراحل (5 كم/500 م)، منع التكرار، العوائق المتجاوَزة، ضعف GPS، خارج ليبيا، سياسة التحديث |
-| واجهة الصفحة | `app/static/js/drive.js` | `watchPosition`، Leaflet (Follow)، الصوت/النطق/الاهتزاز/الإشعار المحلي، Wake Lock |
+| واجهة الصفحة | `app/static/js/drive.js` | `watchPosition`، Leaflet (Follow)، رسم مسار الرحلة وخط الطريق، مزامنة القائمة المحفوظة، الصوت/النطق/الاهتزاز/الإشعار المحلي، Wake Lock |
 | محاكي التطوير | `app/static/js/drive-sim.js` | يُحمَّل فقط عند `DRIVE_SIMULATOR=True` و`?simulate=1` |
 
-**الخصوصية:** القرار كله على الجهاز؛ يُرسل للخادم موقع مقرّب إلى منزلتين عشريتين (≈1.1 كم) عند الجلب فقط، ولا يُخزَّن ولا يُسجَّل؛
-واستجابة `/reports/nearby` لا تُخزَّن في ذاكرة الـ SW (`NEVER`) ويحتفظ التطبيق بآخر قائمة في الذاكرة مع عرض عمرها.
+**الخصوصية:** القرار كله على الجهاز؛ صفحة `/drive` **لا ترسل موقع السائق للخادم إطلاقاً**: تنزّل القائمة الكاملة (`/reports/alertable`) وتصفّيها محلياً.
+المسار يُحفظ في ذاكرة الصفحة فقط. القائمة المحفوظة في IndexedDB بيانات عامة (لا بيانات مُبلِّغين).
 **الفهرس:** `ix_reports_lat_lng (latitude, longitude)` — ترحيل `a3d9c2e41f07`.

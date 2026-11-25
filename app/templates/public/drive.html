@@ -44,7 +44,8 @@
   <aside class="dv-intro" data-intro>
     <p><i class="bi bi-info-circle-fill" aria-hidden="true"></i> {{ _("Keep this screen open during the trip: in this version alerts work only while the page is visible.") }}</p>
     <p>{{ _("You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s.", far=(drive_cfg.far_m / 1000) | num(1) ~ " " ~ _("km"), near=drive_cfg.near_m | num ~ " " ~ _("m")) }}</p>
-    <p class="dv-muted">{{ _("Your location is processed on this device only and is never stored on the server.") }}</p>
+    <p>{{ _("Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet.") }}</p>
+    <p class="dv-muted">{{ _("Your location and route are processed on this device only and are never sent to the server.") }}</p>
   </aside>
 </main>
 
@@ -60,6 +61,7 @@
 <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/geo.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/drive-engine.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/offline-store.js') }}" defer></script>
 {% if simulate %}<script src="{{ url_for('static', filename='js/drive-sim.js') }}" defer></script>{% endif %}
 <script src="{{ url_for('static', filename='js/drive.js') }}" defer></script>
 {% endblock %}

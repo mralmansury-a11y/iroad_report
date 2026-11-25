@@ -174,7 +174,9 @@ def drive():
     simulate = bool(current_app.config.get("DRIVE_SIMULATOR")) and request.args.get("simulate") == "1"
     client_cfg = cfg.client_dict()
     client_cfg.update({
-        "endpoint": url_for("api.reports_nearby"),
+        "endpoint": url_for("api.reports_nearby"),          # used by the simulator only
+        "hazards_endpoint": url_for("api.reports_alertable"),  # full list kept on the device (offline)
+        "road_endpoint": url_for("api.road"),
         "tiles": current_app.config["MAP_TILE_URL"],
         "attribution": current_app.config["MAP_ATTRIBUTION"],
         "simulate": simulate,

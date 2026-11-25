@@ -26,6 +26,7 @@
     minGpsHeadingSpeed: 2,   // m/s: below this the device heading is unreliable
     passedAngleDeg: 90,      // a hazard more than this off the heading is behind the driver
     listSize: 5,
+    listRadiusM: Infinity,   // hazards farther than this are ignored (the device may hold the whole country)
     bbox: null,              // {min_lat, max_lat, min_lng, max_lng}: alerts only inside (Libya)
     // reference when present, else the id, else the position (never one shared "undefined" key)
     keyOf: (h) => (h.reference != null ? String(h.reference) : h.id != null ? String(h.id) : "@" + h.lat + "," + h.lng),
@@ -97,6 +98,30 @@
     return { value: km >= 9.95 ? Math.round(km) : Math.round(km * 10) / 10, unit: "km" };
   }
 
+  /**
+   * Driver's route kept on the device: appends `point` when it is at least `minStepM` from the last
+   * point (ignores GPS jitter while stopped). Above `maxPoints` every second point of the older half
+   * is dropped, so a long trip keeps its whole shape with bounded memory. Returns true when appended.
+   */
+  function appendTrack(track, point, minStepM, maxPoints) {
+    if (!G.validPoint(point)) return false;
+    const last = track[track.length - 1];
+    if (last && G.distanceM(last, point) < (minStepM || 0)) return false;
+    track.push({ lat: point.lat, lng: point.lng });
+    if (maxPoints && track.length > maxPoints) {
+      const half = Math.floor(track.length / 2);
+      const older = track.slice(0, half).filter((_, i) => i % 2 === 0);
+      track.splice(0, half, ...older);
+    }
+    return true;
+  }
+
+  /** Number of hazards within `radiusM` of `pos` (trip summary computed on the device). */
+  function countWithin(hazards, pos, radiusM) {
+    if (!G.validPoint(pos)) return 0;
+    return (hazards || []).filter((h) => G.validPoint(h) && G.distanceM(pos, h) <= radiusM).length;
+  }
+
   function createEngine(options) {
     const o = Object.assign({}, DEFAULTS, options || {});
     if (!(o.nearM < o.farM)) throw new Error("nearM must be smaller than farM");
@@ -138,6 +163,7 @@
         for (const { id, hazard } of hazards) {
           if (passed.has(id)) continue;
           const distanceM = G.distanceM(pos, hazard);
+          if (distanceM > o.listRadiusM) continue;
           const bearing = G.bearingDeg(pos, hazard);
           if (hd == null) {
             rows.push({ hazard, id, distanceM, bearing, stage: stageFor(distanceM, o.farM, o.nearM), ahead: null });
@@ -173,5 +199,6 @@
     };
   }
 
-  return { DEFAULTS, stageFor, createHeadingTracker, createAlertLog, shouldRefresh, roundDistance, createEngine };
+  return { DEFAULTS, stageFor, createHeadingTracker, createAlertLog, shouldRefresh, roundDistance, appendTrack, countWithin,
+           createEngine };
 });

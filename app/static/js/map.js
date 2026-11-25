@@ -1,4 +1,7 @@
-/* Public road map (Leaflet + OpenStreetMap). Works in RTL and LTR. */
+/* Public road map (Leaflet + OpenStreetMap). Works in RTL and LTR.
+ * Offline: the page, the road line and the report list come from the service-worker caches, viewed tiles
+ * from the tile cache (crossOrigin → cacheable CORS tiles). The user's position comes from the device GPS
+ * and is followed live, with or without internet; it never leaves the device. */
 (function () {
   "use strict";
   const IR = window.IR;
@@ -12,7 +15,7 @@
     const road = roadR && roadR.data && roadR.data.data;
     const m = road ? road.map : { lat: 31.2, lng: 16.6, zoom: 7, tiles: "https://tile.openstreetmap.org/{z}/{x}/{y}.png", attribution: "© OpenStreetMap" };
     const map = L.map(el, { zoomControl: true }).setView([m.lat, m.lng], m.zoom);
-    L.tileLayer(m.tiles, { maxZoom: 18, attribution: m.attribution }).addTo(map);
+    L.tileLayer(m.tiles, { maxZoom: 18, attribution: m.attribution, crossOrigin: true }).addTo(map);
     const bounds = [];
     if (road && road.polyline.length > 1) {
       const pts = road.polyline.map((p) => [p[0], p[1]]);
@@ -31,10 +34,13 @@
     if ("geolocation" in navigator) {
       navigator.permissions && navigator.permissions.query({ name: "geolocation" }).then((p) => {
         if (p.state !== "granted") return;
-        navigator.geolocation.getCurrentPosition((pos) => {
-          L.circleMarker([pos.coords.latitude, pos.coords.longitude], { radius: 7, color: "#fff", weight: 3, fillColor: "#34668e", fillOpacity: 1 })
+        let me = null;
+        navigator.geolocation.watchPosition((pos) => {
+          const ll = [pos.coords.latitude, pos.coords.longitude];
+          if (me) { me.setLatLng(ll); return; }
+          me = L.circleMarker(ll, { radius: 7, color: "#fff", weight: 3, fillColor: "#34668e", fillOpacity: 1 })
             .bindTooltip(IR.t("youAreHere")).addTo(map);
-        });
+        }, () => {}, { enableHighAccuracy: true, maximumAge: 10000 });
       }).catch(() => {});
     }
   })();

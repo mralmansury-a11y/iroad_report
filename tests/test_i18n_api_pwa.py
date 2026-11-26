@@ -51,10 +51,10 @@ def test_all_major_pages_both_languages(client, users):
 
 def test_status_labels_translated(client):
     ar = client.get("/reports/").get_data(as_text=True)
-    assert "قيد المراجعة" in ar
+    assert "متحقق منه" in ar and "قيد المراجعة" not in ar  # under_review is shown as «متحقق منه»
     client.get("/lang/en")
     en = client.get("/reports/").get_data(as_text=True)
-    assert "Under review" in en
+    assert "Verified" in en and "Under review" not in en
 
 
 def test_manifest_localized(client):

@@ -117,7 +117,7 @@ def test_full_workflow_history_points(app, users):
 
     sup = app.test_client()
     login(sup, "0921000003")
-    r = sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review", "st-internal_note": "check"})
+    r = sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review", "st-note": "check"})
     assert r.status_code == 302
     team_id = users["employee"].team_memberships[0].team_id
     r = sup.post(f"/admin/reports/{rep.id}/assign", data={"as-team_id": team_id, "as-assignee_id": users["employee"].id})
@@ -130,7 +130,7 @@ def test_full_workflow_history_points(app, users):
     login(emp, "0921000002")
     assert emp.get(f"/admin/reports/{rep.id}").status_code == 200
     emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "in_progress"})
-    emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "resolved", "st-public_note": "تم الردم"})
+    emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "resolved", "st-note": "تم الردم", "st-visibility": "public"})
     db.session.refresh(rep)
     assert rep.status.code == "resolved" and rep.resolved_at is not None
     hist = [h.to_status.code for h in rep.history]
@@ -180,7 +180,7 @@ def test_internal_notes_hidden_from_reporter(app, users):
     login(sup, "0921000003")
     sup.post(f"/admin/reports/{rep.id}/note", data={"nt-body": "SECRET-INTERNAL", "nt-visibility": "internal"})
     sup.post(f"/admin/reports/{rep.id}/note", data={"nt-body": "PUBLIC-REPLY", "nt-visibility": "public"})
-    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review", "st-internal_note": "HIDDEN-NOTE"})
+    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review", "st-note": "HIDDEN-NOTE"})
     page = citizen.get(f"/reports/{rep.reference}").get_data(as_text=True)
     assert "PUBLIC-REPLY" in page and "SECRET-INTERNAL" not in page and "HIDDEN-NOTE" not in page
     api = citizen.get(f"/api/v1/reports/{rep.reference}").get_json()["data"]

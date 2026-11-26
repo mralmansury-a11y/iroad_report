@@ -24,6 +24,7 @@
   const APPROX_MAX_AGE_MS = 300000;    // a quick position up to 5 min old is fine for placing the map
   const SLOW_FIX_HINT_S = 20;          // after this many seconds without a fix, explain the likely cause
   const SEV_COLORS = { high: "#c0392b", medium: "#e2a73e", low: "#6fb5a8" };
+  const LIST_EXTRA = 2;                // hazards listed under the banner (kept short while driving)
   const ICON_RE = /^bi-[a-z0-9-]+$/;
   const numFmt = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
 
@@ -45,8 +46,7 @@
   const ui = {
     start: $('[data-action="start"]'), stop: $('[data-action="stop"]'), recenter: $('[data-action="recenter"]'),
     intro: $("[data-intro]"), message: $("[data-message]"), list: $("[data-list]"),
-    bannerIcon: $("[data-banner-icon]"), bannerTitle: $("[data-banner-title]"), bannerMeta: $("[data-banner-meta]"),
-    bannerDist: $("[data-banner-dist]"),
+    bannerIcon: $("[data-banner-icon]"), bannerTitle: $("[data-banner-title]"), bannerDist: $("[data-banner-dist]"),
     gps: $('[data-status="gps"] span'), data: $('[data-status="data"] span'), net: $('[data-status="net"] span'),
     netItem: $('[data-status="net"]'), itemTpl: document.getElementById("dvItemTpl"),
   };
@@ -86,7 +86,7 @@
     // crossOrigin → CORS tiles the service worker can keep for offline use (never opaque responses)
     L.tileLayer(CFG.tiles, { maxZoom: 18, attribution: CFG.attribution, crossOrigin: true }).addTo(map);
     drawRoad();
-    trackLine = L.polyline([], { color: "#34668e", weight: 5, opacity: 0.8, interactive: false }).addTo(map);
+    trackLine = L.polyline([], { color: "#1f6fb2", weight: 6, opacity: 0.85, interactive: false }).addTo(map);
     hazardLayer = L.layerGroup().addTo(map);
     map.on("dragstart", () => { trip.follow = false; ui.recenter.hidden = !trip.active; });
   }
@@ -118,34 +118,40 @@
     if (!hazardLayer) return;
     hazardLayer.clearLayers();
     items.forEach((h) => L.circleMarker([h.lat, h.lng], {
-      radius: 9, color: "#fff", weight: 2, fillColor: SEV_COLORS[h.severity.code] || "#999", fillOpacity: 0.95,
+      radius: 11, color: "#fff", weight: 3, fillColor: SEV_COLORS[h.severity.code] || "#999", fillOpacity: 1,
     }).bindPopup(popupFor(h)).addTo(hazardLayer));
   }
   function drawDriver(pos) {
     if (!map) return;
     const ll = [pos.lat, pos.lng];
     if (!driverMarker) {
-      driverMarker = L.circleMarker(ll, { radius: 10, color: "#fff", weight: 3, fillColor: "#34668e", fillOpacity: 1 }).addTo(map);
+      driverMarker = L.circleMarker(ll, { radius: 12, color: "#fff", weight: 4, fillColor: "#1f6fb2", fillOpacity: 1 }).addTo(map);
     } else driverMarker.setLatLng(ll);
     if (trip.follow) map.setView(ll, Math.max(map.getZoom(), 14), { animate: true });
   }
 
   /* ---------- status bar ---------- */
+  /* Status chips are short (icon + a few characters); the full sentence is the chip's tooltip / label. */
+  function chip(li, text, full) { li.textContent = text; li.parentElement.title = full || text; }
   function renderNet() {
     const on = navigator.onLine;
-    ui.net.textContent = on ? t("online") : t("offline");
+    ui.net.textContent = on ? t("online") : t("offline"); // visually hidden: the icon colour carries it
+    ui.netItem.title = ui.net.textContent;
     ui.netItem.dataset.tone = on ? "ok" : "bad";
   }
   function renderDataAge() {
-    if (!data.fetchedAt) { ui.data.textContent = t("notUpdated"); return; }
+    if (!data.fetchedAt) { chip(ui.data, "—", t("notUpdated")); return; }
     const min = Math.floor((Date.now() - data.fetchedAt) / 60000);
-    if (min < 1) ui.data.textContent = t("updatedJustNow");
-    else if (min < 60) ui.data.textContent = t("updatedMinutes", { n: min });
-    else if (min < 48 * 60) ui.data.textContent = t("updatedHours", { n: Math.floor(min / 60) });
-    else ui.data.textContent = t("updatedDays", { n: Math.floor(min / 1440) });
+    let full, short;
+    if (min < 1) { full = t("updatedJustNow"); short = t("ageNow"); }
+    else if (min < 60) { full = t("updatedMinutes", { n: min }); short = t("ageMinutes", { n: min }); }
+    else if (min < 48 * 60) { const n = Math.floor(min / 60); full = t("updatedHours", { n }); short = t("ageHours", { n }); }
+    else { const n = Math.floor(min / 1440); full = t("updatedDays", { n }); short = t("ageDays", { n }); }
+    chip(ui.data, short, full);
   }
   function renderGps(accuracy) {
-    ui.gps.textContent = accuracy == null ? t("gpsWaiting") : t("gpsAccuracy", { n: Math.round(accuracy) });
+    if (accuracy == null) chip(ui.gps, "…", t("gpsWaiting"));
+    else chip(ui.gps, "±" + Math.round(accuracy) + " " + t("unitM"), t("gpsAccuracy", { n: Math.round(accuracy) }));
   }
 
   /* ---------- banner & list ---------- */
@@ -154,22 +160,20 @@
     if (!row) {
       ui.bannerIcon.className = "bi bi-shield-check";
       ui.bannerTitle.textContent = noHazardText;
-      ui.bannerMeta.textContent = ""; ui.bannerDist.textContent = "";
+      ui.bannerDist.textContent = "";
       return;
     }
     const h = row.hazard;
     setIcon(ui.bannerIcon, h.category.icon);
     ui.bannerTitle.textContent = h.category.name;
-    ui.bannerMeta.textContent = h.severity.name + (h.km_label ? " · " + h.km_label : "");
     ui.bannerDist.textContent = fmtDistance(row.distanceM);
   }
   function renderList(rows) {
     const frag = document.createDocumentFragment();
-    rows.slice(1).forEach((r) => {
+    rows.slice(1, 1 + LIST_EXTRA).forEach((r) => {
       const li = ui.itemTpl.content.firstElementChild.cloneNode(true);
       setIcon(li.querySelector(".dv-item-ico i"), r.hazard.category.icon);
       li.querySelector(".dv-item-title").textContent = r.hazard.category.name;
-      li.querySelector(".dv-item-meta").textContent = r.hazard.severity.name;
       li.querySelector(".dv-item-dist").textContent = fmtDistance(r.distanceM);
       li.dataset.severity = r.hazard.severity.code;
       frag.appendChild(li);

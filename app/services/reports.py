@@ -69,14 +69,19 @@ def can_view_report(user, report: Report) -> bool:
     return user.can("reports.view_assigned") and is_assigned_to(user, report)
 
 
+def assigned_to_condition(user: User):
+    """SQL form of is_assigned_to(): assigned to the user personally or to one of the user's teams."""
+    tids = user_team_ids(user)
+    cond = Report.assigned_user_id == user.id
+    if tids:
+        cond = cond | Report.assigned_team_id.in_(tids)
+    return cond
+
+
 def staff_reports_query(user: User):
     q = db.select(Report)
     if not user.can("reports.view_all"):
-        tids = user_team_ids(user)
-        cond = Report.assigned_user_id == user.id
-        if tids:
-            cond = cond | Report.assigned_team_id.in_(tids)
-        q = q.where(cond)
+        q = q.where(assigned_to_condition(user))
     return q
 
 
@@ -151,11 +156,25 @@ def create_report(data: ReportInput, reporter: User | None, files=()) -> Report:
             ))
         db.session.add(ReportStatusHistory(report_id=report.id, from_status_id=None, to_status_id=new_status.id,
                                            changed_by_id=reporter.id if reporter else None))
+        auto_verified = reporter is not None and reporter.is_staff
+        if auto_verified:
+            # A staff account is the administration itself: its report is verified on creation
+            # (status under_review, shown as «متحقق منه» / "Verified") and is public immediately.
+            verified = status_by_code(ReportStatus.UNDER_REVIEW)
+            report.status = verified
+            db.session.add(ReportStatusHistory(report_id=report.id, from_status_id=new_status.id,
+                                               to_status_id=verified.id, changed_by_id=reporter.id,
+                                               internal_note=_("Verified automatically: submitted by a staff account.")))
         if reporter:
             ref = report.reference
-            notify(reporter, "report_update",
-                   lambda: (_("Report received"), _("Your report %(ref)s was received and will be reviewed.", ref=ref)),
-                   url=url_for("reports.detail", reference=ref), report=report)
+            if auto_verified:
+                notify(reporter, "report_update",
+                       lambda: (_("Report published"), _("Your report %(ref)s was verified and published.", ref=ref)),
+                       url=url_for("reports.detail", reference=ref), report=report)
+            else:
+                notify(reporter, "report_update",
+                       lambda: (_("Report received"), _("Your report %(ref)s was received and will be reviewed.", ref=ref)),
+                       url=url_for("reports.detail", reference=ref), report=report)
         audit("report.create", "report", report.id, user=reporter, reference=report.reference)
         db.session.commit()
         return report
@@ -210,8 +229,8 @@ def _notify_reporter_status(report: Report, to_code: str, note: str | None):
 
     def render():
         if to_code == ReportStatus.UNDER_REVIEW:
-            t = _("Your report was accepted")
-            b = _('Report "%(title)s" is now under review.', title=title)
+            t = _("Your report was verified")
+            b = _('Report "%(title)s" was verified by the road team.', title=title)
         elif to_code == ReportStatus.RESOLVED:
             t = _("Report resolved")
             b = _('Report "%(title)s" has been fixed. Thank you for your contribution.', title=title)
@@ -281,8 +300,9 @@ def assign_report(report: Report, actor: User, team_id: int | None, assignee_id:
         if report.first_response_at is None:
             report.first_response_at = utcnow()
         report.status = new
+        # the instructions live on the assignment only (they used to be copied here and showed twice)
         db.session.add(ReportStatusHistory(report_id=report.id, from_status_id=old.id, to_status_id=new.id,
-                                           changed_by_id=actor.id, internal_note=a.note))
+                                           changed_by_id=actor.id))
         _notify_reporter_status(report, ReportStatus.ASSIGNED, None)
 
     # notify assignee / team members
@@ -317,6 +337,33 @@ def add_note(report: Report, actor: User, body: str, is_internal: bool = True) -
     audit("report.note", "report", report.id, user=actor, internal=is_internal)
     db.session.commit()
     return n
+
+
+def activity_log(report: Report) -> list[dict]:
+    """One chronological log for the staff report page: status changes, assignments and notes.
+
+    Each item: {"at", "kind": "status"|"assign"|"note", "actor", "obj", "notes": [(text, is_internal)]}.
+    Every text appears once. Older data copied the assignment instructions into the status history
+    as an internal note: such a copy (same text, within a minute of the assignment) is dropped here.
+    """
+    items = []
+    instructions = [(a.assigned_at, a.note) for a in report.assignments if a.note]
+    for h in report.history:
+        notes = []
+        if h.public_note:
+            notes.append((h.public_note, False))
+        if h.internal_note and not any(
+                text == h.internal_note and abs((at - h.created_at).total_seconds()) <= 60 for at, text in instructions):
+            notes.append((h.internal_note, True))
+        items.append({"at": h.created_at, "kind": "status", "actor": h.changed_by, "obj": h, "notes": notes})
+    for a in report.assignments:
+        items.append({"at": a.assigned_at, "kind": "assign", "actor": a.assigned_by, "obj": a,
+                      "notes": [(a.note, True)] if a.note else []})
+    for n in report.notes:
+        items.append({"at": n.created_at, "kind": "note", "actor": n.author, "obj": n, "notes": [(n.body, n.is_internal)]})
+    order = {"status": 0, "assign": 1, "note": 2}
+    items.sort(key=lambda i: (i["at"], order[i["kind"]]))
+    return items
 
 
 def team_members_for_select():

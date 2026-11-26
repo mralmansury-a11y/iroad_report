@@ -11,9 +11,9 @@
     </div>
     <nav>
       <a href="{{ url_for('admin.dashboard') }}" class="{{ 'active' if ep == 'admin.dashboard' }}"><i class="bi bi-speedometer2"></i>{{ _("Dashboard") }}</a>
-      <a href="{{ url_for('admin.reports') }}" class="{{ 'active' if ep.startswith('admin.report') }}"><i class="bi bi-clipboard2-data"></i>{{ _("Reports") }}</a>
-      <a href="{{ url_for('admin.reports', mine=1) }}"><i class="bi bi-person-check"></i>{{ _("My assignments") }}</a>
-      {% if current_user.can('analytics.view') %}<a href="{{ url_for('admin.analytics') }}" class="{{ 'active' if ep == 'admin.analytics' }}"><i class="bi bi-graph-up"></i>{{ _("Analytics") }}</a>{% endif %}
+      {% set mine = ep == 'admin.reports' and request.args.get('mine') == '1' %}
+      <a href="{{ url_for('admin.reports') }}" class="{{ 'active' if ep.startswith('admin.report') and not mine }}"><i class="bi bi-clipboard2-data"></i>{{ _("Reports") }}</a>
+      <a href="{{ url_for('admin.reports', mine=1) }}" class="{{ 'active' if mine }}"><i class="bi bi-person-check"></i>{{ _("My assignments") }}</a>
       {% if current_user.can('announcements.manage') or current_user.can('messages.manage') %}<div class="grp">{{ _("Communication") }}</div>{% endif %}
       {% if current_user.can('announcements.manage') %}<a href="{{ url_for('admin.announcements') }}" class="{{ 'active' if ep.startswith('admin.announcement') }}"><i class="bi bi-megaphone"></i>{{ _("Announcements & alerts") }}</a>{% endif %}
       {% if current_user.can('messages.manage') %}<a href="{{ url_for('admin.messages') }}" class="{{ 'active' if ep.startswith('admin.message') }}"><i class="bi bi-chat-left-text"></i>{{ _("Support messages") }}</a>{% endif %}
@@ -44,7 +44,7 @@
     </div>
     <main id="main" class="ad-content" tabindex="-1">
       {% with messages = get_flashed_messages(with_categories=true) %}
-        {% for cat, msg in messages %}<div class="alert alert-{{ 'danger' if cat == 'danger' else ('success' if cat == 'success' else 'info') }} ir-alert">{{ msg }}</div>{% endfor %}
+        {% for cat, msg in messages %}<div class="alert alert-{{ cat if cat in ('danger', 'success', 'warning') else 'info' }} ir-alert">{{ msg }}</div>{% endfor %}
       {% endwith %}
       {% block admin_content %}{% endblock %}
     </main>

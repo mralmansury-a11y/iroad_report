@@ -4,19 +4,20 @@ from app.models import Announcement, Notification, ReportCategory, Role, SystemS
 from .conftest import login
 
 ADMIN_PAGES = ["/admin/", "/admin/reports", "/admin/users", "/admin/teams", "/admin/categories", "/admin/sections",
-               "/admin/announcements", "/admin/messages", "/admin/analytics", "/admin/settings", "/admin/audit",
-               "/admin/employees"]
+               "/admin/announcements", "/admin/messages", "/admin/settings", "/admin/audit", "/admin/employees"]
+# merged into the dashboard: kept as a permission-checked redirect for old links
+REDIRECTED_PAGES = ["/admin/analytics"]
 
 
 def test_anonymous_redirected_from_admin(client):
-    for p in ADMIN_PAGES:
+    for p in ADMIN_PAGES + REDIRECTED_PAGES:
         r = client.get(p)
         assert r.status_code == 302 and "/auth/login" in r.headers["Location"], p
 
 
 def test_public_user_forbidden(client, users):
     login(client, "0921000001")
-    for p in ADMIN_PAGES:
+    for p in ADMIN_PAGES + REDIRECTED_PAGES:
         assert client.get(p).status_code == 403, p
 
 
@@ -30,7 +31,8 @@ def test_employee_limited(client, users):
 
 def test_supervisor_vs_admin(client, users):
     login(client, "0921000003")
-    assert client.get("/admin/analytics").status_code == 200
+    r = client.get("/admin/analytics")
+    assert r.status_code == 301 and r.headers["Location"].endswith("/admin/")
     assert client.get("/admin/announcements").status_code == 200
     assert client.get("/admin/settings").status_code == 403
     assert client.get("/admin/users/new").status_code == 403

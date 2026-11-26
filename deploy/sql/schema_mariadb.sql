@@ -517,5 +517,11 @@ CREATE INDEX ix_report_status_history_created_at ON report_status_history (creat
 
 CREATE INDEX ix_report_status_history_report_id ON report_status_history (report_id);
 
-INSERT INTO alembic_version (version_num) VALUES ('a3d9c2e41f07');
+-- Running upgrade a3d9c2e41f07 -> c5e8a1d4b7f2 (data only: status under_review is displayed «متحقق منه» / "Verified")
+
+UPDATE report_status_translations SET name = 'متحقق منه' WHERE locale = 'ar' AND status_id IN (SELECT id FROM report_statuses WHERE code = 'under_review');
+
+UPDATE report_status_translations SET name = 'Verified' WHERE locale = 'en' AND status_id IN (SELECT id FROM report_statuses WHERE code = 'under_review');
+
+INSERT INTO alembic_version (version_num) VALUES ('c5e8a1d4b7f2');
 

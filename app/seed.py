@@ -20,7 +20,7 @@ from .services.settings import DEFAULT_SETTINGS
 STATUSES = [
     # code, order, tone, final, ar, en
     ("new", 1, "new", False, "جديد", "New"),
-    ("under_review", 2, "review", False, "قيد المراجعة", "Under review"),
+    ("under_review", 2, "review", False, "متحقق منه", "Verified"),  # code kept; renamed in c5e8a1d4b7f2
     ("assigned", 3, "assigned", False, "تم الإسناد", "Assigned"),
     ("in_progress", 4, "progress", False, "قيد التنفيذ", "In progress"),
     ("resolved", 5, "done", True, "تم الإصلاح", "Resolved"),

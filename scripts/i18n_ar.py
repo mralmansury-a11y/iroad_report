@@ -6,6 +6,18 @@ Used by scripts/build_translations.py to fill the catalogue. After the first bui
 as a reviewed reference.
 """
 AR = {
+    "Verified": "متحقق منه",
+    "Verified automatically: submitted by a staff account.": "تم التحقق تلقائياً: البلاغ مُقدَّم من حساب موظف.",
+    "Report published": "نُشر البلاغ",
+    "Your report %(ref)s was verified and published.": "تم التحقق من بلاغك %(ref)s ونُشر.",
+    "Your report was verified": "تم التحقق من بلاغك",
+    "Report \"%(title)s\" was verified by the road team.": "تحقق فريق الطريق من بلاغ «%(title)s».",
+    "Activity log": "سجل النشاط",
+    "Report submitted": "تم تقديم البلاغ",
+    "Required when rejecting; a rejection reason is always shown to the reporter.": "إلزامية عند الرفض، وسبب الرفض يظهر للمُبلِّغ دائماً.",
+    "Radius of reports fetched around the driver (km, max 200)": "نطاق جلب البلاغات حول السائق (كم، بحد أقصى 200)",
+    "Voice alerts at %(far)s and %(near)s. Keep the screen open. Works offline.": "تنبيه صوتي عند %(far)s ثم %(near)s. أبقِ الشاشة مفتوحة. يعمل دون إنترنت.",
+    "now": "الآن",
     "New status": "الحالة الجديدة",
     "Note to the reporter (visible)": "ملاحظة للمُبلِّغ (ظاهرة له)",
     "Internal note (staff only)": "ملاحظة داخلية (للموظفين فقط)",

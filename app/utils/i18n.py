@@ -125,6 +125,11 @@ def drive_js_strings() -> dict:
         "updatedMinutes": _("Reports updated %(n)s min ago", n="{n}"),
         "updatedHours": _("Reports updated %(n)s h ago", n="{n}"),
         "updatedDays": _("Reports updated %(n)s days ago", n="{n}"),
+        # short forms shown in the status chips while driving (the full sentence is the tooltip)
+        "ageNow": _("now"),
+        "ageMinutes": _("%(n)s min", n="{n}"),
+        "ageHours": _("%(n)s h", n="{n}"),
+        "ageDays": _("%(n)s d", n="{n}"),
         "usingSaved": _("No internet: using the %(n)s reports saved on this device.", n="{n}"),
         "noSavedReports": _("No reports are saved on this device yet. Connect to the internet once to download them."),
         "updateFailed": _("Could not update the reports. The last list is shown."),

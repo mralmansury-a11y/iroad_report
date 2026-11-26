@@ -11,7 +11,7 @@
     <ul class="dv-status" aria-label="{{ _('Status') }}">
       <li data-status="gps"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i><span class="num">—</span></li>
       <li data-status="data"><i class="bi bi-arrow-repeat" aria-hidden="true"></i><span>—</span></li>
-      <li data-status="net"><i class="bi bi-wifi" aria-hidden="true"></i><span>—</span></li>
+      <li data-status="net"><i class="bi bi-wifi" aria-hidden="true"></i><span class="visually-hidden">—</span></li>
     </ul>
   </header>
 
@@ -19,7 +19,6 @@
     <span class="dv-banner-ico"><i class="bi bi-shield-check" aria-hidden="true" data-banner-icon></i></span>
     <span class="dv-banner-body">
       <span class="dv-banner-title" data-banner-title>{{ _("No reported hazards ahead") }}</span>
-      <span class="dv-banner-meta" data-banner-meta></span>
     </span>
     <span class="dv-banner-dist num" data-banner-dist></span>
   </section>
@@ -31,8 +30,7 @@
     <button type="button" class="dv-recenter" data-action="recenter" hidden><i class="bi bi-crosshair" aria-hidden="true"></i> {{ _("Re-centre") }}</button>
   </div>
 
-  <section class="dv-next" aria-labelledby="dvNextTitle">
-    <h2 id="dvNextTitle">{{ _("Next hazards ahead") }}</h2>
+  <section class="dv-next" aria-label="{{ _('Next hazards ahead') }}">
     <ol class="dv-list" data-list></ol>
   </section>
 
@@ -41,18 +39,14 @@
     <button type="button" class="dv-btn dv-btn-stop" data-action="stop" hidden><i class="bi bi-stop-fill" aria-hidden="true"></i>{{ _("End driving") }}</button>
   </div>
 
-  <aside class="dv-intro" data-intro>
-    <p><i class="bi bi-info-circle-fill" aria-hidden="true"></i> {{ _("Keep this screen open during the trip: in this version alerts work only while the page is visible.") }}</p>
-    <p>{{ _("You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s.", far=(drive_cfg.far_m / 1000) | num(1) ~ " " ~ _("km"), near=drive_cfg.near_m | num ~ " " ~ _("m")) }}</p>
-    <p>{{ _("Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet.") }}</p>
-    <p class="dv-muted">{{ _("Your location and route are processed on this device only and are never sent to the server.") }}</p>
-  </aside>
+  <p class="dv-intro" data-intro><i class="bi bi-info-circle-fill" aria-hidden="true"></i>
+    {{ _("Voice alerts at %(far)s and %(near)s. Keep the screen open. Works offline.", far=(drive_cfg.far_m / 1000) | num(1) ~ " " ~ _("km"), near=drive_cfg.near_m | num ~ " " ~ _("m")) }}</p>
 </main>
 
 <template id="dvItemTpl">
   <li class="dv-item">
     <span class="dv-item-ico"><i class="bi" aria-hidden="true"></i></span>
-    <span class="dv-item-body"><span class="dv-item-title"></span><span class="dv-item-meta"></span></span>
+    <span class="dv-item-body"><span class="dv-item-title"></span></span>
     <span class="dv-item-dist num"></span>
   </li>
 </template>

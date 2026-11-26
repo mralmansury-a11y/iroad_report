@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-24 02:47+0200\n"
+"POT-Creation-Date: 2026-11-26 02:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: en\n"
@@ -77,6 +77,9 @@ msgstr "Active account"
 msgid "Active contributor"
 msgstr "Active contributor"
 
+msgid "Activity log"
+msgstr "Activity log"
+
 msgid "Add a photo of the problem"
 msgstr "Add a photo of the problem"
 
@@ -114,9 +117,6 @@ msgstr "Allow browser notifications to receive report updates and road alerts."
 msgid "Allow location access if the browser asks."
 msgstr "Allow location access if the browser asks."
 
-msgid "Allow location access to see nearby reports."
-msgstr "Allow location access to see nearby reports."
-
 msgid "Allow reports without an account"
 msgstr "Allow reports without an account"
 
@@ -134,9 +134,6 @@ msgstr "An unexpected error occurred. Please try again later."
 
 msgid "An unsent draft was restored."
 msgstr "An unsent draft was restored."
-
-msgid "Analytics"
-msgstr "Analytics"
 
 msgid "Android (Chrome / Edge / Samsung Internet)"
 msgstr "Android (Chrome / Edge / Samsung Internet)"
@@ -170,9 +167,6 @@ msgstr "Assigned"
 msgid "Assigned to"
 msgstr "Assigned to"
 
-msgid "Assignment history"
-msgstr "Assignment history"
-
 msgid "At least 8 characters, with letters and numbers."
 msgstr "At least 8 characters, with letters and numbers."
 
@@ -181,9 +175,6 @@ msgstr "Audit log"
 
 msgid "Average resolution time"
 msgstr "Average resolution time"
-
-msgid "Average response"
-msgstr "Average response"
 
 msgid "Average response time"
 msgstr "Average response time"
@@ -225,14 +216,8 @@ msgstr "Change status"
 msgid "Changes saved."
 msgstr "Changes saved."
 
-msgid "The other changes were saved."
-msgstr "The other changes were saved."
-
 msgid "Chat with support"
 msgstr "Chat with support"
-
-msgid "Choose a road section"
-msgstr "Choose a road section"
 
 msgid "Choose a team or an employee."
 msgstr "Choose a team or an employee."
@@ -576,9 +561,6 @@ msgstr "Internal"
 msgid "Internal (staff only)"
 msgstr "Internal (staff only)"
 
-msgid "Internal note (staff only)"
-msgstr "Internal note (staff only)"
-
 msgid "International Road Libya"
 msgstr "International Road Libya"
 
@@ -617,9 +599,6 @@ msgstr "Job title"
 
 msgid "Keep this number to follow up your report."
 msgstr "Keep this number to follow up your report."
-
-msgid "Keep this screen open during the trip: in this version alerts work only while the page is visible."
-msgstr "Keep this screen open during the trip: in this version alerts work only while the page is visible."
 
 msgid "Kilometre marker"
 msgstr "Kilometre marker"
@@ -763,9 +742,6 @@ msgstr "National Development Agency"
 msgid "National Development Agency — Sirte"
 msgstr "National Development Agency — Sirte"
 
-msgid "Nearby reports"
-msgstr "Nearby reports"
-
 msgid "Network error. Please try again."
 msgstr "Network error. Please try again."
 
@@ -838,11 +814,12 @@ msgstr "No eligible reports near the start point: simulating a straight drive."
 msgid "No employees yet."
 msgstr "No employees yet."
 
+#, python-format
+msgid "No internet: using the %(n)s reports saved on this device."
+msgstr "No internet: using the %(n)s reports saved on this device."
+
 msgid "No messages."
 msgstr "No messages."
-
-msgid "No notes yet."
-msgstr "No notes yet."
 
 msgid "No notifications yet."
 msgstr "No notifications yet."
@@ -852,6 +829,9 @@ msgstr "No report matches this reference number and phone."
 
 msgid "No reported hazards ahead"
 msgstr "No reported hazards ahead"
+
+msgid "No reports are saved on this device yet. Connect to the internet once to download them."
+msgstr "No reports are saved on this device yet. Connect to the internet once to download them."
 
 msgid "No reports match the filters."
 msgstr "No reports match the filters."
@@ -886,12 +866,6 @@ msgstr "Note"
 
 msgid "Note added."
 msgstr "Note added."
-
-msgid "Note to the reporter (visible)"
-msgstr "Note to the reporter (visible)"
-
-msgid "Notes"
-msgstr "Notes"
 
 msgid "Notification permission was denied in the browser."
 msgstr "Notification permission was denied in the browser."
@@ -957,9 +931,6 @@ msgstr "Open “My reports” to see the current status and the full history. Yo
 msgid "Optional. The employee must belong to the selected team."
 msgstr "Optional. The employee must belong to the selected team."
 
-msgid "Or choose a section…"
-msgstr "Or choose a section…"
-
 msgid "Order"
 msgstr "Order"
 
@@ -989,9 +960,6 @@ msgstr "Passwords do not match."
 
 msgid "People"
 msgstr "People"
-
-msgid "Performance (last 30/90 days)"
-msgstr "Performance (last 30/90 days)"
 
 msgid "Period"
 msgstr "Period"
@@ -1086,8 +1054,8 @@ msgstr "Push notifications on my devices"
 msgid "Radius for “nearby reports” (km)"
 msgstr "Radius for “nearby reports” (km)"
 
-msgid "Radius of reports fetched around the driver (km, max 50)"
-msgstr "Radius of reports fetched around the driver (km, max 50)"
+msgid "Radius of reports fetched around the driver (km, max 200)"
+msgstr "Radius of reports fetched around the driver (km, max 200)"
 
 msgid "Re-centre"
 msgstr "Re-centre"
@@ -1142,16 +1110,16 @@ msgid "Report \"%(title)s\" has been fixed. Thank you for your contribution."
 msgstr "Report \"%(title)s\" has been fixed. Thank you for your contribution."
 
 #, python-format
-msgid "Report \"%(title)s\" is now under review."
-msgstr "Report \"%(title)s\" is now under review."
-
-#, python-format
 msgid "Report \"%(title)s\" is now: %(status)s"
 msgstr "Report \"%(title)s\" is now: %(status)s"
 
 #, python-format
 msgid "Report \"%(title)s\" was rejected."
 msgstr "Report \"%(title)s\" was rejected."
+
+#, python-format
+msgid "Report \"%(title)s\" was verified by the road team."
+msgstr "Report \"%(title)s\" was verified by the road team."
 
 #, python-format
 msgid "Report %(ref)s \"%(title)s\" was assigned to you."
@@ -1165,6 +1133,9 @@ msgstr "Report assigned."
 
 msgid "Report photo"
 msgstr "Report photo"
+
+msgid "Report published"
+msgstr "Report published"
 
 msgid "Report received"
 msgstr "Report received"
@@ -1192,6 +1163,9 @@ msgstr "Report statuses that trigger driving alerts (verified by the administrat
 
 msgid "Report submission is temporarily closed."
 msgstr "Report submission is temporarily closed."
+
+msgid "Report submitted"
+msgstr "Report submitted"
 
 msgid "Reporter"
 msgstr "Reporter"
@@ -1221,14 +1195,22 @@ msgid "Reports sent"
 msgstr "Reports sent"
 
 #, python-format
+msgid "Reports updated %(n)s days ago"
+msgstr "Reports updated %(n)s days ago"
+
+#, python-format
+msgid "Reports updated %(n)s h ago"
+msgstr "Reports updated %(n)s h ago"
+
+#, python-format
 msgid "Reports updated %(n)s min ago"
 msgstr "Reports updated %(n)s min ago"
 
 msgid "Reports updated just now"
 msgstr "Reports updated just now"
 
-msgid "Required when rejecting. Shown to the reporter."
-msgstr "Required when rejecting. Shown to the reporter."
+msgid "Required when rejecting; a rejection reason is always shown to the reporter."
+msgstr "Required when rejecting; a rejection reason is always shown to the reporter."
 
 msgid "Reset"
 msgstr "Reset"
@@ -1256,9 +1238,6 @@ msgstr "Road closed"
 
 msgid "Road closure"
 msgstr "Road closure"
-
-msgid "Road illustration with nearby reports"
-msgstr "Road illustration with nearby reports"
 
 msgid "Road map"
 msgstr "Road map"
@@ -1377,9 +1356,6 @@ msgstr "State"
 msgid "Status"
 msgstr "Status"
 
-msgid "Status history"
-msgstr "Status history"
-
 msgid "Status updated."
 msgstr "Status updated."
 
@@ -1466,6 +1442,9 @@ msgstr "The map could not be loaded. Use “Use my location”."
 
 msgid "The note is empty."
 msgstr "The note is empty."
+
+msgid "The other changes were saved."
+msgstr "The other changes were saved."
 
 #, python-format
 msgid "The password of your account was changed on %(when)s."
@@ -1571,9 +1550,6 @@ msgstr "Try again"
 msgid "Type"
 msgstr "Type"
 
-msgid "Under review"
-msgstr "Under review"
-
 msgid "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
 msgstr "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
 
@@ -1607,6 +1583,12 @@ msgstr "User created."
 msgid "Users"
 msgstr "Users"
 
+msgid "Verified"
+msgstr "Verified"
+
+msgid "Verified automatically: submitted by a staff account."
+msgstr "Verified automatically: submitted by a staff account."
+
 msgid "Version"
 msgstr "Version"
 
@@ -1624,6 +1606,10 @@ msgstr "Visibility rate (%)"
 
 msgid "Visible to reporter"
 msgstr "Visible to reporter"
+
+#, python-format
+msgid "Voice alerts at %(far)s and %(near)s. Keep the screen open. Works offline."
+msgstr "Voice alerts at %(far)s and %(near)s. Keep the screen open. Works offline."
 
 msgid "Waiting for GPS…"
 msgstr "Waiting for GPS…"
@@ -1742,24 +1728,14 @@ msgstr "You earned %(n)s points for your report \"%(title)s\"."
 msgid "You have been logged out."
 msgstr "You have been logged out."
 
-#, python-format
-msgid "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
-msgstr "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
-
 msgid "Your account was created. Welcome!"
 msgstr "Your account was created. Welcome!"
-
-msgid "Your approximate location on the road"
-msgstr "Your approximate location on the road"
 
 msgid "Your current location was set"
 msgstr "Your current location was set"
 
 msgid "Your location could not be determined. Choose it manually."
 msgstr "Your location could not be determined. Choose it manually."
-
-msgid "Your location is processed on this device only and is never stored on the server."
-msgstr "Your location is processed on this device only and is never stored on the server."
 
 msgid "Your message was sent. The support team will contact you."
 msgstr "Your message was sent. The support team will contact you."
@@ -1783,17 +1759,18 @@ msgstr "Your personal data is not shared with any party outside the National Dev
 msgid "Your report %(ref)s was received and will be reviewed."
 msgstr "Your report %(ref)s was received and will be reviewed."
 
-msgid "Your report was accepted"
-msgstr "Your report was accepted"
+#, python-format
+msgid "Your report %(ref)s was verified and published."
+msgstr "Your report %(ref)s was verified and published."
 
 msgid "Your report was received"
 msgstr "Your report was received"
 
+msgid "Your report was verified"
+msgstr "Your report was verified"
+
 msgid "Your rights"
 msgstr "Your rights"
-
-msgid "by"
-msgstr "by"
 
 msgid "e.g. Deep pothole in the right lane"
 msgstr "e.g. Deep pothole in the right lane"
@@ -1819,6 +1796,9 @@ msgstr "m"
 msgid "metres"
 msgstr "metres"
 
+msgid "now"
+msgstr "now"
+
 msgid "privacy policy"
 msgstr "privacy policy"
 
@@ -1843,23 +1823,81 @@ msgstr "until"
 #~ msgid "To reset your password open this link (valid for 1 hour):"
 #~ msgstr "To reset your password open this link (valid for 1 hour):"
 
-#, python-format
-msgid "Reports updated %(n)s h ago"
-msgstr "Reports updated %(n)s h ago"
+#~ msgid "Allow location access to see nearby reports."
+#~ msgstr "Allow location access to see nearby reports."
 
-#, python-format
-msgid "Reports updated %(n)s days ago"
-msgstr "Reports updated %(n)s days ago"
+#~ msgid "Analytics"
+#~ msgstr "Analytics"
 
-#, python-format
-msgid "No internet: using the %(n)s reports saved on this device."
-msgstr "No internet: using the %(n)s reports saved on this device."
+#~ msgid "Assignment history"
+#~ msgstr "Assignment history"
 
-msgid "No reports are saved on this device yet. Connect to the internet once to download them."
-msgstr "No reports are saved on this device yet. Connect to the internet once to download them."
+#~ msgid "Average response"
+#~ msgstr "Average response"
 
-msgid "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
-msgstr "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+#~ msgid "Choose a road section"
+#~ msgstr "Choose a road section"
 
-msgid "Your location and route are processed on this device only and are never sent to the server."
-msgstr "Your location and route are processed on this device only and are never sent to the server."
+#~ msgid "Internal note (staff only)"
+#~ msgstr "Internal note (staff only)"
+
+#~ msgid "Keep this screen open during the trip: in this version alerts work only while the page is visible."
+#~ msgstr "Keep this screen open during the trip: in this version alerts work only while the page is visible."
+
+#~ msgid "Nearby reports"
+#~ msgstr "Nearby reports"
+
+#~ msgid "No notes yet."
+#~ msgstr "No notes yet."
+
+#~ msgid "Note to the reporter (visible)"
+#~ msgstr "Note to the reporter (visible)"
+
+#~ msgid "Notes"
+#~ msgstr "Notes"
+
+#~ msgid "Or choose a section…"
+#~ msgstr "Or choose a section…"
+
+#~ msgid "Performance (last 30/90 days)"
+#~ msgstr "Performance (last 30/90 days)"
+
+#~ msgid "Radius of reports fetched around the driver (km, max 50)"
+#~ msgstr "Radius of reports fetched around the driver (km, max 50)"
+
+#~ msgid "Report \"%(title)s\" is now under review."
+#~ msgstr "Report \"%(title)s\" is now under review."
+
+#~ msgid "Required when rejecting. Shown to the reporter."
+#~ msgstr "Required when rejecting. Shown to the reporter."
+
+#~ msgid "Road illustration with nearby reports"
+#~ msgstr "Road illustration with nearby reports"
+
+#~ msgid "Status history"
+#~ msgstr "Status history"
+
+#~ msgid "Under review"
+#~ msgstr "Under review"
+
+#~ msgid "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
+#~ msgstr "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
+
+#~ msgid "Your approximate location on the road"
+#~ msgstr "Your approximate location on the road"
+
+#~ msgid "Your location is processed on this device only and is never stored on the server."
+#~ msgstr "Your location is processed on this device only and is never stored on the server."
+
+#~ msgid "Your report was accepted"
+#~ msgstr "Your report was accepted"
+
+#~ msgid "by"
+#~ msgstr "by"
+
+#~ msgid "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+#~ msgstr "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+
+#~ msgid "Your location and route are processed on this device only and are never sent to the server."
+#~ msgstr "Your location and route are processed on this device only and are never sent to the server."
+

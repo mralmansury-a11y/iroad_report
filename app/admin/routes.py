@@ -20,8 +20,8 @@ from ..services.mail import send_template
 from ..services.notify import broadcast_push, notify
 from ..services.rbac import can_grant_role, permission_required
 from ..services.reports import (
-    WorkflowError, add_note, allowed_next_statuses, assign_report, can_view_report, change_status,
-    staff_reports_query,
+    WorkflowError, activity_log, add_note, allowed_next_statuses, assign_report, assigned_to_condition,
+    can_view_report, change_status, staff_reports_query,
 )
 from ..services.settings import DEFAULT_SETTINGS, get_setting, set_setting
 from ..services.uploads import delete_stored
@@ -41,10 +41,13 @@ def _page():
     return max(1, request.args.get("page", 1, type=int))
 
 
-# ============================================================ dashboard
+# ============================================================ dashboard (single home page, analytics layout)
 @bp.route("/")
 def dashboard():
-    if current_user.can("reports.view_all"):
+    """The control-panel home. Users with analytics.view get the full analytics view (it used to be a
+    separate page); other staff get the same layout limited to the reports assigned to them."""
+    full = current_user.can("analytics.view")
+    if full:
         counts = stats.status_counts()
     else:
         q = staff_reports_query(current_user).subquery()
@@ -54,7 +57,6 @@ def dashboard():
         counts = {c: 0 for c in ReportStatus.ALL}
         counts.update(dict(rows))
         counts["total"] = sum(counts[c] for c in ReportStatus.ALL)
-    recent = db.session.execute(staff_reports_query(current_user).order_by(Report.created_at.desc()).limit(8)).scalars().all()
     unassigned_high = []
     if current_user.can("reports.assign"):
         unassigned_high = db.session.execute(
@@ -64,9 +66,17 @@ def dashboard():
     new_messages = 0
     if current_user.can("messages.manage"):
         new_messages = db.session.execute(db.select(db.func.count(ContactMessage.id)).filter_by(status="new")).scalar_one()
-    return render_template("admin/dashboard.html", counts=counts, recent=recent, unassigned_high=unassigned_high,
-                           avg_response=stats.avg_response_hours(), avg_resolution=stats.avg_resolution_hours(),
-                           new_messages=new_messages)
+    ctx = dict(counts=counts, full=full, unassigned_high=unassigned_high, new_messages=new_messages,
+               min_samples=get_setting("stats_min_samples", 3))
+    if full:
+        months, created, resolved = stats.over_time(12)
+        ctx.update(months=months, created=created, resolved=resolved, by_category=stats.by_category(),
+                   by_section=stats.by_section(), yearly=stats.yearly_summary(), workload=stats.employee_workload(),
+                   avg_response=stats.avg_response_hours(), avg_resolution=stats.avg_resolution_hours())
+    else:
+        ctx["recent"] = db.session.execute(
+            staff_reports_query(current_user).order_by(Report.created_at.desc()).limit(8)).scalars().all()
+    return render_template("admin/dashboard.html", **ctx)
 
 
 # ============================================================ reports
@@ -109,7 +119,8 @@ def reports():
     if _parse_date(a.get("to")):
         q = q.where(Report.created_at < _parse_date(a.get("to")) + timedelta(days=1))
     if a.get("mine") == "1":
-        q = q.where(Report.assigned_user_id == current_user.id)
+        # same rule as access: assigned to me personally OR to one of my teams (most reports go to a team)
+        q = q.where(assigned_to_condition(current_user))
     order = Report.created_at.asc() if a.get("sort") == "oldest" else Report.created_at.desc()
     pagination = db.paginate(q.order_by(order), page=_page(), per_page=_per_page(), error_out=False)
     cats = db.session.execute(db.select(ReportCategory).order_by(ReportCategory.sort_order)).scalars().all()
@@ -150,7 +161,7 @@ def _status_form(report: Report):
 def report_detail(report_id):
     r = _get_report_or_404(report_id)
     return render_template("admin/report_detail.html", report=r, status_form=_status_form(r),
-                           assign_form=_assign_form(r), note_form=NoteForm(prefix="nt"))
+                           assign_form=_assign_form(r), note_form=NoteForm(prefix="nt"), activity=activity_log(r))
 
 
 @bp.route("/reports/<int:report_id>/status", methods=["POST"])
@@ -159,8 +170,11 @@ def report_status(report_id):
     r = _get_report_or_404(report_id)
     form = _status_form(r)
     if form.validate_on_submit():
+        note = (form.note.data or "").strip() or None
+        # a rejection reason is always sent to the reporter
+        public = form.visibility.data == "public" or form.to_status.data == ReportStatus.REJECTED
         try:
-            change_status(r, current_user, form.to_status.data, form.public_note.data, form.internal_note.data)
+            change_status(r, current_user, form.to_status.data, note if public else None, None if public else note)
             flash(_("Status updated."), "success")
         except WorkflowError as exc:
             db.session.rollback()
@@ -661,18 +675,11 @@ def message_detail(msg_id):
     return render_template("admin/message_detail.html", msg=msg, form=form)
 
 
-# ============================================================ analytics
+# ============================================================ analytics (merged into the dashboard)
 @bp.route("/analytics")
 @permission_required("analytics.view")
 def analytics():
-    months, created, resolved = stats.over_time(12)
-    return render_template(
-        "admin/analytics.html",
-        counts=stats.status_counts(), by_category=stats.by_category(), by_section=stats.by_section(),
-        months=months, created=created, resolved=resolved, yearly=stats.yearly_summary(),
-        workload=stats.employee_workload(), avg_response=stats.avg_response_hours(),
-        avg_resolution=stats.avg_resolution_hours(), min_samples=get_setting("stats_min_samples", 3),
-    )
+    return redirect(url_for("admin.dashboard"), 301)  # old links and bookmarks
 
 
 # ============================================================ settings

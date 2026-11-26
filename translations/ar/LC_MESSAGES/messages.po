@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-24 02:47+0200\n"
+"POT-Creation-Date: 2026-11-26 02:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: ar\n"
@@ -77,6 +77,9 @@ msgstr "الحساب مفعّل"
 msgid "Active contributor"
 msgstr "مساهم نشط"
 
+msgid "Activity log"
+msgstr "سجل النشاط"
+
 msgid "Add a photo of the problem"
 msgstr "أضف صورة للعطل"
 
@@ -114,9 +117,6 @@ msgstr "اسمح بإشعارات المتصفح لاستقبال تحديثات
 msgid "Allow location access if the browser asks."
 msgstr "اسمح بالوصول إلى الموقع إذا طلب المتصفح ذلك."
 
-msgid "Allow location access to see nearby reports."
-msgstr "اسمح بالوصول إلى موقعك لعرض البلاغات القريبة."
-
 msgid "Allow reports without an account"
 msgstr "السماح بالإبلاغ دون حساب"
 
@@ -134,9 +134,6 @@ msgstr "حدث خطأ غير متوقع. يرجى المحاولة لاحقاً.
 
 msgid "An unsent draft was restored."
 msgstr "تمت استعادة مسودة غير مرسلة."
-
-msgid "Analytics"
-msgstr "التحليلات"
 
 msgid "Android (Chrome / Edge / Samsung Internet)"
 msgstr "أندرويد (Chrome / Edge / Samsung Internet)"
@@ -170,9 +167,6 @@ msgstr "تم الإسناد"
 msgid "Assigned to"
 msgstr "مُسند إلى"
 
-msgid "Assignment history"
-msgstr "سجل الإسناد"
-
 msgid "At least 8 characters, with letters and numbers."
 msgstr "8 أحرف على الأقل، تتضمن حروفاً وأرقاماً."
 
@@ -181,9 +175,6 @@ msgstr "سجل التدقيق"
 
 msgid "Average resolution time"
 msgstr "متوسط زمن الإصلاح"
-
-msgid "Average response"
-msgstr "متوسط الاستجابة"
 
 msgid "Average response time"
 msgstr "متوسط زمن الاستجابة"
@@ -225,14 +216,8 @@ msgstr "تغيير الحالة"
 msgid "Changes saved."
 msgstr "تم حفظ التغييرات."
 
-msgid "The other changes were saved."
-msgstr "تم حفظ بقية التغييرات."
-
 msgid "Chat with support"
 msgstr "الدردشة مع الدعم"
-
-msgid "Choose a road section"
-msgstr "اختر القاطع"
 
 msgid "Choose a team or an employee."
 msgstr "اختر فريقاً أو موظفاً."
@@ -576,9 +561,6 @@ msgstr "داخلية"
 msgid "Internal (staff only)"
 msgstr "داخلية (للموظفين فقط)"
 
-msgid "Internal note (staff only)"
-msgstr "ملاحظة داخلية (للموظفين فقط)"
-
 msgid "International Road Libya"
 msgstr "الطريق الدولي ليبيا"
 
@@ -617,9 +599,6 @@ msgstr "المسمى الوظيفي"
 
 msgid "Keep this number to follow up your report."
 msgstr "احتفظ بهذا الرقم لمتابعة بلاغك."
-
-msgid "Keep this screen open during the trip: in this version alerts work only while the page is visible."
-msgstr "أبقِ هذه الشاشة مفتوحة طوال الرحلة: في هذه النسخة تعمل التنبيهات فقط والصفحة ظاهرة."
 
 msgid "Kilometre marker"
 msgstr "الكيلومتر"
@@ -763,9 +742,6 @@ msgstr "الجهاز الوطني للتنمية"
 msgid "National Development Agency — Sirte"
 msgstr "الجهاز الوطني للتنمية — سرت"
 
-msgid "Nearby reports"
-msgstr "بلاغات قريبة"
-
 msgid "Network error. Please try again."
 msgstr "خطأ في الشبكة. يرجى المحاولة مجدداً."
 
@@ -838,11 +814,12 @@ msgstr "لا توجد بلاغات مؤهلة قرب نقطة البداية: ت
 msgid "No employees yet."
 msgstr "لا يوجد موظفون بعد."
 
+#, python-format
+msgid "No internet: using the %(n)s reports saved on this device."
+msgstr "لا يوجد اتصال بالإنترنت: تُستخدم البلاغات المحفوظة على هذا الجهاز (%(n)s)."
+
 msgid "No messages."
 msgstr "لا توجد رسائل."
-
-msgid "No notes yet."
-msgstr "لا توجد ملاحظات بعد."
 
 msgid "No notifications yet."
 msgstr "لا توجد تنبيهات بعد."
@@ -852,6 +829,9 @@ msgstr "لا يوجد بلاغ يطابق هذا الرقم المرجعي ور�
 
 msgid "No reported hazards ahead"
 msgstr "لا توجد عوائق مُبلّغ عنها أمامك"
+
+msgid "No reports are saved on this device yet. Connect to the internet once to download them."
+msgstr "لا توجد بلاغات محفوظة على هذا الجهاز بعد. اتصل بالإنترنت مرة واحدة لتنزيلها."
 
 msgid "No reports match the filters."
 msgstr "لا توجد بلاغات مطابقة للتصفية."
@@ -886,12 +866,6 @@ msgstr "الملاحظة"
 
 msgid "Note added."
 msgstr "تمت إضافة الملاحظة."
-
-msgid "Note to the reporter (visible)"
-msgstr "ملاحظة للمُبلِّغ (ظاهرة له)"
-
-msgid "Notes"
-msgstr "الملاحظات"
 
 msgid "Notification permission was denied in the browser."
 msgstr "تم رفض إذن الإشعارات في المتصفح."
@@ -957,9 +931,6 @@ msgstr "افتح «بلاغاتي» لمعرفة الحالة الحالية و�
 msgid "Optional. The employee must belong to the selected team."
 msgstr "اختياري. يجب أن يكون الموظف عضواً في الفريق المختار."
 
-msgid "Or choose a section…"
-msgstr "أو اختر القاطع…"
-
 msgid "Order"
 msgstr "الترتيب"
 
@@ -989,9 +960,6 @@ msgstr "كلمتا المرور غير متطابقتين."
 
 msgid "People"
 msgstr "الأشخاص"
-
-msgid "Performance (last 30/90 days)"
-msgstr "الأداء (آخر 30/90 يوماً)"
 
 msgid "Period"
 msgstr "الفترة"
@@ -1086,8 +1054,8 @@ msgstr "الإشعارات الفورية على أجهزتي"
 msgid "Radius for “nearby reports” (km)"
 msgstr "نطاق «البلاغات القريبة» (كم)"
 
-msgid "Radius of reports fetched around the driver (km, max 50)"
-msgstr "نطاق جلب البلاغات حول السائق (كم، بحد أقصى 50)"
+msgid "Radius of reports fetched around the driver (km, max 200)"
+msgstr "نطاق جلب البلاغات حول السائق (كم، بحد أقصى 200)"
 
 msgid "Re-centre"
 msgstr "إعادة التوسيط"
@@ -1142,16 +1110,16 @@ msgid "Report \"%(title)s\" has been fixed. Thank you for your contribution."
 msgstr "تم إصلاح «%(title)s». شكراً لمساهمتك."
 
 #, python-format
-msgid "Report \"%(title)s\" is now under review."
-msgstr "بلاغ «%(title)s» قيد المراجعة الآن."
-
-#, python-format
 msgid "Report \"%(title)s\" is now: %(status)s"
 msgstr "حالة بلاغ «%(title)s» الآن: %(status)s"
 
 #, python-format
 msgid "Report \"%(title)s\" was rejected."
 msgstr "تم رفض بلاغ «%(title)s»."
+
+#, python-format
+msgid "Report \"%(title)s\" was verified by the road team."
+msgstr "تحقق فريق الطريق من بلاغ «%(title)s»."
 
 #, python-format
 msgid "Report %(ref)s \"%(title)s\" was assigned to you."
@@ -1165,6 +1133,9 @@ msgstr "تم إسناد البلاغ."
 
 msgid "Report photo"
 msgstr "صورة البلاغ"
+
+msgid "Report published"
+msgstr "نُشر البلاغ"
 
 msgid "Report received"
 msgstr "تم استلام البلاغ"
@@ -1192,6 +1163,9 @@ msgstr "حالات البلاغ المؤهلة لتنبيه السائقين (ا
 
 msgid "Report submission is temporarily closed."
 msgstr "استقبال البلاغات متوقف مؤقتاً."
+
+msgid "Report submitted"
+msgstr "تم تقديم البلاغ"
 
 msgid "Reporter"
 msgstr "المُبلِّغ"
@@ -1221,14 +1195,22 @@ msgid "Reports sent"
 msgstr "بلاغات مُرسلة"
 
 #, python-format
+msgid "Reports updated %(n)s days ago"
+msgstr "حُدّثت البلاغات قبل %(n)s يوم"
+
+#, python-format
+msgid "Reports updated %(n)s h ago"
+msgstr "حُدّثت البلاغات قبل %(n)s س"
+
+#, python-format
 msgid "Reports updated %(n)s min ago"
 msgstr "حُدّثت البلاغات قبل %(n)s د"
 
 msgid "Reports updated just now"
 msgstr "حُدّثت البلاغات الآن"
 
-msgid "Required when rejecting. Shown to the reporter."
-msgstr "مطلوبة عند الرفض، وتظهر للمُبلِّغ."
+msgid "Required when rejecting; a rejection reason is always shown to the reporter."
+msgstr "إلزامية عند الرفض، وسبب الرفض يظهر للمُبلِّغ دائماً."
 
 msgid "Reset"
 msgstr "إعادة تعيين"
@@ -1256,9 +1238,6 @@ msgstr "الطريق مغلق"
 
 msgid "Road closure"
 msgstr "إغلاق طريق"
-
-msgid "Road illustration with nearby reports"
-msgstr "رسم توضيحي للطريق مع البلاغات القريبة"
 
 msgid "Road map"
 msgstr "خريطة الطريق"
@@ -1377,9 +1356,6 @@ msgstr "الوضع"
 msgid "Status"
 msgstr "الحالة"
 
-msgid "Status history"
-msgstr "سجل الحالات"
-
 msgid "Status updated."
 msgstr "تم تحديث الحالة."
 
@@ -1466,6 +1442,9 @@ msgstr "تعذّر تحميل الخريطة. استخدم «استخدم موق
 
 msgid "The note is empty."
 msgstr "الملاحظة فارغة."
+
+msgid "The other changes were saved."
+msgstr "تم حفظ بقية التغييرات."
 
 #, python-format
 msgid "The password of your account was changed on %(when)s."
@@ -1571,9 +1550,6 @@ msgstr "إعادة المحاولة"
 msgid "Type"
 msgstr "النوع"
 
-msgid "Under review"
-msgstr "قيد المراجعة"
-
 msgid "Unsupported file type. Allowed: JPG, PNG, WEBP, HEIC."
 msgstr "نوع الملف غير مدعوم. المسموح: JPG وPNG وWEBP وHEIC."
 
@@ -1607,6 +1583,12 @@ msgstr "تم إنشاء المستخدم."
 msgid "Users"
 msgstr "المستخدمون"
 
+msgid "Verified"
+msgstr "متحقق منه"
+
+msgid "Verified automatically: submitted by a staff account."
+msgstr "تم التحقق تلقائياً: البلاغ مُقدَّم من حساب موظف."
+
 msgid "Version"
 msgstr "الإصدار"
 
@@ -1624,6 +1606,10 @@ msgstr "معدل الوضوح (%)"
 
 msgid "Visible to reporter"
 msgstr "ظاهرة للمُبلِّغ"
+
+#, python-format
+msgid "Voice alerts at %(far)s and %(near)s. Keep the screen open. Works offline."
+msgstr "تنبيه صوتي عند %(far)s ثم %(near)s. أبقِ الشاشة مفتوحة. يعمل دون إنترنت."
 
 msgid "Waiting for GPS…"
 msgstr "بانتظار إشارة GPS…"
@@ -1742,24 +1728,14 @@ msgstr "حصلت على %(n)s نقطة لمساهمتك في بلاغ «%(title)
 msgid "You have been logged out."
 msgstr "تم تسجيل الخروج."
 
-#, python-format
-msgid "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
-msgstr "ستُنبَّه صوتياً بالعوائق المتحقق منها من الإدارة أمامك، عند %(far)s ثم عند %(near)s."
-
 msgid "Your account was created. Welcome!"
 msgstr "تم إنشاء حسابك. مرحباً بك!"
-
-msgid "Your approximate location on the road"
-msgstr "موقعك التقريبي على الطريق"
 
 msgid "Your current location was set"
 msgstr "تم تحديد موقعك الحالي"
 
 msgid "Your location could not be determined. Choose it manually."
 msgstr "تعذّر تحديد موقعك. اختره يدوياً."
-
-msgid "Your location is processed on this device only and is never stored on the server."
-msgstr "يُعالَج موقعك على هذا الجهاز فقط ولا يُخزَّن على الخادم إطلاقاً."
 
 msgid "Your message was sent. The support team will contact you."
 msgstr "تم إرسال رسالتك. سيتواصل معك فريق الدعم."
@@ -1783,17 +1759,18 @@ msgstr "لا تتم مشاركة بياناتك الشخصية مع أي جهة 
 msgid "Your report %(ref)s was received and will be reviewed."
 msgstr "تم استلام بلاغك %(ref)s وستتم مراجعته."
 
-msgid "Your report was accepted"
-msgstr "تم قبول بلاغك"
+#, python-format
+msgid "Your report %(ref)s was verified and published."
+msgstr "تم التحقق من بلاغك %(ref)s ونُشر."
 
 msgid "Your report was received"
 msgstr "تم استلام بلاغك"
 
+msgid "Your report was verified"
+msgstr "تم التحقق من بلاغك"
+
 msgid "Your rights"
 msgstr "حقوقك"
-
-msgid "by"
-msgstr "بواسطة"
 
 msgid "e.g. Deep pothole in the right lane"
 msgstr "مثال: حفرة عميقة في الحارة اليمنى"
@@ -1819,6 +1796,9 @@ msgstr "م"
 msgid "metres"
 msgstr "متر"
 
+msgid "now"
+msgstr "الآن"
+
 msgid "privacy policy"
 msgstr "سياسة الخصوصية"
 
@@ -1843,23 +1823,81 @@ msgstr "حتى"
 #~ msgid "To reset your password open this link (valid for 1 hour):"
 #~ msgstr "لإعادة تعيين كلمة المرور افتح هذا الرابط (صالح لمدة ساعة):"
 
-#, python-format
-msgid "Reports updated %(n)s h ago"
-msgstr "حُدّثت البلاغات قبل %(n)s س"
+#~ msgid "Allow location access to see nearby reports."
+#~ msgstr "اسمح بالوصول إلى موقعك لعرض البلاغات القريبة."
 
-#, python-format
-msgid "Reports updated %(n)s days ago"
-msgstr "حُدّثت البلاغات قبل %(n)s يوم"
+#~ msgid "Analytics"
+#~ msgstr "التحليلات"
 
-#, python-format
-msgid "No internet: using the %(n)s reports saved on this device."
-msgstr "لا يوجد اتصال بالإنترنت: تُستخدم البلاغات المحفوظة على هذا الجهاز (%(n)s)."
+#~ msgid "Assignment history"
+#~ msgstr "سجل الإسناد"
 
-msgid "No reports are saved on this device yet. Connect to the internet once to download them."
-msgstr "لا توجد بلاغات محفوظة على هذا الجهاز بعد. اتصل بالإنترنت مرة واحدة لتنزيلها."
+#~ msgid "Average response"
+#~ msgstr "متوسط الاستجابة"
 
-msgid "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
-msgstr "تُحفظ البلاغات المؤكدة ومناطق الخريطة التي تتصفحها على هذا الجهاز، فتستمر التنبيهات وعرض موقعك ومسارك دون اتصال بالإنترنت."
+#~ msgid "Choose a road section"
+#~ msgstr "اختر القاطع"
 
-msgid "Your location and route are processed on this device only and are never sent to the server."
-msgstr "يُعالَج موقعك ومسارك على هذا الجهاز فقط ولا يُرسَلان إلى الخادم إطلاقاً."
+#~ msgid "Internal note (staff only)"
+#~ msgstr "ملاحظة داخلية (للموظفين فقط)"
+
+#~ msgid "Keep this screen open during the trip: in this version alerts work only while the page is visible."
+#~ msgstr "أبقِ هذه الشاشة مفتوحة طوال الرحلة: في هذه النسخة تعمل التنبيهات فقط والصفحة ظاهرة."
+
+#~ msgid "Nearby reports"
+#~ msgstr "بلاغات قريبة"
+
+#~ msgid "No notes yet."
+#~ msgstr "لا توجد ملاحظات بعد."
+
+#~ msgid "Note to the reporter (visible)"
+#~ msgstr "ملاحظة للمُبلِّغ (ظاهرة له)"
+
+#~ msgid "Notes"
+#~ msgstr "الملاحظات"
+
+#~ msgid "Or choose a section…"
+#~ msgstr "أو اختر القاطع…"
+
+#~ msgid "Performance (last 30/90 days)"
+#~ msgstr "الأداء (آخر 30/90 يوماً)"
+
+#~ msgid "Radius of reports fetched around the driver (km, max 50)"
+#~ msgstr "نطاق جلب البلاغات حول السائق (كم، بحد أقصى 50)"
+
+#~ msgid "Report \"%(title)s\" is now under review."
+#~ msgstr "بلاغ «%(title)s» قيد المراجعة الآن."
+
+#~ msgid "Required when rejecting. Shown to the reporter."
+#~ msgstr "مطلوبة عند الرفض، وتظهر للمُبلِّغ."
+
+#~ msgid "Road illustration with nearby reports"
+#~ msgstr "رسم توضيحي للطريق مع البلاغات القريبة"
+
+#~ msgid "Status history"
+#~ msgstr "سجل الحالات"
+
+#~ msgid "Under review"
+#~ msgstr "قيد المراجعة"
+
+#~ msgid "You will be alerted by voice about hazards verified by the administration ahead of you, at %(far)s and again at %(near)s."
+#~ msgstr "ستُنبَّه صوتياً بالعوائق المتحقق منها من الإدارة أمامك، عند %(far)s ثم عند %(near)s."
+
+#~ msgid "Your approximate location on the road"
+#~ msgstr "موقعك التقريبي على الطريق"
+
+#~ msgid "Your location is processed on this device only and is never stored on the server."
+#~ msgstr "يُعالَج موقعك على هذا الجهاز فقط ولا يُخزَّن على الخادم إطلاقاً."
+
+#~ msgid "Your report was accepted"
+#~ msgstr "تم قبول بلاغك"
+
+#~ msgid "by"
+#~ msgstr "بواسطة"
+
+#~ msgid "Verified reports and the map areas you view are saved on this device, so alerts, your position and your route keep working without internet."
+#~ msgstr "تُحفظ البلاغات المؤكدة ومناطق الخريطة التي تتصفحها على هذا الجهاز، فتستمر التنبيهات وعرض موقعك ومسارك دون اتصال بالإنترنت."
+
+#~ msgid "Your location and route are processed on this device only and are never sent to the server."
+#~ msgstr "يُعالَج موقعك ومسارك على هذا الجهاز فقط ولا يُرسَلان إلى الخادم إطلاقاً."
+

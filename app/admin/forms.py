@@ -9,10 +9,14 @@ from wtforms.validators import DataRequired, Length, NumberRange, Optional
 from ..utils.validators import Phone, StrongPassword
 
 
+NOTE_VISIBILITY = [("internal", _l("Internal (staff only)")), ("public", _l("Official response (visible to reporter)"))]
+
+
 class StatusForm(FlaskForm):
+    """One note box + its visibility (it used to be two boxes: public and internal)."""
     to_status = SelectField(_l("New status"), validators=[DataRequired()])
-    public_note = TextAreaField(_l("Note to the reporter (visible)"), validators=[Optional(), Length(max=1000)])
-    internal_note = TextAreaField(_l("Internal note (staff only)"), validators=[Optional(), Length(max=2000)])
+    note = TextAreaField(_l("Note"), validators=[Optional(), Length(max=2000)])
+    visibility = SelectField(_l("Visibility"), choices=NOTE_VISIBILITY, default="internal")
 
 
 class AssignForm(FlaskForm):
@@ -23,8 +27,7 @@ class AssignForm(FlaskForm):
 
 class NoteForm(FlaskForm):
     body = TextAreaField(_l("Note"), validators=[DataRequired(), Length(max=5000)])
-    visibility = SelectField(_l("Visibility"), choices=[("internal", _l("Internal (staff only)")),
-                                                        ("public", _l("Official response (visible to reporter)"))])
+    visibility = SelectField(_l("Visibility"), choices=NOTE_VISIBILITY, default="internal")
 
 
 class UserForm(FlaskForm):

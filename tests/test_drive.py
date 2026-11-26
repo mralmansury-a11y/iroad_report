@@ -123,7 +123,7 @@ class TestDriveSettings:
         set_setting("drive_alert_statuses", '["resolved", "bogus", "assigned", "assigned"]')
         db.session.commit()
         c = drive_config()
-        assert c.far_m == 5000 and c.cone_deg == 90 and c.fetch_radius_km == 50
+        assert c.far_m == 5000 and c.cone_deg == 90 and c.fetch_radius_km == 200
         assert c.near_m < c.far_m
         assert c.alert_statuses == ("assigned",)  # final/unknown statuses can never trigger alerts
 
@@ -137,7 +137,7 @@ class TestDriveSettings:
                                         "drive_alert_statuses": ["assigned"]}) == []
         assert validate_drive_settings({"drive_alert_far_m": "500", "drive_alert_near_m": "500"}) == \
             ["drive_alert_far_m", "drive_alert_near_m"]
-        assert set(validate_drive_settings({"drive_cone_deg": "0", "drive_refresh_s": "x", "drive_fetch_radius_km": "51"})) == \
+        assert set(validate_drive_settings({"drive_cone_deg": "0", "drive_refresh_s": "x", "drive_fetch_radius_km": "201"})) == \
             {"drive_cone_deg", "drive_refresh_s", "drive_fetch_radius_km"}
         assert validate_drive_settings({"drive_alert_statuses": []}) == ["drive_alert_statuses"]
         assert validate_drive_settings({"drive_alert_statuses": ["resolved"]}) == ["drive_alert_statuses"]
@@ -212,11 +212,15 @@ class TestNearbyApi:
         assert refs(nearby(client, lat=SABHA[0], lng=SABHA[1], radius_km=45)) == [r10.reference, r40.reference]
         assert refs(nearby(client, lat=SABHA[0], lng=SABHA[1], radius_km=9.9)) == []
 
-    def test_radius_is_capped_at_50_km(self, client):
-        r40 = make_report(*north_of(SABHA, 40))
-        make_report(*north_of(SABHA, 60))
+    def test_radius_is_capped_at_200_km(self, client):
+        r150 = make_report(*north_of(SABHA, 150))
+        make_report(*north_of(SABHA, 250))
         body = nearby(client, lat=SABHA[0], lng=SABHA[1], radius_km=500).get_json()["data"]
-        assert body["radius_km"] == 50 and [i["reference"] for i in body["items"]] == [r40.reference]
+        assert body["radius_km"] == 200 and [i["reference"] for i in body["items"]] == [r150.reference]
+
+    def test_radius_up_to_200_km_is_accepted_in_settings(self):
+        assert validate_drive_settings({"drive_fetch_radius_km": "200"}) == []
+        assert validate_drive_settings({"drive_fetch_radius_km": "201"}) == ["drive_fetch_radius_km"]
 
     def test_default_radius_comes_from_settings(self, client):
         make_report(*north_of(SABHA, 10))
@@ -520,11 +524,11 @@ class TestAdminDriveSettings:
     def test_reject_invalid(self, client, users):
         login(client, "admin@example.ly")
         client.post("/admin/settings", data=self._form(drive_alert_far_m="400", drive_alert_near_m="450",
-                                                     drive_fetch_radius_km="80", drive_alert_statuses=[]))
+                                                     drive_fetch_radius_km="250", drive_alert_statuses=[]))
         c = drive_config()
         assert (c.far_m, c.near_m, c.fetch_radius_km, c.alert_statuses) == (5000, 500, 30, ("assigned", "in_progress"))
         # a valid value submitted together with invalid ones is still saved
-        client.post("/admin/settings", data=self._form(drive_cone_deg="25", drive_fetch_radius_km="80"))
+        client.post("/admin/settings", data=self._form(drive_cone_deg="25", drive_fetch_radius_km="250"))
         assert drive_config().cone_deg == 25 and drive_config().fetch_radius_km == 30
 
     def test_partial_save_is_not_reported_as_success(self, client, users):
@@ -573,7 +577,7 @@ def test_migration_upgrade_downgrade(tmp_path, monkeypatch):
         upgrade(directory=mig_dir)
         assert "ix_reports_lat_lng" in indexes()
         with engine.connect() as conn:
-            assert conn.execute(sa.text("SELECT version_num FROM alembic_version")).scalar() == "a3d9c2e41f07"
+            assert conn.execute(sa.text("SELECT version_num FROM alembic_version")).scalar() == "c5e8a1d4b7f2"
         engine.dispose()
 
 
@@ -585,7 +589,7 @@ def test_model_declares_the_index():
 def test_mariadb_schema_script_in_sync():
     sql = (ROOT / "deploy" / "sql" / "schema_mariadb.sql").read_text(encoding="utf-8")
     assert "CREATE INDEX ix_reports_lat_lng ON reports (latitude, longitude);" in sql
-    assert "VALUES ('a3d9c2e41f07')" in sql
+    assert "VALUES ('c5e8a1d4b7f2')" in sql
 
 
 # ------------------------------------------------------------------ JavaScript engine (Node built-in test runner)

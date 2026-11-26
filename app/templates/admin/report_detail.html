@@ -37,25 +37,29 @@
       {% if report.latitude is not none %}<div id="reportMap" class="ir-map-sm mt-3" data-lat="{{ report.latitude }}" data-lng="{{ report.longitude }}" data-tiles="{{ config.MAP_TILE_URL }}"></div>{% endif %}
     </div>
 
+    {#- One chronological activity log: status changes, assignments and notes, each text shown once. -#}
     <div class="ir-card ir-card-pad" id="notes">
-      <h3 class="fs-6 fw-bold">{{ _("Status history") }}</h3>
+      <h3 class="fs-6 fw-bold">{{ _("Activity log") }}</h3>
       <ol class="ir-timeline">
-        {% for h in report.history %}
-        <li><strong>{{ status_label(h.to_status) }}</strong> <span class="small ir-muted">· {{ h.created_at|dt('short') }} · {{ h.changed_by.full_name if h.changed_by else _("System / reporter") }}</span>
-          {% if h.public_note %}<div class="small"><i class="bi bi-eye"></i> {{ h.public_note }}</div>{% endif %}
-          {% if h.internal_note %}<div class="small ir-muted"><i class="bi bi-lock"></i> {{ h.internal_note }}</div>{% endif %}</li>
+        {% for it in activity %}
+        <li>
+          {% if it.kind == 'status' %}
+            <strong>{{ status_label(it.obj.to_status) if it.obj.from_status_id else _("Report submitted") }}</strong>
+          {% elif it.kind == 'assign' %}
+            <strong><i class="bi bi-person-check"></i> {{ _("Assigned to") }} {{ it.obj.assignee.full_name if it.obj.assignee else '' }}{% if it.obj.team %} ({{ it.obj.team.tr('name') }}){% endif %}</strong>
+            {% if it.obj.is_active %}<span class="ir-badge tone-assigned">{{ _("Active") }}</span>{% elif it.obj.completed_at %}<span class="ir-badge tone-done">{{ _("Completed") }}</span>{% endif %}
+          {% else %}
+            <strong><i class="bi bi-chat-left-text"></i> {{ _("Note") }}</strong>
+          {% endif %}
+          <span class="small ir-muted">· {{ it.at|dt('short') }} · {{ it.actor.full_name if it.actor else _("System / reporter") }}</span>
+          {% for text, internal in it.notes %}
+            <div class="small {{ 'ir-muted' if internal }}" dir="auto"><i class="bi {{ 'bi-lock' if internal else 'bi-eye' }}" title="{{ _('Internal') if internal else _('Visible to reporter') }}"></i> {{ text }}</div>
+          {% endfor %}
+        </li>
         {% endfor %}
       </ol>
-      <h3 class="fs-6 fw-bold mt-3">{{ _("Notes") }}</h3>
-      {% for n in report.notes %}
-        <div class="border rounded-3 p-2 mb-2 small" style="border-color:var(--ir-border)!important">
-          <div class="ir-muted">{{ n.author.full_name if n.author else '' }} · {{ n.created_at|dt('short') }} ·
-            {% if n.is_internal %}<i class="bi bi-lock"></i> {{ _("Internal") }}{% else %}<i class="bi bi-eye"></i> {{ _("Visible to reporter") }}{% endif %}</div>
-          <div dir="auto">{{ n.body }}</div>
-        </div>
-      {% else %}<p class="small ir-muted">{{ _("No notes yet.") }}</p>{% endfor %}
       {% if current_user.can('reports.internal_notes') %}
-      <form method="post" action="{{ url_for('admin.report_note', report_id=report.id) }}" class="ir-form" novalidate>
+      <form method="post" action="{{ url_for('admin.report_note', report_id=report.id) }}" class="ir-form mt-3" novalidate>
         {{ note_form.csrf_token }}
         {{ field(note_form.body, rows=3) }}
         <div class="d-flex gap-2 align-items-end">{{ field(note_form.visibility, cls="flex-fill mb-0") }}<button class="btn btn-outline-light" type="submit">{{ _("Add note") }}</button></div>
@@ -71,8 +75,8 @@
       <form method="post" action="{{ url_for('admin.report_status', report_id=report.id) }}" class="ir-form" novalidate>
         {{ status_form.csrf_token }}
         {{ field(status_form.to_status) }}
-        {{ field(status_form.public_note, rows=2, help=_("Required when rejecting. Shown to the reporter.")) }}
-        {{ field(status_form.internal_note, rows=2) }}
+        {{ field(status_form.note, rows=2, help=_("Required when rejecting; a rejection reason is always shown to the reporter.")) }}
+        {{ field(status_form.visibility) }}
         <button class="btn btn-primary w-100" type="submit">{{ _("Update status") }}</button>
       </form>
     </div>
@@ -87,19 +91,6 @@
         {{ field(assign_form.note, rows=2) }}
         <button class="btn btn-primary w-100" type="submit">{{ _("Assign") }}</button>
       </form>
-    </div>
-    {% endif %}
-    {% if report.assignments %}
-    <div class="ir-card ir-card-pad">
-      <h3 class="fs-6 fw-bold">{{ _("Assignment history") }}</h3>
-      <ul class="list-unstyled small mb-0">
-        {% for a in report.assignments|reverse %}
-        <li class="py-1 border-bottom" style="border-color:var(--ir-border)!important">{{ a.assignee.full_name if a.assignee else '' }} {% if a.team %}({{ a.team.tr('name') }}){% endif %}
-          <span class="ir-muted">· {{ a.assigned_at|dt('short') }} · {{ _("by") }} {{ a.assigned_by.full_name if a.assigned_by else '' }}</span>
-          {% if a.is_active %}<span class="ir-badge tone-assigned">{{ _("Active") }}</span>{% elif a.completed_at %}<span class="ir-badge tone-done">{{ _("Completed") }}</span>{% endif %}
-          {% if a.note %}<div>{{ a.note }}</div>{% endif %}</li>
-        {% endfor %}
-      </ul>
     </div>
     {% endif %}
   </div>

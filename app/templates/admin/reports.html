@@ -1,10 +1,12 @@
 {% extends "admin/base_admin.html" %}
 {% from "_macros.html" import status_badge, pager, empty %}
-{% block admin_title %}{{ _("Reports") }}{% endblock %}
+{% block admin_title %}{{ _("My assignments") if request.args.get('mine') == '1' else _("Reports") }}{% endblock %}
 {% block admin_content %}
 {% set a = request.args %}
-{% set active_filters = [] %}{% for k, v in a.items() if v and k not in ('page', 'sort') %}{% set _ = active_filters.append(k) %}{% endfor %}
+{% set mine = a.get('mine') == '1' %}
+{% set active_filters = a.items() | selectattr(1) | map(attribute=0) | reject('in', ('page', 'sort', 'mine')) | list %}
 <form method="get" class="ir-card ir-card-pad ad-filters mb-3">
+  {% if mine %}<input type="hidden" name="mine" value="1">{% endif %}
   <button type="button" class="btn btn-outline-light btn-sm w-100 ad-filters-toggle justify-content-center gap-2" data-filters-toggle aria-controls="adFiltersBody" aria-expanded="false">
     <i class="bi bi-funnel"></i> {{ _("Search and filter") }}{% if active_filters %} <span class="ir-badge tone-assigned num">{{ active_filters|length }}</span>{% endif %}</button>
   <div class="row g-2 align-items-end ad-filters-body" id="adFiltersBody" data-active="{{ 1 if active_filters else 0 }}">
@@ -25,7 +27,7 @@
   <div class="col-6 col-md-2"><label class="form-label small" for="fso">{{ _("Sort") }}</label>
     <select id="fso" class="form-select" name="sort"><option value="">{{ _("Newest first") }}</option><option value="oldest" {{ 'selected' if a.get('sort') == 'oldest' }}>{{ _("Oldest first") }}</option></select></div>
   <div class="col-12 col-md-2 d-flex gap-2"><button class="btn btn-primary flex-fill" type="submit"><i class="bi bi-funnel"></i> {{ _("Filter") }}</button>
-    <a class="btn btn-outline-light" href="{{ url_for('admin.reports') }}" aria-label="{{ _('Reset') }}"><i class="bi bi-x-lg"></i></a></div>
+    <a class="btn btn-outline-light" href="{{ url_for('admin.reports', mine=1) if mine else url_for('admin.reports') }}" aria-label="{{ _('Reset') }}"><i class="bi bi-x-lg"></i></a></div>
   </div>
 </form>
 <div class="ir-card">

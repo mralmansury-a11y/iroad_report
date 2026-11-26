@@ -1,4 +1,5 @@
-/* Analytics charts (Chart.js) with bilingual labels supplied by the server. */
+/* Dashboard charts (Chart.js) with bilingual labels supplied by the server.
+ * A chart whose canvas is not on the page is skipped (employees see the status chart only). */
 (function () {
   "use strict";
   const el = document.getElementById("chartData");
@@ -15,7 +16,8 @@
   const tooltip = { rtl, textDirection: rtl ? "rtl" : "ltr" };
   const PALETTE = ["#c0392b", "#e2a73e", "#2f5f86", "#5a4a99", "#0e6e76", "#8a867e"];
 
-  new Chart(document.getElementById("chTime"), {
+  const canvas = (id) => document.getElementById(id);
+  if (canvas("chTime")) new Chart(canvas("chTime"), {
     type: "line",
     data: { labels: d.months, datasets: [
       { label: window.IR.t("reports"), data: d.created, borderColor: "#34668e", backgroundColor: "rgba(52,102,142,.2)", tension: 0.3, fill: true },
@@ -23,12 +25,12 @@
     ] },
     options: { maintainAspectRatio: false, plugins: { legend, tooltip }, scales: { x: { reverse: rtl }, y: { beginAtZero: true, ticks: { precision: 0 } } } },
   });
-  new Chart(document.getElementById("chStatus"), {
+  if (canvas("chStatus")) new Chart(canvas("chStatus"), {
     type: "doughnut",
     data: { labels: d.statusLabels, datasets: [{ data: d.statusValues, backgroundColor: PALETTE, borderWidth: 0 }] },
     options: { maintainAspectRatio: false, plugins: { legend, tooltip } },
   });
-  const bar = (id, labels, values, color) => new Chart(document.getElementById(id), {
+  const bar = (id, labels, values, color) => canvas(id) && new Chart(canvas(id), {
     type: "bar",
     data: { labels, datasets: [{ data: values, backgroundColor: color, borderRadius: 6 }] },
     options: { indexAxis: "y", maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip },

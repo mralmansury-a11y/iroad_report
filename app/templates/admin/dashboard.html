@@ -1,49 +1,79 @@
 {% extends "admin/base_admin.html" %}
 {% from "_macros.html" import status_badge, empty %}
+{#- Single control-panel home in the analytics layout (the separate Analytics page was merged here).
+    full = analytics.view: national statistics and charts; otherwise the same layout for the user's own reports. -#}
 {% block admin_title %}{{ _("Dashboard") }}{% endblock %}
 {% block admin_content %}
-{% set tiles = [('total', _('Total reports'), '#34668e'), ('new', _('New'), '#c0392b'), ('under_review', _('Under review'), '#e2a73e'),
-                ('assigned', _('Assigned'), '#2f5f86'), ('in_progress', _('In progress'), '#5a4a99'), ('resolved', _('Resolved'), '#0e6e76'), ('rejected', _('Rejected'), '#8a867e')] %}
-<div class="ad-kpis mb-4">
-  {% for key, label, color in tiles %}
-  <a class="ad-kpi" href="{{ url_for('admin.reports', status=(key if key != 'total' else None)) }}">
-    <span class="v num">{{ counts[key] }}</span><span class="l">{{ label }}</span>
-    <div class="bar" style="background:{{ color }}"></div>
-  </a>
-  {% endfor %}
+<script type="application/json" id="chartData">{{ {
+  "months": months or [], "created": created or [], "resolved": resolved or [],
+  "statusLabels": [_("New"), _("Verified"), _("Assigned"), _("In progress"), _("Resolved"), _("Rejected")],
+  "statusValues": [counts.new, counts.under_review, counts.assigned, counts.in_progress, counts.resolved, counts.rejected],
+  "catLabels": (by_category or []) | map(attribute=0) | list, "catValues": (by_category or []) | map(attribute=1) | list,
+  "secLabels": (by_section or []) | map(attribute=0) | list, "secValues": (by_section or []) | map(attribute=1) | list,
+  "lang": lang
+} | tojson }}</script>
+
+{% if unassigned_high or new_messages %}
+<div class="row g-2 mb-3">
+  {% if unassigned_high %}
+  <div class="col-lg-8"><div class="ir-card ir-card-pad h-100">
+    <h2 class="fs-6 fw-bold text-danger mb-2"><i class="bi bi-exclamation-triangle"></i> {{ _("Serious reports awaiting action") }}</h2>
+    <ul class="list-unstyled mb-0 small">{% for r in unassigned_high %}<li class="py-1"><a href="{{ url_for('admin.report_detail', report_id=r.id) }}">{{ r.title }}</a> <span class="ir-muted num">· {{ r.km_marker|km }} · {{ r.created_at|reltime }}</span></li>{% endfor %}</ul>
+  </div></div>
+  {% endif %}
+  {% if new_messages %}
+  <div class="col-lg-4"><a class="ir-card ir-card-pad d-block h-100 text-decoration-none text-reset" href="{{ url_for('admin.messages', status='new') }}">
+    <i class="bi bi-chat-left-text"></i> {{ _("New support messages") }}: <strong class="num">{{ new_messages }}</strong></a></div>
+  {% endif %}
 </div>
+{% endif %}
+
+<div class="row g-3 mb-3">
+  <div class="col-6 col-md-3"><a class="ad-kpi text-decoration-none" href="{{ url_for('admin.reports', mine=None if full else 1) }}"><span class="v num">{{ counts.total }}</span><span class="l">{{ _("Total reports") if full else _("My assignments") }}</span></a></div>
+  <div class="col-6 col-md-3"><a class="ad-kpi text-decoration-none" href="{{ url_for('admin.reports', status='new', mine=None if full else 1) }}"><span class="v num">{{ counts.new }}</span><span class="l">{{ _("New") }}</span></a></div>
+  {% if full %}
+  <div class="col-6 col-md-3"><div class="ad-kpi"><span class="v num">{{ avg_response|hours }}</span><span class="l">{{ _("Average response time") }}</span></div></div>
+  <div class="col-6 col-md-3"><div class="ad-kpi"><span class="v num">{{ avg_resolution|hours }}</span><span class="l">{{ _("Average resolution time") }}</span></div></div>
+  {% else %}
+  <div class="col-6 col-md-3"><a class="ad-kpi text-decoration-none" href="{{ url_for('admin.reports', mine=1, status='in_progress') }}"><span class="v num">{{ counts.assigned + counts.in_progress }}</span><span class="l">{{ _("Open assignments") }}</span></a></div>
+  <div class="col-6 col-md-3"><a class="ad-kpi text-decoration-none" href="{{ url_for('admin.reports', mine=1, status='resolved') }}"><span class="v num">{{ counts.resolved }}</span><span class="l">{{ _("Resolved") }}</span></a></div>
+  {% endif %}
+</div>
+{% if full and counts.total < min_samples %}<div class="alert alert-info ir-alert">{{ _("Not enough data yet for meaningful statistics. Charts will become useful as reports accumulate.") }}</div>{% endif %}
+
 <div class="row g-3">
-  <div class="col-lg-8">
-    <div class="ir-card ir-card-pad">
-      <div class="d-flex justify-content-between align-items-center mb-2"><h2 class="fs-6 fw-bold m-0">{{ _("Latest reports") }}</h2>
-        <a class="small" href="{{ url_for('admin.reports') }}">{{ _("View all") }}</a></div>
-      <div class="table-responsive"><table class="table table-hover mb-0">
-        <thead><tr><th>{{ _("Reference") }}</th><th>{{ _("Title") }}</th><th>{{ _("Location") }}</th><th>{{ _("Severity") }}</th><th>{{ _("Status") }}</th><th>{{ _("Time") }}</th></tr></thead>
-        <tbody>
-        {% for r in recent %}
-          <tr><td class="num ltr"><a href="{{ url_for('admin.report_detail', report_id=r.id) }}">{{ r.reference }}</a></td><td>{{ r.title }}</td>
-            <td class="num">{{ r.km_marker|km }}</td><td><i class="bi bi-circle-fill sev-{{ r.severity }}" style="font-size:8px"></i> {{ severity_label(r.severity) }}</td>
-            <td>{{ status_badge(r.status) }}</td><td class="small ir-muted">{{ r.created_at|reltime }}</td></tr>
-        {% else %}<tr><td colspan="6">{{ empty('bi-clipboard', _("No reports yet.")) }}</td></tr>{% endfor %}
-        </tbody></table></div>
-    </div>
-  </div>
-  <div class="col-lg-4">
-    <div class="ir-card ir-card-pad mb-3">
-      <h2 class="fs-6 fw-bold">{{ _("Performance (last 30/90 days)") }}</h2>
-      <div class="d-flex justify-content-between py-2 border-bottom"><span>{{ _("Average response time") }}</span><strong class="num">{{ avg_response|hours }}</strong></div>
-      <div class="d-flex justify-content-between py-2"><span>{{ _("Average resolution time") }}</span><strong class="num">{{ avg_resolution|hours }}</strong></div>
-      {% if avg_response is none %}<div class="small ir-muted">{{ _("Not enough data yet") }}</div>{% endif %}
-    </div>
-    {% if unassigned_high %}
-    <div class="ir-card ir-card-pad mb-3">
-      <h2 class="fs-6 fw-bold text-danger"><i class="bi bi-exclamation-triangle"></i> {{ _("Serious reports awaiting action") }}</h2>
-      <ul class="list-unstyled mb-0">{% for r in unassigned_high %}<li class="py-1"><a href="{{ url_for('admin.report_detail', report_id=r.id) }}">{{ r.title }}</a> <span class="small ir-muted num">· {{ r.km_marker|km }} · {{ r.created_at|reltime }}</span></li>{% endfor %}</ul>
-    </div>
-    {% endif %}
-    {% if new_messages %}
-    <a class="ir-card ir-card-pad d-block text-decoration-none text-reset" href="{{ url_for('admin.messages', status='new') }}"><i class="bi bi-chat-left-text"></i> {{ _("New support messages") }}: <strong class="num">{{ new_messages }}</strong></a>
-    {% endif %}
-  </div>
+  {% if full %}
+  <div class="col-lg-8"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports over time (12 months)") }}</h2><div class="ad-chart"><canvas id="chTime" aria-label="{{ _('Reports over time (12 months)') }}" role="img"></canvas></div></div></div>
+  {% endif %}
+  <div class="col-lg-4"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports by status") }}</h2><div class="ad-chart"><canvas id="chStatus" role="img" aria-label="{{ _('Reports by status') }}"></canvas></div></div></div>
+  {% if full %}
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports by category") }}</h2><div class="ad-chart"><canvas id="chCat" role="img" aria-label="{{ _('Reports by category') }}"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Reports by road section") }}</h2><div class="ad-chart"><canvas id="chSec" role="img" aria-label="{{ _('Reports by road section') }}"></canvas></div></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Yearly summary") }}</h2>
+    <table class="table mb-0"><thead><tr><th>{{ _("Year") }}</th><th>{{ _("Received") }}</th><th>{{ _("Resolved") }}</th></tr></thead>
+    <tbody>{% for y, v in yearly.items() %}<tr><td class="num">{{ y }}</td><td class="num">{{ v.created }}</td><td class="num">{{ v.resolved }}</td></tr>{% else %}<tr><td colspan="3" class="ir-muted">—</td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-lg-6"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Employee workload") }}</h2>
+    <table class="table mb-0"><thead><tr><th>{{ _("Employee") }}</th><th>{{ _("Open assignments") }}</th><th>{{ _("Completed") }}</th></tr></thead>
+    <tbody>{% for w in workload %}<tr><td>{{ w.user.full_name }}</td><td class="num">{{ w.active }}</td><td class="num">{{ w.done }}</td></tr>{% else %}<tr><td colspan="3" class="ir-muted">—</td></tr>{% endfor %}</tbody></table></div></div>
+  <div class="col-12"><div class="ir-card ir-card-pad"><h2 class="fs-6 fw-bold">{{ _("Monthly summary") }}</h2>
+    <div class="table-responsive"><table class="table mb-0 no-stack"><thead><tr><th>{{ _("Month") }}</th>{% for m in months %}<th class="num">{{ m }}</th>{% endfor %}</tr></thead>
+    <tbody><tr><td>{{ _("Received") }}</td>{% for v in created %}<td class="num">{{ v }}</td>{% endfor %}</tr><tr><td>{{ _("Resolved") }}</td>{% for v in resolved %}<td class="num">{{ v }}</td>{% endfor %}</tr></tbody></table></div></div></div>
+  {% else %}
+  <div class="col-lg-8"><div class="ir-card ir-card-pad">
+    <div class="d-flex justify-content-between align-items-center mb-2"><h2 class="fs-6 fw-bold m-0">{{ _("Latest reports") }}</h2>
+      <a class="small" href="{{ url_for('admin.reports', mine=1) }}">{{ _("View all") }}</a></div>
+    <div class="table-responsive"><table class="table table-hover mb-0">
+      <thead><tr><th>{{ _("Reference") }}</th><th>{{ _("Title") }}</th><th>{{ _("Location") }}</th><th>{{ _("Status") }}</th></tr></thead>
+      <tbody>{% for r in recent %}
+        <tr><td class="num ltr"><a href="{{ url_for('admin.report_detail', report_id=r.id) }}">{{ r.reference }}</a></td><td>{{ r.title }}</td>
+          <td class="num">{{ r.km_marker|km }}</td><td>{{ status_badge(r.status) }}</td></tr>
+      {% else %}<tr><td colspan="4">{{ empty('bi-clipboard', _("No reports yet.")) }}</td></tr>{% endfor %}</tbody></table></div>
+  </div></div>
+  {% endif %}
 </div>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='vendor/chartjs/chart.umd.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}" defer></script>
+<script src="{{ url_for('static', filename='js/analytics.js') }}" defer></script>
 {% endblock %}

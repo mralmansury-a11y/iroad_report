@@ -12,7 +12,7 @@ from ..models import Report, ReportStatus
 from .geo import LIBYA_BBOX, bounding_box, haversine_km
 from .settings import DEFAULT_SETTINGS, get_setting
 
-MAX_FETCH_RADIUS_KM = 50
+MAX_FETCH_RADIUS_KM = 200  # km; a larger circle only lengthens the "upcoming" list, alerts stay at far_m
 MAX_NEARBY_ITEMS = 300
 # Upper bound of the full list a device downloads and keeps for offline use (GET /reports/alertable).
 MAX_OFFLINE_ITEMS = 3000

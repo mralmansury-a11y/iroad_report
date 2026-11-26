@@ -13,7 +13,10 @@ from ..models import (
 )
 from ..services.drive import MAX_FETCH_RADIUS_KM, alertable_reports, drive_config, nearby_alertable_reports
 from ..services.geo import is_in_libya, km_from_coordinates, road_polyline, section_for_km, valid_coordinates
-from ..services.reports import ReportInput, WorkflowError, can_view_report, create_report
+from ..services.reports import (
+    ReportInput, WorkflowError, can_view_report, create_report, is_staff_only, is_staff_viewer,
+    public_reports_condition,
+)
 from ..services.settings import get_setting
 from ..services.stats import home_metrics, nearby_markers
 from ..services.uploads import UploadError
@@ -147,8 +150,8 @@ def list_reports():
         if not current_user.is_authenticated:
             return err("unauthorized", _("Login required."), 401)
         q = q.where(Report.reporter_id == current_user.id)
-    else:
-        q = q.join(ReportStatus).where(ReportStatus.code != ReportStatus.REJECTED)
+    if request.args.get("mine") != "1" or not is_staff_viewer(current_user):
+        q = q.where(public_reports_condition())
     st = request.args.get("status")
     if st in ReportStatus.ALL:
         q = q.where(Report.status.has(code=st))
@@ -254,7 +257,7 @@ def get_report(reference):
     if r is None:
         return err("not_found", _("Not found."), 404)
     data = report_public(r)
-    tracked = r.reporter_id is None and reference in session.get("tracked_reports", [])
+    tracked = r.reporter_id is None and reference in session.get("tracked_reports", []) and not is_staff_only(r)
     if (current_user.is_authenticated and can_view_report(current_user, r)) or tracked:
         data.update({
             "description": r.description,
@@ -265,7 +268,7 @@ def get_report(reference):
                          "note": h.public_note, "at": h.created_at.isoformat() + "Z"} for h in r.history],
             "responses": [{"body": n.body, "at": n.created_at.isoformat() + "Z"} for n in r.notes if not n.is_internal],
         })
-    elif r.status_code == ReportStatus.REJECTED:
+    elif is_staff_only(r):
         return err("not_found", _("Not found."), 404)
     return ok(data)
 

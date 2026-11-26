@@ -152,12 +152,10 @@ def test_invalid_transition_rejected(app, users):
     rep = _new_report(citizen)
     sup = app.test_client()
     login(sup, "0921000003")
-    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "resolved"})  # new → resolved not allowed
-    db.session.refresh(rep)
-    assert rep.status.code == "new"
-    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "rejected"})  # missing reason
-    db.session.refresh(rep)
-    assert rep.status.code == "new"
+    for code in ("resolved", "in_progress", "assigned"):  # reviewers choose only new / verified / false
+        sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": code})
+        db.session.refresh(rep)
+        assert rep.status.code == "new"
 
 
 def test_employee_cannot_touch_unassigned(app, users):

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-26 02:10+0200\n"
+"POT-Creation-Date: 2026-11-26 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: ar\n"
@@ -422,6 +422,9 @@ msgstr "أدخل رقم هاتفك لتتمكن من متابعة البلاغ."
 
 msgid "Expected congestion"
 msgstr "ازدحام متوقع"
+
+msgid "False report"
+msgstr "زائف"
 
 msgid "Filter"
 msgstr "تصفية"
@@ -997,9 +1000,6 @@ msgstr "تشغيل صوت عند وصول إشعار"
 msgid "Please correct the highlighted fields."
 msgstr "يرجى تصحيح الحقول المحددة."
 
-msgid "Please give the reporter a reason for rejection."
-msgstr "يرجى توضيح سبب الرفض للمُبلِّغ."
-
 msgid "Points and rewards"
 msgstr "النقاط والمكافآت"
 
@@ -1087,9 +1087,6 @@ msgstr "مستخدم مسجّل"
 msgid "Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured."
 msgstr "يستلم المستخدمون المسجّلون الرد كإشعار، وتستلمه عناوين البريد الإلكتروني بالبريد عند إعداد خادم SMTP."
 
-msgid "Rejected"
-msgstr "مرفوض"
-
 msgid "Remember me"
 msgstr "تذكرني"
 
@@ -1112,10 +1109,6 @@ msgstr "تم إصلاح «%(title)s». شكراً لمساهمتك."
 #, python-format
 msgid "Report \"%(title)s\" is now: %(status)s"
 msgstr "حالة بلاغ «%(title)s» الآن: %(status)s"
-
-#, python-format
-msgid "Report \"%(title)s\" was rejected."
-msgstr "تم رفض بلاغ «%(title)s»."
 
 #, python-format
 msgid "Report \"%(title)s\" was verified by the road team."
@@ -1142,9 +1135,6 @@ msgstr "تم استلام البلاغ"
 
 msgid "Report reference number"
 msgstr "الرقم المرجعي للبلاغ"
-
-msgid "Report rejected"
-msgstr "تم رفض البلاغ"
 
 msgid "Report resolved"
 msgstr "تم إصلاح العطل"
@@ -1208,9 +1198,6 @@ msgstr "حُدّثت البلاغات قبل %(n)s د"
 
 msgid "Reports updated just now"
 msgstr "حُدّثت البلاغات الآن"
-
-msgid "Required when rejecting; a rejection reason is always shown to the reporter."
-msgstr "إلزامية عند الرفض، وسبب الرفض يظهر للمُبلِّغ دائماً."
 
 msgid "Reset"
 msgstr "إعادة تعيين"
@@ -1900,4 +1887,19 @@ msgstr "حتى"
 
 #~ msgid "Your location and route are processed on this device only and are never sent to the server."
 #~ msgstr "يُعالَج موقعك ومسارك على هذا الجهاز فقط ولا يُرسَلان إلى الخادم إطلاقاً."
+
+#~ msgid "Please give the reporter a reason for rejection."
+#~ msgstr "يرجى توضيح سبب الرفض للمُبلِّغ."
+
+#~ msgid "Rejected"
+#~ msgstr "مرفوض"
+
+#~ msgid "Report \"%(title)s\" was rejected."
+#~ msgstr "تم رفض بلاغ «%(title)s»."
+
+#~ msgid "Report rejected"
+#~ msgstr "تم رفض البلاغ"
+
+#~ msgid "Required when rejecting; a rejection reason is always shown to the reporter."
+#~ msgstr "إلزامية عند الرفض، وسبب الرفض يظهر للمُبلِّغ دائماً."
 

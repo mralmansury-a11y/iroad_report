@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-26 02:10+0200\n"
+"POT-Creation-Date: 2026-11-26 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -433,6 +433,9 @@ msgid "Enter your phone number so you can follow up the report."
 msgstr ""
 
 msgid "Expected congestion"
+msgstr ""
+
+msgid "False report"
 msgstr ""
 
 msgid "Filter"
@@ -1033,9 +1036,6 @@ msgstr ""
 msgid "Please correct the highlighted fields."
 msgstr ""
 
-msgid "Please give the reporter a reason for rejection."
-msgstr ""
-
 msgid "Points and rewards"
 msgstr ""
 
@@ -1129,9 +1129,6 @@ msgid ""
 "receive it by e-mail when SMTP is configured."
 msgstr ""
 
-msgid "Rejected"
-msgstr ""
-
 msgid "Remember me"
 msgstr ""
 
@@ -1153,10 +1150,6 @@ msgstr ""
 
 #, python-format
 msgid "Report \"%(title)s\" is now: %(status)s"
-msgstr ""
-
-#, python-format
-msgid "Report \"%(title)s\" was rejected."
 msgstr ""
 
 #, python-format
@@ -1183,9 +1176,6 @@ msgid "Report received"
 msgstr ""
 
 msgid "Report reference number"
-msgstr ""
-
-msgid "Report rejected"
 msgstr ""
 
 msgid "Report resolved"
@@ -1253,11 +1243,6 @@ msgid "Reports updated %(n)s min ago"
 msgstr ""
 
 msgid "Reports updated just now"
-msgstr ""
-
-msgid ""
-"Required when rejecting; a rejection reason is always shown to the "
-"reporter."
 msgstr ""
 
 msgid "Reset"

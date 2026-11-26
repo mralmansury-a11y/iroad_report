@@ -14,6 +14,7 @@ from ..models import Announcement, ContactMessage, Report, RoadSection, User, ut
 from ..services.audit import audit
 from ..services.drive import drive_config
 from ..services.notify import get_prefs
+from ..services.reports import public_reports_condition
 from ..services.settings import get_setting
 from ..services.stats import user_contribution
 from ..utils import safe_referrer
@@ -42,7 +43,7 @@ def active_announcements(limit=5):
 @bp.route("/")
 def home():
     latest = db.session.execute(
-        db.select(Report).order_by(Report.created_at.desc()).limit(3)
+        db.select(Report).where(public_reports_condition()).order_by(Report.created_at.desc()).limit(3)
     ).scalars().all()
     return render_template("public/home.html", latest=latest, sections=active_sections(),
                            announcements=active_announcements(3))

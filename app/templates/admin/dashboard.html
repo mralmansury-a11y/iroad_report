@@ -6,7 +6,7 @@
 {% block admin_content %}
 <script type="application/json" id="chartData">{{ {
   "months": months or [], "created": created or [], "resolved": resolved or [],
-  "statusLabels": [_("New"), _("Verified"), _("Assigned"), _("In progress"), _("Resolved"), _("Rejected")],
+  "statusLabels": [_("New"), _("Verified"), _("Assigned"), _("In progress"), _("Resolved"), _("False report")],
   "statusValues": [counts.new, counts.under_review, counts.assigned, counts.in_progress, counts.resolved, counts.rejected],
   "catLabels": (by_category or []) | map(attribute=0) | list, "catValues": (by_category or []) | map(attribute=1) | list,
   "secLabels": (by_section or []) | map(attribute=0) | list, "secValues": (by_section or []) | map(attribute=1) | list,

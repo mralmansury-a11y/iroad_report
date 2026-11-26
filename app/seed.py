@@ -24,7 +24,7 @@ STATUSES = [
     ("assigned", 3, "assigned", False, "تم الإسناد", "Assigned"),
     ("in_progress", 4, "progress", False, "قيد التنفيذ", "In progress"),
     ("resolved", 5, "done", True, "تم الإصلاح", "Resolved"),
-    ("rejected", 6, "rejected", True, "مرفوض", "Rejected"),
+    ("rejected", 6, "rejected", True, "زائف", "False report"),  # code kept; renamed in e7b3f9a2c6d1
 ]
 
 TEAMS = [

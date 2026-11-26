@@ -20,15 +20,7 @@ from .notify import notify
 from .settings import get_setting
 from .uploads import UploadError, save_image
 
-# Allowed workflow transitions (supervisors / admins)
-TRANSITIONS: dict[str, tuple[str, ...]] = {
-    ReportStatus.NEW: (ReportStatus.UNDER_REVIEW, ReportStatus.ASSIGNED, ReportStatus.REJECTED),
-    ReportStatus.UNDER_REVIEW: (ReportStatus.ASSIGNED, ReportStatus.IN_PROGRESS, ReportStatus.RESOLVED, ReportStatus.REJECTED),
-    ReportStatus.ASSIGNED: (ReportStatus.IN_PROGRESS, ReportStatus.UNDER_REVIEW, ReportStatus.REJECTED),
-    ReportStatus.IN_PROGRESS: (ReportStatus.RESOLVED, ReportStatus.ASSIGNED),
-    ReportStatus.RESOLVED: (ReportStatus.IN_PROGRESS,),       # re-open
-    ReportStatus.REJECTED: (ReportStatus.UNDER_REVIEW,),      # re-open
-}
+# Reviewers (supervisors / admins) choose only ReportStatus.REVIEW_CHOICES; "assigned" is set by assigning.
 # Field employees may only progress work that is assigned to them / their team
 EMPLOYEE_TRANSITIONS: dict[str, tuple[str, ...]] = {
     ReportStatus.ASSIGNED: (ReportStatus.IN_PROGRESS,),
@@ -59,8 +51,24 @@ def is_assigned_to(user: User, report: Report) -> bool:
     )
 
 
+def is_staff_only(report: Report) -> bool:
+    """A false report («زائف») is shown to staff accounts only: never to the public or its reporter."""
+    return report.status_code in ReportStatus.STAFF_ONLY
+
+
+def is_staff_viewer(user) -> bool:
+    return user is not None and user.is_authenticated and user.is_staff
+
+
+def public_reports_condition():
+    """SQL filter for the reports anyone may see (excludes staff-only statuses)."""
+    return Report.status.has(ReportStatus.code.notin_(ReportStatus.STAFF_ONLY))
+
+
 def can_view_report(user, report: Report) -> bool:
     if user is None or not user.is_authenticated:
+        return False
+    if is_staff_only(report) and not user.is_staff:
         return False
     if report.reporter_id == user.id:
         return True
@@ -88,7 +96,7 @@ def staff_reports_query(user: User):
 def allowed_next_statuses(user: User, report: Report) -> list[str]:
     cur = report.status_code
     if user.can("reports.review"):
-        return list(TRANSITIONS.get(cur, ()))
+        return [c for c in ReportStatus.REVIEW_CHOICES if c != cur]
     if user.can("reports.update_status") and is_assigned_to(user, report):
         return list(EMPLOYEE_TRANSITIONS.get(cur, ()))
     return []
@@ -192,8 +200,6 @@ def change_status(report: Report, actor: User, to_code: str, public_note: str | 
                   internal_note: str | None = None, commit: bool = True) -> ReportStatusHistory:
     if to_code not in allowed_next_statuses(actor, report):
         raise WorkflowError(_("This status change is not allowed."))
-    if to_code == ReportStatus.REJECTED and not (public_note or "").strip():
-        raise WorkflowError(_("Please give the reporter a reason for rejection."))
     old = report.status
     new = status_by_code(to_code)
     now = utcnow()
@@ -222,7 +228,7 @@ def change_status(report: Report, actor: User, to_code: str, public_note: str | 
 
 
 def _notify_reporter_status(report: Report, to_code: str, note: str | None):
-    if not report.reporter:
+    if not report.reporter or to_code in ReportStatus.STAFF_ONLY:  # the reporter can no longer open it
         return
     ref, title = report.reference, report.title
     st = status_by_code(to_code)
@@ -234,9 +240,6 @@ def _notify_reporter_status(report: Report, to_code: str, note: str | None):
         elif to_code == ReportStatus.RESOLVED:
             t = _("Report resolved")
             b = _('Report "%(title)s" has been fixed. Thank you for your contribution.', title=title)
-        elif to_code == ReportStatus.REJECTED:
-            t = _("Report rejected")
-            b = _('Report "%(title)s" was rejected.', title=title)
         else:
             t = _("Report status updated")
             b = _('Report "%(title)s" is now: %(status)s', title=title, status=st.tr("name"))

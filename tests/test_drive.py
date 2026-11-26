@@ -577,7 +577,7 @@ def test_migration_upgrade_downgrade(tmp_path, monkeypatch):
         upgrade(directory=mig_dir)
         assert "ix_reports_lat_lng" in indexes()
         with engine.connect() as conn:
-            assert conn.execute(sa.text("SELECT version_num FROM alembic_version")).scalar() == "c5e8a1d4b7f2"
+            assert conn.execute(sa.text("SELECT version_num FROM alembic_version")).scalar() == "e7b3f9a2c6d1"
         engine.dispose()
 
 

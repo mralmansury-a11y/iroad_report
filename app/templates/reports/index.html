@@ -19,7 +19,7 @@
     <label class="visually-hidden" for="stf">{{ _("Status") }}</label>
     <select id="stf" name="status" class="form-select form-select-sm" data-autosubmit>
       <option value="">{{ _("All statuses") }}</option>
-      {% for code, label in [('new', _('New')), ('under_review', _('Verified')), ('assigned', _('Assigned')), ('in_progress', _('In progress')), ('resolved', _('Resolved'))] + ([('rejected', _('Rejected'))] if tab == 'mine' else []) %}
+      {% for code, label in [('new', _('New')), ('under_review', _('Verified')), ('assigned', _('Assigned')), ('in_progress', _('In progress')), ('resolved', _('Resolved'))] + ([('rejected', _('False report'))] if show_staff_only else []) %}
       <option value="{{ code }}" {{ 'selected' if status == code }}>{{ label }}</option>
       {% endfor %}
     </select>

@@ -76,28 +76,75 @@ def test_legacy_duplicated_instruction_is_hidden(app, users):
     assert sup.get(f"/admin/reports/{rep.id}").get_data(as_text=True).count("INSTR-1") == 1
 
 
-def test_status_form_has_a_single_note_box(app, users):
+def test_report_page_has_one_note_box(app, users):
     citizen = app.test_client()
     login(citizen, "0921000001")
     rep = _new_report(citizen)
     sup = app.test_client()
     login(sup, "0921000003")
     html = sup.get(f"/admin/reports/{rep.id}").get_data(as_text=True)
-    assert 'name="st-note"' in html and 'name="st-visibility"' in html
-    assert "st-public_note" not in html and "st-internal_note" not in html
+    assert html.count("<textarea") == 2  # the note box and the assignment instructions
+    assert 'name="nt-body"' in html and 'name="st-note"' not in html and 'name="st-visibility"' not in html
     assert "سجل النشاط" in html
 
 
-def test_rejection_reason_is_always_public(app, users):
+def test_status_list_offers_new_verified_false_only(app, users):
     citizen = app.test_client()
     login(citizen, "0921000001")
     rep = _new_report(citizen)
     sup = app.test_client()
     login(sup, "0921000003")
-    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "rejected", "st-note": "REASON-X",
-                                                      "st-visibility": "internal"})
+    html = sup.get(f"/admin/reports/{rep.id}").get_data(as_text=True)
+    options = html.split('name="st-to_status"', 1)[1].split("</select>", 1)[0]
+    assert 'value="under_review"' in options and 'value="rejected"' in options and "زائف" in options
+    for code in ("assigned", "in_progress", "resolved"):
+        assert f'value="{code}"' not in options
+    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review"})
+    html = sup.get(f"/admin/reports/{rep.id}").get_data(as_text=True)
+    options = html.split('name="st-to_status"', 1)[1].split("</select>", 1)[0]
+    assert 'value="new"' in options and 'value="rejected"' in options and 'value="under_review"' not in options
+
+
+# ------------------------------------------------------------------ false reports («زائف»): staff accounts only
+def _false_report(app):
+    citizen = app.test_client()
+    login(citizen, "0921000001")
+    rep = _new_report(citizen)
+    rep.title = "FALSE-REPORT-T"
+    db.session.commit()
+    sup = app.test_client()
+    login(sup, "0921000003")
+    sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "rejected"})  # no reason needed
     db.session.refresh(rep)
-    assert rep.status.code == "rejected" and rep.history[-1].public_note == "REASON-X"
+    assert rep.status.code == "rejected" and rep.status.tr("name", "ar") == "زائف"
+    return rep, citizen
+
+
+def test_false_report_hidden_from_public_and_reporter(app, users):
+    rep, citizen = _false_report(app)
+    anon = app.test_client()
+    for c in (anon, citizen):
+        assert "FALSE-REPORT-T" not in c.get("/").get_data(as_text=True)
+        assert "FALSE-REPORT-T" not in c.get("/reports/").get_data(as_text=True)
+        assert c.get(f"/reports/{rep.reference}").status_code == 404
+        assert c.get(f"/api/v1/reports/{rep.reference}").status_code == 404
+        assert rep.reference not in c.get("/api/v1/reports").get_data(as_text=True)
+    assert "FALSE-REPORT-T" not in citizen.get("/reports/?tab=mine").get_data(as_text=True)
+    assert rep.reference not in citizen.get("/api/v1/reports?mine=1").get_data(as_text=True)
+    assert citizen.get(f"/admin/reports/{rep.id}").status_code in (403, 404)
+    # the reporter is not notified about a report they can no longer open
+    updates = db.session.execute(db.select(Notification).filter_by(user_id=users["public"].id,
+                                                                   kind="report_update")).scalars().all()
+    assert [n.title_en for n in updates] == ["Report received"]
+
+
+def test_false_report_visible_to_staff(app, users):
+    rep, _ = _false_report(app)
+    staff = app.test_client()
+    login(staff, "admin@example.ly")
+    assert staff.get(f"/admin/reports/{rep.id}").status_code == 200
+    assert staff.get(f"/reports/{rep.reference}").status_code == 200
+    assert "FALSE-REPORT-T" in staff.get("/admin/reports").get_data(as_text=True)
 
 
 # ------------------------------------------------------------------ staff reports are verified automatically
@@ -173,4 +220,33 @@ def test_migration_renames_under_review(tmp_path, monkeypatch):
         assert names() == {"ar": "متحقق منه", "en": "Verified"}
         downgrade(directory=mig, revision="a3d9c2e41f07")
         assert names() == {"ar": "قيد المراجعة", "en": "Under review"}
+        db.engine.dispose()
+
+
+# ------------------------------------------------------------------ migration e7b3f9a2c6d1 renames «مرفوض» to «زائف»
+def test_migration_renames_rejected_to_false_report(tmp_path, monkeypatch):
+    import sqlalchemy as sa
+    from flask_migrate import downgrade, upgrade
+
+    import config
+    from app import create_app
+    from tests.test_drive import ROOT
+    monkeypatch.setattr(config.TestingConfig, "SQLALCHEMY_DATABASE_URI", f"sqlite:///{(tmp_path / 'm.db').as_posix()}")
+    app = create_app("testing")
+    mig = str(ROOT / "migrations")
+    with app.app_context():
+        upgrade(directory=mig, revision="c5e8a1d4b7f2")
+        with db.engine.begin() as c:
+            c.execute(sa.text("INSERT INTO report_statuses (id, code, sort_order, tone, is_final) "
+                              "VALUES (6, 'rejected', 6, 'rejected', 1)"))
+            c.execute(sa.text("INSERT INTO report_status_translations (status_id, locale, name) "
+                              "VALUES (6, 'ar', 'مرفوض'), (6, 'en', 'Rejected')"))
+
+        def names():
+            with db.engine.connect() as c:
+                return dict(c.execute(sa.text("SELECT locale, name FROM report_status_translations")).all())
+        upgrade(directory=mig)
+        assert names() == {"ar": "زائف", "en": "False report"}
+        downgrade(directory=mig, revision="c5e8a1d4b7f2")
+        assert names() == {"ar": "مرفوض", "en": "Rejected"}
         db.engine.dispose()

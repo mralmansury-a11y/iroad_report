@@ -170,11 +170,8 @@ def report_status(report_id):
     r = _get_report_or_404(report_id)
     form = _status_form(r)
     if form.validate_on_submit():
-        note = (form.note.data or "").strip() or None
-        # a rejection reason is always sent to the reporter
-        public = form.visibility.data == "public" or form.to_status.data == ReportStatus.REJECTED
         try:
-            change_status(r, current_user, form.to_status.data, note if public else None, None if public else note)
+            change_status(r, current_user, form.to_status.data)
             flash(_("Status updated."), "success")
         except WorkflowError as exc:
             db.session.rollback()

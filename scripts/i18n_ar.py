@@ -7,6 +7,7 @@ as a reviewed reference.
 """
 AR = {
     "Verified": "متحقق منه",
+    "False report": "زائف",
     "Verified automatically: submitted by a staff account.": "تم التحقق تلقائياً: البلاغ مُقدَّم من حساب موظف.",
     "Report published": "نُشر البلاغ",
     "Your report %(ref)s was verified and published.": "تم التحقق من بلاغك %(ref)s ونُشر.",

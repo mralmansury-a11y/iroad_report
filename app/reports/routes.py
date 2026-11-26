@@ -10,7 +10,9 @@ from flask_login import current_user
 from ..extensions import db, limiter
 from ..models import Report, ReportAttachment, ReportCategory, ReportStatus
 from ..services.geo import km_from_coordinates, section_for_km
-from ..services.reports import ReportInput, can_view_report, create_report
+from ..services.reports import (
+    ReportInput, can_view_report, create_report, is_staff_only, is_staff_viewer, public_reports_condition,
+)
 from ..services.settings import get_setting
 from ..services.uploads import UploadError, upload_dir
 from ..utils.validators import normalize_phone
@@ -34,7 +36,7 @@ def _track(ref: str):
 def _full_access(report: Report) -> bool:
     if current_user.is_authenticated and can_view_report(current_user, report):
         return True
-    return report.reporter_id is None and report.reference in _tracked()
+    return report.reporter_id is None and report.reference in _tracked() and not is_staff_only(report)
 
 
 def _wants_json() -> bool:
@@ -53,14 +55,14 @@ def index():
             q = q.where(Report.reference.in_(_tracked()))
         else:
             q = q.where(Report.reporter_id == current_user.id)
-    else:
-        rejected = db.session.execute(db.select(ReportStatus.id).filter_by(code=ReportStatus.REJECTED)).scalar()
-        q = q.where(Report.status_id != rejected)
+    if tab != "mine" or not is_staff_viewer(current_user):
+        q = q.where(public_reports_condition())
     status = request.args.get("status")
     if status in ReportStatus.ALL:
         q = q.join(ReportStatus).where(ReportStatus.code == status)
     pagination = db.paginate(q, page=page, per_page=current_app.config["REPORTS_PER_PAGE"], error_out=False)
-    return render_template("reports/index.html", pagination=pagination, tab=tab, status=status)
+    return render_template("reports/index.html", pagination=pagination, tab=tab, status=status,
+                           show_staff_only=tab == "mine" and is_staff_viewer(current_user))
 
 
 def _categories():
@@ -159,7 +161,7 @@ def detail(reference):
     if report is None:
         abort(404)
     full = _full_access(report)
-    if not full and report.status_code == ReportStatus.REJECTED:
+    if not full and is_staff_only(report):
         abort(404)
     public_notes = [n for n in report.notes if not n.is_internal] if full else []
     return render_template("reports/detail.html", report=report, full=full, public_notes=public_notes)

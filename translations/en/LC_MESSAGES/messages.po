@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: International Road Services - Libya 1.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-26 02:10+0200\n"
+"POT-Creation-Date: 2026-11-26 11:02+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: IRS Libya\n"
 "Language: en\n"
@@ -422,6 +422,9 @@ msgstr "Enter your phone number so you can follow up the report."
 
 msgid "Expected congestion"
 msgstr "Expected congestion"
+
+msgid "False report"
+msgstr "False report"
 
 msgid "Filter"
 msgstr "Filter"
@@ -997,9 +1000,6 @@ msgstr "Play a sound when a notification arrives"
 msgid "Please correct the highlighted fields."
 msgstr "Please correct the highlighted fields."
 
-msgid "Please give the reporter a reason for rejection."
-msgstr "Please give the reporter a reason for rejection."
-
 msgid "Points and rewards"
 msgstr "Points and rewards"
 
@@ -1087,9 +1087,6 @@ msgstr "Registered user"
 msgid "Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured."
 msgstr "Registered users receive the reply as a notification; e-mail addresses receive it by e-mail when SMTP is configured."
 
-msgid "Rejected"
-msgstr "Rejected"
-
 msgid "Remember me"
 msgstr "Remember me"
 
@@ -1112,10 +1109,6 @@ msgstr "Report \"%(title)s\" has been fixed. Thank you for your contribution."
 #, python-format
 msgid "Report \"%(title)s\" is now: %(status)s"
 msgstr "Report \"%(title)s\" is now: %(status)s"
-
-#, python-format
-msgid "Report \"%(title)s\" was rejected."
-msgstr "Report \"%(title)s\" was rejected."
 
 #, python-format
 msgid "Report \"%(title)s\" was verified by the road team."
@@ -1142,9 +1135,6 @@ msgstr "Report received"
 
 msgid "Report reference number"
 msgstr "Report reference number"
-
-msgid "Report rejected"
-msgstr "Report rejected"
 
 msgid "Report resolved"
 msgstr "Report resolved"
@@ -1208,9 +1198,6 @@ msgstr "Reports updated %(n)s min ago"
 
 msgid "Reports updated just now"
 msgstr "Reports updated just now"
-
-msgid "Required when rejecting; a rejection reason is always shown to the reporter."
-msgstr "Required when rejecting; a rejection reason is always shown to the reporter."
 
 msgid "Reset"
 msgstr "Reset"
@@ -1900,4 +1887,19 @@ msgstr "until"
 
 #~ msgid "Your location and route are processed on this device only and are never sent to the server."
 #~ msgstr "Your location and route are processed on this device only and are never sent to the server."
+
+#~ msgid "Please give the reporter a reason for rejection."
+#~ msgstr "Please give the reporter a reason for rejection."
+
+#~ msgid "Rejected"
+#~ msgstr "Rejected"
+
+#~ msgid "Report \"%(title)s\" was rejected."
+#~ msgstr "Report \"%(title)s\" was rejected."
+
+#~ msgid "Report rejected"
+#~ msgstr "Report rejected"
+
+#~ msgid "Required when rejecting; a rejection reason is always shown to the reporter."
+#~ msgstr "Required when rejecting; a rejection reason is always shown to the reporter."
 

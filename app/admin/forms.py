@@ -13,10 +13,8 @@ NOTE_VISIBILITY = [("internal", _l("Internal (staff only)")), ("public", _l("Off
 
 
 class StatusForm(FlaskForm):
-    """One note box + its visibility (it used to be two boxes: public and internal)."""
+    """Status only: notes are written once, in the activity-log note box (NoteForm)."""
     to_status = SelectField(_l("New status"), validators=[DataRequired()])
-    note = TextAreaField(_l("Note"), validators=[Optional(), Length(max=2000)])
-    visibility = SelectField(_l("Visibility"), choices=NOTE_VISIBILITY, default="internal")
 
 
 class AssignForm(FlaskForm):

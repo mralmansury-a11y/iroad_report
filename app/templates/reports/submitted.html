@@ -11,7 +11,8 @@
     <div class="small ir-muted">{{ _("Keep this number to follow up your report.") }}</div>
   </div>
   <div class="d-grid gap-2">
-    <a class="btn btn-primary" href="{{ url_for('reports.detail', reference=report.reference) }}">{{ _("Follow the report") }}</a>
+    {% if can_follow %}<a class="btn btn-primary" href="{{ url_for('reports.detail', reference=report.reference) }}">{{ _("Follow the report") }}</a>
+    {% else %}<p class="small ir-muted mb-1">{{ _("This report is being reviewed and can be followed once it is verified.") }}</p>{% endif %}
     <a class="btn btn-outline-light" href="{{ url_for('main.home') }}">{{ _("Back to home") }}</a>
   </div>
 </div>

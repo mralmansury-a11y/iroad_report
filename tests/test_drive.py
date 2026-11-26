@@ -230,11 +230,12 @@ class TestNearbyApi:
         assert body["radius_km"] == 8 and body["items"] == []
 
     def test_configured_statuses(self, client):
-        new = make_report(*north_of(SABHA, 2), status="new")
+        verified = make_report(*north_of(SABHA, 2), status="under_review")
         make_report(*north_of(SABHA, 2), status="assigned")
-        set_setting("drive_alert_statuses", '["new"]')
+        make_report(*north_of(SABHA, 2), status="new")
+        set_setting("drive_alert_statuses", '["under_review", "new"]')  # "new" is staff-only: ignored
         db.session.commit()
-        assert refs(nearby(client, lat=SABHA[0], lng=SABHA[1])) == [new.reference]
+        assert refs(nearby(client, lat=SABHA[0], lng=SABHA[1])) == [verified.reference]
 
     @pytest.mark.parametrize("body", [{}, {"lat": 27}, {"lng": 14}, {"lat": "abc", "lng": 14}, {"lat": 91, "lng": 14},
                                       {"lat": 27, "lng": 181}, {"lat": "nan", "lng": 14}, {"lat": 27, "lng": "inf"},
@@ -345,11 +346,11 @@ class TestAlertableApi:
         assert client.get(self.URL, headers={"If-None-Match": ar}).status_code == 200
 
     def test_configured_statuses_and_disabled(self, client):
-        new = make_report(*north_of(SABHA, 2), status="new")
-        set_setting("drive_alert_statuses", '["new"]')
+        verified = make_report(*north_of(SABHA, 2), status="under_review")
+        set_setting("drive_alert_statuses", '["under_review"]')
         db.session.commit()
         items = client.get(self.URL).get_json()["data"]["items"]
-        assert [i["reference"] for i in items if i["reference"].startswith("TST-")] == [new.reference]
+        assert [i["reference"] for i in items if i["reference"].startswith("TST-")] == [verified.reference]
         set_setting("drive_mode_enabled", False)
         db.session.commit()
         r = client.get(self.URL)

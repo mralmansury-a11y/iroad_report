@@ -22,7 +22,8 @@ MIN_REFETCH_M = 1000
 MAX_REFETCH_M = 10000
 # Statuses that may be configured as "verified by the administration".
 # Final statuses (resolved/rejected) can never trigger an alert.
-ALERTABLE_STATUS_CHOICES = (ReportStatus.NEW, ReportStatus.UNDER_REVIEW, ReportStatus.ASSIGNED, ReportStatus.IN_PROGRESS)
+# Public data: staff-only statuses (new, false report) are never offered.
+ALERTABLE_STATUS_CHOICES = (ReportStatus.UNDER_REVIEW, ReportStatus.ASSIGNED, ReportStatus.IN_PROGRESS)
 DEFAULT_ALERT_STATUSES = (ReportStatus.ASSIGNED, ReportStatus.IN_PROGRESS)
 
 # key: (min, max) inclusive ranges accepted from the control panel

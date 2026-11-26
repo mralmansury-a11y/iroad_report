@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-26 11:02+0200\n"
+"POT-Creation-Date: 2026-11-26 11:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1553,6 +1553,9 @@ msgid "This phone number is already registered."
 msgstr ""
 
 msgid "This report belongs to a registered account. Log in to follow it."
+msgstr ""
+
+msgid "This report is being reviewed and can be followed once it is verified."
 msgstr ""
 
 msgid "This status change is not allowed."

@@ -40,9 +40,10 @@ def avg_resolution_hours(days: int = 90) -> float | None:
     return _avg_hours(rows)
 
 
-def open_status_ids() -> list[int]:
-    return list(db.session.execute(
-        db.select(ReportStatus.id).where(ReportStatus.code.in_(ReportStatus.OPEN))).scalars())
+def public_open_status_ids() -> list[int]:
+    """Open statuses anyone may see (home-page markers and counts): staff-only statuses excluded."""
+    codes = [c for c in ReportStatus.OPEN if c not in ReportStatus.STAFF_ONLY]
+    return list(db.session.execute(db.select(ReportStatus.id).where(ReportStatus.code.in_(codes))).scalars())
 
 
 def nearby_open_count(km: float | None, radius: float | None = None) -> int | None:
@@ -51,7 +52,7 @@ def nearby_open_count(km: float | None, radius: float | None = None) -> int | No
     radius = radius or float(get_setting("nearby_radius_km", 20) or 20)
     return db.session.execute(
         db.select(func.count(Report.id)).where(
-            Report.status_id.in_(open_status_ids()),
+            Report.status_id.in_(public_open_status_ids()),
             Report.km_marker.between(km - radius, km + radius),
         )
     ).scalar_one()
@@ -63,7 +64,7 @@ def nearby_markers(km: float | None, radius: float | None = None, limit: int = 1
     radius = radius or float(get_setting("nearby_radius_km", 20) or 20)
     rows = db.session.execute(
         db.select(Report).where(
-            Report.status_id.in_(open_status_ids()),
+            Report.status_id.in_(public_open_status_ids()),
             Report.km_marker.between(km - radius, km + radius),
         ).order_by(Report.created_at.desc()).limit(limit)
     ).scalars().all()

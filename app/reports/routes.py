@@ -39,6 +39,13 @@ def _full_access(report: Report) -> bool:
     return report.reporter_id is None and report.reference in _tracked() and not is_staff_only(report)
 
 
+def _is_sender(report: Report) -> bool:
+    """The account or guest session that sent the report, whatever its status (confirmation page only)."""
+    if current_user.is_authenticated:
+        return report.reporter_id == current_user.id
+    return report.reporter_id is None and report.reference in _tracked()
+
+
 def _wants_json() -> bool:
     return request.headers.get("X-Requested-With") == "fetch" or request.accept_mimetypes.best == "application/json"
 
@@ -128,9 +135,9 @@ def new():
 @bp.route("/submitted/<reference>")
 def submitted(reference):
     report = db.session.execute(db.select(Report).filter_by(reference=reference)).scalar_one_or_none()
-    if report is None or not _full_access(report):
+    if report is None or not (_is_sender(report) or _full_access(report)):
         abort(404)
-    return render_template("reports/submitted.html", report=report)
+    return render_template("reports/submitted.html", report=report, can_follow=_full_access(report))
 
 
 @bp.route("/track", methods=["GET", "POST"])
@@ -144,8 +151,10 @@ def track():
         owner_phone = None
         if report is not None:
             owner_phone = report.guest_phone or (report.reporter.phone if report.reporter else None)
-        if report is None or not phone or owner_phone != phone:
+        if report is None or not phone or owner_phone != phone or report.status_code == ReportStatus.REJECTED:
             flash(_("No report matches this reference number and phone."), "danger")
+        elif is_staff_only(report):  # new: not shown until the road team verifies it
+            flash(_("This report is being reviewed and can be followed once it is verified."), "info")
         else:
             if report.reporter_id is None:
                 _track(report.reference)

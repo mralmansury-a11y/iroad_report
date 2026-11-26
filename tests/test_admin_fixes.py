@@ -250,3 +250,50 @@ def test_migration_renames_rejected_to_false_report(tmp_path, monkeypatch):
         downgrade(directory=mig, revision="c5e8a1d4b7f2")
         assert names() == {"ar": "مرفوض", "en": "Rejected"}
         db.engine.dispose()
+
+
+# ------------------------------------------------------------------ visibility: new = staff only, verified = everyone
+def _set_status(rep, code):
+    rep.status = db.session.execute(db.select(ReportStatus).filter_by(code=code)).scalar_one()
+    db.session.commit()
+
+
+def test_new_report_staff_only_verified_public(app, client, users):
+    citizen = app.test_client()
+    login(citizen, "0921000001")
+    rep = _new_report(citizen)
+    anon = app.test_client()
+    for c in (anon, citizen):
+        assert c.get(f"/reports/{rep.reference}").status_code == 404
+        assert rep.reference not in c.get("/api/v1/reports").get_data(as_text=True)
+    assert rep.reference not in citizen.get("/api/v1/reports?mine=1").get_data(as_text=True)
+    login(client, "admin@example.ly")
+    assert client.get(f"/reports/{rep.reference}").status_code == 200
+    _set_status(rep, "under_review")
+    for c in (anon, citizen, client):
+        assert c.get(f"/reports/{rep.reference}").status_code == 200
+        assert rep.reference in c.get("/api/v1/reports").get_data(as_text=True)
+
+
+def test_map_never_shows_new_or_false_reports(app, client, users):
+    citizen = app.test_client()
+    login(citizen, "0921000001")
+    reps = {code: _new_report(citizen) for code in ("new", "under_review", "rejected")}
+    for code, rep in reps.items():
+        _set_status(rep, code)
+    login(client, "admin@example.ly")  # not even for staff
+    for c in (app.test_client(), client):
+        shown = {i["reference"] for i in c.get("/api/v1/reports/map").get_json()["data"]["items"]}
+        assert reps["under_review"].reference in shown
+        assert reps["new"].reference not in shown and reps["rejected"].reference not in shown
+
+
+def test_assigned_employee_gets_the_same_three_statuses(app, users):
+    rep, _ = _assign_to_team(app, users)
+    emp = app.test_client()
+    login(emp, "0921000002")
+    html = emp.get(f"/admin/reports/{rep.id}").get_data(as_text=True)
+    options = html.split('name="st-to_status"', 1)[1].split("</select>", 1)[0]
+    for code in ("new", "under_review", "rejected"):
+        assert f'value="{code}"' in options
+    assert 'value="in_progress"' not in options and 'value="resolved"' not in options

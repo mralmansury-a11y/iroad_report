@@ -2,6 +2,7 @@ from app.extensions import db
 from app.models import (
     Notification, PointsTransaction, Report, ReportAttachment, ReportCategory, ReportStatus, ReportStatusHistory,
 )
+from app.services.settings import set_setting
 
 from .conftest import login, png_bytes
 
@@ -22,8 +23,12 @@ def test_submit_report_logged_in(client, users, app):
     assert rep.title  # defaulted from category
     assert len(rep.attachments) == 1 and rep.attachments[0].mime_type == "image/jpeg"
     assert db.session.execute(db.select(Notification).filter_by(user_id=users["public"].id)).first() is not None
-    # owner can view the attachment, anonymous cannot
+    # a new report is staff-only: the owner sees its photo once it is verified, anonymous never
     att = rep.attachments[0]
+    assert client.get(f"/reports/attachment/{att.id}").status_code == 404
+    assert client.get(r.headers["Location"]).status_code == 200  # the confirmation page still opens
+    rep.status = db.session.execute(db.select(ReportStatus).filter_by(code="under_review")).scalar_one()
+    db.session.commit()
     assert client.get(f"/reports/attachment/{att.id}").status_code == 200
     anon = app.test_client()
     assert anon.get(f"/reports/attachment/{att.id}").status_code == 404
@@ -85,6 +90,12 @@ def test_guest_report_and_tracking(app):
                headers={"X-Requested-With": "fetch"})
     assert r.status_code == 201
     ref = r.get_json()["reference"]
+    assert c.get(f"/reports/{ref}").status_code == 404  # new: staff-only until verified
+    r = c.post("/reports/track", data={"reference": ref, "phone": "0919998877"})
+    assert r.status_code == 200 and "قيد المراجعة" in r.get_data(as_text=True)
+    rep = db.session.execute(db.select(Report).filter_by(reference=ref)).scalar_one()
+    rep.status = db.session.execute(db.select(ReportStatus).filter_by(code="under_review")).scalar_one()
+    db.session.commit()
     assert c.get(f"/reports/{ref}").status_code == 200  # tracked in session
     other = app.test_client()
     page = other.get(f"/reports/{ref}").get_data(as_text=True)
@@ -115,9 +126,11 @@ def test_full_workflow_history_points(app, users):
     login(citizen, "0921000001")
     rep = _new_report(citizen)
 
+    set_setting("points_per_accepted", 5)
+    db.session.commit()
     sup = app.test_client()
     login(sup, "0921000003")
-    r = sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review", "st-note": "check"})
+    r = sup.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review"})
     assert r.status_code == 302
     team_id = users["employee"].team_memberships[0].team_id
     r = sup.post(f"/admin/reports/{rep.id}/assign", data={"as-team_id": team_id, "as-assignee_id": users["employee"].id})
@@ -129,16 +142,17 @@ def test_full_workflow_history_points(app, users):
     emp = app.test_client()
     login(emp, "0921000002")
     assert emp.get(f"/admin/reports/{rep.id}").status_code == 200
-    emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "in_progress"})
-    emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "resolved", "st-note": "تم الردم", "st-visibility": "public"})
+    emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "in_progress"})  # no longer offered
     db.session.refresh(rep)
-    assert rep.status.code == "resolved" and rep.resolved_at is not None
+    assert rep.status.code == "assigned"
+    emp.post(f"/admin/reports/{rep.id}/status", data={"st-to_status": "under_review"})
+    db.session.refresh(rep)
     hist = [h.to_status.code for h in rep.history]
-    assert hist == ["new", "under_review", "assigned", "in_progress", "resolved"]
+    assert hist == ["new", "under_review", "assigned", "under_review"]
     pts = db.session.execute(db.select(PointsTransaction).filter_by(user_id=users["public"].id)).scalars().all()
-    assert sum(p.points for p in pts) == 20
+    assert sum(p.points for p in pts) == 5  # awarded once, on the first verification
     db.session.refresh(users["public"])
-    assert users["public"].points == 20
+    assert users["public"].points == 5
     kinds = {n.kind for n in db.session.execute(db.select(Notification).filter_by(user_id=users["public"].id)).scalars()}
     assert {"report_update", "points"} <= kinds
     # bilingual system notification

@@ -161,8 +161,8 @@ def list_reports():
 
 @bp.get("/reports/map")
 def reports_map():
-    q = (db.select(Report).join(ReportStatus)
-         .where(ReportStatus.code.in_(ReportStatus.OPEN), Report.latitude.is_not(None))
+    q = (db.select(Report).join(ReportStatus)  # never new or false reports (staff-only), even for staff
+         .where(ReportStatus.code.in_(ReportStatus.OPEN), public_reports_condition(), Report.latitude.is_not(None))
          .order_by(Report.created_at.desc()).limit(500))
     items = []
     for r in db.session.execute(q).scalars():

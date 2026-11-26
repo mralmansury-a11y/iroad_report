@@ -38,8 +38,10 @@ class ReportStatus(TranslatableMixin, db.Model):
     REJECTED = "rejected"
     ALL = (NEW, UNDER_REVIEW, ASSIGNED, IN_PROGRESS, RESOLVED, REJECTED)
     OPEN = (NEW, UNDER_REVIEW, ASSIGNED, IN_PROGRESS)
-    REVIEW_CHOICES = (NEW, UNDER_REVIEW, REJECTED)  # the only statuses a reviewer sets by hand
-    STAFF_ONLY = (REJECTED,)  # «زائف» / "False report": hidden from the public and the reporter
+    REVIEW_CHOICES = (NEW, UNDER_REVIEW, REJECTED)  # the only statuses chosen by hand on the report page
+    # Shown to staff accounts only (never to the public or the reporter): «جديد» until it is verified,
+    # «زائف» / "False report" for good. Neither is ever shown on the map.
+    STAFF_ONLY = (NEW, REJECTED)
 
     id = db.Column(db.Integer, primary_key=True)
     code = db.Column(db.String(24), nullable=False, unique=True)

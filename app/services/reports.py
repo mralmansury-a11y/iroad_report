@@ -20,12 +20,7 @@ from .notify import notify
 from .settings import get_setting
 from .uploads import UploadError, save_image
 
-# Reviewers (supervisors / admins) choose only ReportStatus.REVIEW_CHOICES; "assigned" is set by assigning.
-# Field employees may only progress work that is assigned to them / their team
-EMPLOYEE_TRANSITIONS: dict[str, tuple[str, ...]] = {
-    ReportStatus.ASSIGNED: (ReportStatus.IN_PROGRESS,),
-    ReportStatus.IN_PROGRESS: (ReportStatus.RESOLVED,),
-}
+# Statuses are chosen by hand from ReportStatus.REVIEW_CHOICES only; "assigned" is set by assigning.
 
 
 class WorkflowError(ValueError):
@@ -52,7 +47,7 @@ def is_assigned_to(user: User, report: Report) -> bool:
 
 
 def is_staff_only(report: Report) -> bool:
-    """A false report («زائف») is shown to staff accounts only: never to the public or its reporter."""
+    """New and false reports are shown to staff accounts only: never to the public or the reporter."""
     return report.status_code in ReportStatus.STAFF_ONLY
 
 
@@ -94,11 +89,9 @@ def staff_reports_query(user: User):
 
 
 def allowed_next_statuses(user: User, report: Report) -> list[str]:
-    cur = report.status_code
-    if user.can("reports.review"):
-        return [c for c in ReportStatus.REVIEW_CHOICES if c != cur]
-    if user.can("reports.update_status") and is_assigned_to(user, report):
-        return list(EMPLOYEE_TRANSITIONS.get(cur, ()))
+    """Reviewers, and employees on reports assigned to them, choose among New / Verified / False report."""
+    if user.can("reports.review") or (user.can("reports.update_status") and is_assigned_to(user, report)):
+        return [c for c in ReportStatus.REVIEW_CHOICES if c != report.status_code]
     return []
 
 
@@ -182,7 +175,7 @@ def create_report(data: ReportInput, reporter: User | None, files=()) -> Report:
             else:
                 notify(reporter, "report_update",
                        lambda: (_("Report received"), _("Your report %(ref)s was received and will be reviewed.", ref=ref)),
-                       url=url_for("reports.detail", reference=ref), report=report)
+                       url=url_for("reports.submitted", reference=ref), report=report)  # detail: once verified
         audit("report.create", "report", report.id, user=reporter, reference=report.reference)
         db.session.commit()
         return report
